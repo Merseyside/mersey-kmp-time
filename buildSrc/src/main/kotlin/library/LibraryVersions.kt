@@ -4,8 +4,8 @@ object LibraryVersions {
         const val groupId = "io.github.merseyside"
         const val applicationId = "com.merseyside.merseyLib"
 
-        const val version = "1.0.0"
-        const val versionCode = 100
+        const val version = "1.0.1"
+        const val versionCode = 101
 
         const val compileSdk = 30
         const val targetSdk = 30
