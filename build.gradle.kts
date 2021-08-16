@@ -76,7 +76,8 @@ allprojects {
                 val signingKeyId: String? = System.getenv("SIGNING_KEY_ID")
                 val signingPassword: String? = System.getenv("SIGNING_PASSWORD")
                 val signingKey: String? = System.getenv("SIGNING_KEY")?.let { base64Key ->
-                    String(Base64.getDecoder().decode(base64Key))
+                    val _base = base64Key.replace("\n", "")
+                    String(Base64.getDecoder().decode(_base))
                 }
                 if (signingKeyId != null) {
                     useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
