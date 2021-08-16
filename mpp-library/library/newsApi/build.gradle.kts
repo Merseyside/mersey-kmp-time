@@ -1,3 +1,0 @@
-plugins {
-    plugin(Plugins.commonFeature)
-}

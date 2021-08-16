@@ -1,4 +1,3 @@
-
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -76,42 +75,26 @@ tasks.withType<KotlinCompile> {
 }
 
 val androidLibs = listOf(
-    Deps.Android.appCompat,
-    Deps.Android.navigation,
-    Deps.Android.navigationUi,
-    Deps.Android.constraintLayout,
-    Deps.Android.mokoMvvmDatabinding,
-    Deps.Android.mokoMvvmViewbinding,
-    Deps.Android.koin,
-    Deps.Android.koinExt,
-    Deps.Android.material,
-    Deps.Android.recyclerView
+    LibraryDeps.Libs.appCompat,
+    LibraryDeps.Libs.navigation,
+    LibraryDeps.Libs.navigationUi,
+    LibraryDeps.Libs.constraintLayout,
+    LibraryDeps.Libs.material
 )
 
 val merseyLibs = listOf(
-    Deps.Android.MerseyLibs.archy,
-    Deps.Android.MerseyLibs.adapters,
-    Deps.Android.MerseyLibs.utils,
-    Deps.Android.MerseyLibs.archyAndroid
+    LibraryDeps.Libs.MerseyLibs.archy,
+    LibraryDeps.Libs.MerseyLibs.utils
 )
 
 val merseyModules = listOf(
     Modules.Android.MerseyLibs.archy,
-    Modules.Android.MerseyLibs.adapters,
-    Modules.Android.MerseyLibs.utils,
-    Modules.Android.MerseyLibs.archyAndroid
+    Modules.Android.MerseyLibs.utils
 )
 
 dependencies {
-    implementation(project(Modules.MultiPlatform.mppLibrary))
-
     androidLibs.forEach { lib -> implementation(lib) }
-
-    if (isLocalAndroidDependencies()) {
-        merseyModules.forEach { lib -> implementation(project(lib)) }
-    } else {
-        merseyLibs.forEach { lib -> implementation(lib) }
-    }
+    merseyLibs.forEach { lib -> implementation(lib) }
 
     compileOnly("javax.annotation:javax.annotation-api:1.3.2")
 }

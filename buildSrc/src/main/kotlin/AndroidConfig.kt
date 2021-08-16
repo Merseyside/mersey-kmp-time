@@ -2,7 +2,7 @@
  * Configuration of android build
  */
 object AndroidConfig {
-    const val APPLICATION_ID = "com.merseyside.template"
+    const val APPLICATION_ID = "com.merseyside.merseyLib.time"
 
     const val COMPILE_SDK_VERSION = 30
     const val MIN_SDK_VERSION = 21
