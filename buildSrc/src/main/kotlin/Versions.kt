@@ -23,7 +23,7 @@ object Versions {
         const val navigation = "2.3.5"
         const val lifecycle = "2.3.1"
         const val recyclerView = "1.1.0"
-        const val merseyLibs = "1.4.1"
+        const val merseyLibs = "1.4.2"
     }
 
     object MultiPlatform {

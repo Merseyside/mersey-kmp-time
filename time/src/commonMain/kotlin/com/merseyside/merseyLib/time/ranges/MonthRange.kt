@@ -7,12 +7,9 @@ import com.merseyside.merseyLib.time.ext.getPrevMonth
 import com.merseyside.merseyLib.time.ext.toMonth
 
 class MonthRange internal constructor(
-    private val start: TimeUnit,
-    private val end: TimeUnit
+    override val start: TimeUnit,
+    override val end: TimeUnit
 ): TimeRange {
-
-    override fun getStart() = start
-    override fun getEnd() = end
 
     fun getMonth(): Month {
         return start.toMonth()
