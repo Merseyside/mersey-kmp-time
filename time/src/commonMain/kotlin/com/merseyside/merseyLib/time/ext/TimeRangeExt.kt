@@ -135,9 +135,12 @@ fun TimeRange.shiftBackOnGap(): TimeRange {
 /**
  * Use %1 and %2 for start and end values accordingly.
  */
-fun TimeRange.toHumanString(format: String): String {
-    return format.replace("$1", start.value.toString())
-        .replace("$2", end.value.toString())
+fun TimeRange.toHumanString(
+    format: String,
+    pattern: String = TimeConfiguration.defaultPattern
+): String {
+    return format.replace("$1", start.toFormattedDate(pattern).value)
+        .replace("$2", end.toFormattedDate(pattern).value)
 }
 
 fun <T : TimeRange> T.logHuman(
