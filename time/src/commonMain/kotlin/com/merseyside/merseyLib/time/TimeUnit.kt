@@ -3,7 +3,6 @@
 package com.merseyside.merseyLib.time
 
 import kotlinx.serialization.Serializable
-import kotlin.jvm.JvmInline
 
 object Conversions {
     const val MILLIS_CONST = 1000L
@@ -122,6 +121,8 @@ interface TimeUnit : Comparable<TimeUnit> {
         return value.toString()
     }
 
+    override fun equals(other: Any?): Boolean
+
     companion object {
         fun getEmpty(): TimeUnit {
             return Millis(0)
@@ -129,9 +130,8 @@ interface TimeUnit : Comparable<TimeUnit> {
     }
 }
 
-@Serializable
-@JvmInline
-value class Millis(override val millis: Long) : TimeUnit {
+@Serializable(with = LongAsMillisSerializer::class)
+class Millis(override val millis: Long) : TimeUnit {
 
     override val value: Long
         get() = millis
@@ -154,11 +154,15 @@ value class Millis(override val millis: Long) : TimeUnit {
     override fun toString(): String {
         return getString()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is TimeUnit) return false
+        return isEqual(other)
+    }
 }
 
 @Serializable(with = LongAsSecondsSerializer::class)
-@JvmInline
-value class Seconds private constructor(override val millis: Long) : TimeUnit {
+class Seconds private constructor(override val millis: Long) : TimeUnit {
 
     override val value: Long
         get() = millis / Conversions.MILLIS_CONST
@@ -183,11 +187,15 @@ value class Seconds private constructor(override val millis: Long) : TimeUnit {
     override fun toString(): String {
         return getString()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is TimeUnit) return false
+        return isEqual(other)
+    }
 }
 
 @Serializable(with = LongAsMinutesSerializer::class)
-@JvmInline
-value class Minutes private constructor(override val millis: Long) : TimeUnit {
+class Minutes private constructor(override val millis: Long) : TimeUnit {
 
     override val value: Long
         get() = toSeconds().value / Conversions.SECONDS_MINUTES_CONST
@@ -212,11 +220,15 @@ value class Minutes private constructor(override val millis: Long) : TimeUnit {
     override fun toString(): String {
         return getString()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is TimeUnit) return false
+        return isEqual(other)
+    }
 }
 
 @Serializable(with = LongAsHoursSerializer::class)
-@JvmInline
-value class Hours private constructor(override val millis: Long) : TimeUnit {
+class Hours private constructor(override val millis: Long) : TimeUnit {
 
     internal constructor(unit: TimeUnit) : this(unit.millis)
 
@@ -241,11 +253,15 @@ value class Hours private constructor(override val millis: Long) : TimeUnit {
     override fun toString(): String {
         return getString()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is TimeUnit) return false
+        return isEqual(other)
+    }
 }
 
 @Serializable(with = LongAsDaysSerializer::class)
-@JvmInline
-value class Days private constructor(override val millis: Long) : TimeUnit {
+class Days private constructor(override val millis: Long) : TimeUnit {
 
     internal constructor(unit: TimeUnit) : this(unit.millis)
 
@@ -270,11 +286,15 @@ value class Days private constructor(override val millis: Long) : TimeUnit {
     override fun toString(): String {
         return getString()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is TimeUnit) return false
+        return isEqual(other)
+    }
 }
 
 @Serializable(with = LongAsWeeksSerializer::class)
-@JvmInline
-value class Weeks private constructor(override val millis: Long) : TimeUnit {
+class Weeks private constructor(override val millis: Long) : TimeUnit {
 
     internal constructor(unit: TimeUnit) : this(unit.millis)
 
@@ -298,5 +318,10 @@ value class Weeks private constructor(override val millis: Long) : TimeUnit {
 
     override fun toString(): String {
         return getString()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is TimeUnit) return false
+        return isEqual(other)
     }
 }

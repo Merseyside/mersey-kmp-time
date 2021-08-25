@@ -2,8 +2,8 @@ package com.merseyside.merseyLib.time.ext
 
 import com.merseyside.merseyLib.logger.Logger
 import com.merseyside.merseyLib.time.*
-import com.merseyside.merseyLib.time.ranges.TimeRange
 import com.merseyside.merseyLib.time.ranges.MonthRange
+import com.merseyside.merseyLib.time.ranges.TimeRange
 import com.merseyside.merseyLib.time.ranges.TimeUnitRange
 
 fun TimeUnit.toFormattedDate(pattern: String = TimeConfiguration.defaultPattern): FormattedDate {
@@ -86,9 +86,9 @@ fun TimeUnit.getWeekRange(): TimeRange {
     val days = toDays().round()
 
     val monday = days - dayOfWeek.toTimeUnit()
-    val sunday = monday + Days(7)
+    val endOfSunday = monday + Days(7)
 
-    return TimeUnitRange(monday, sunday)
+    return TimeUnitRange(monday, endOfSunday)
 }
 
 fun TimeUnit.toMonth(): Month {
@@ -107,6 +107,19 @@ fun TimeUnit.getMonthRange(): MonthRange {
     return MonthRange(monthStart, monthEnd)
 }
 
+fun <T: TimeUnit> List<T>.findEdge(): TimeRange {
+    if (size > 1) {
+        val min = minByOrNull { it.millis }
+        val max = maxByOrNull { it.millis }
+
+        return if (min != null && max != null) {
+            TimeUnitRange(min, max)
+        } else {
+            throw IllegalArgumentException("Should never calls")
+        }
+    } else throw IllegalArgumentException("Size must be > 1")
+}
+
 fun <T : TimeUnit> T.logHuman(
     tag: String = this::class.simpleName ?: "TimeUnit",
     prefix: String = ""
@@ -121,4 +134,8 @@ fun <T : TimeUnit> List<T>.logHuman(
 ): List<T> {
     Logger.log(tag, "$prefix ${joinToString(separator = ", ") { it.getHumanDate().value }}")
     return this
+}
+
+fun TimeUnit.toEndValue(): TimeUnit {
+    return this - Millis(1)
 }

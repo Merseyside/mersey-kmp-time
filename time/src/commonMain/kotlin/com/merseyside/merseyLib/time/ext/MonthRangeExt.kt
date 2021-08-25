@@ -1,8 +1,11 @@
 package com.merseyside.merseyLib.time.ext
 
-import com.merseyside.merseyLib.time.*
-import com.merseyside.merseyLib.time.ranges.TimeRange
+import com.merseyside.merseyLib.time.Days
+import com.merseyside.merseyLib.time.TimeUnit
+import com.merseyside.merseyLib.time.minus
+import com.merseyside.merseyLib.time.plus
 import com.merseyside.merseyLib.time.ranges.MonthRange
+import com.merseyside.merseyLib.time.ranges.TimeRange
 
 fun MonthRange.getNextMonth(): MonthRange {
     return end.getMonthRange()
@@ -24,4 +27,16 @@ fun MonthRange.getDay(number: Int): TimeRange {
     val timeUnit = start + Days(number - 1)
     return if (contains(timeUnit)) timeUnit.toDayTimeRange()
     else throw IllegalArgumentException("Month has only ${getMonth().days} days.")
+}
+
+fun MonthRange.isIntersect(other: TimeRange, includeLast: Boolean = false): Boolean {
+    return (this as TimeRange).isIntersect(other, includeLast)
+}
+
+fun MonthRange.contains(other: TimeRange, includeLast: Boolean = false): Boolean {
+    return (this as TimeRange).contains(other, includeLast)
+}
+
+fun MonthRange.contains(timeUnit: TimeUnit, includeLast: Boolean = false): Boolean {
+    return (this as TimeRange).contains(timeUnit, includeLast)
 }

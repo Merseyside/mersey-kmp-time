@@ -23,12 +23,12 @@ object Versions {
         const val navigation = "2.3.5"
         const val lifecycle = "2.3.1"
         const val recyclerView = "1.1.0"
-        const val merseyLibs = "1.4.2"
+        const val merseyLibs = "1.4.3"
     }
 
     object MultiPlatform {
 
-        const val ktorClient = "1.6.0"
+        const val ktorClient = "1.6.2"
         const val ktorClientLogging = ktorClient
 
         const val mokoResources = "0.16.1"
