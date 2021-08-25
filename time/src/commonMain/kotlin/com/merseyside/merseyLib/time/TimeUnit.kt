@@ -130,8 +130,7 @@ interface TimeUnit : Comparable<TimeUnit> {
 }
 
 @Serializable
-@JvmInline
-value class Millis(override val millis: Long) : TimeUnit {
+class Millis(override val millis: Long) : TimeUnit {
 
     override val value: Long
         get() = millis
@@ -157,8 +156,7 @@ value class Millis(override val millis: Long) : TimeUnit {
 }
 
 @Serializable(with = LongAsSecondsSerializer::class)
-@JvmInline
-value class Seconds private constructor(override val millis: Long) : TimeUnit {
+class Seconds private constructor(override val millis: Long) : TimeUnit {
 
     override val value: Long
         get() = millis / Conversions.MILLIS_CONST
@@ -186,8 +184,7 @@ value class Seconds private constructor(override val millis: Long) : TimeUnit {
 }
 
 @Serializable(with = LongAsMinutesSerializer::class)
-@JvmInline
-value class Minutes private constructor(override val millis: Long) : TimeUnit {
+class Minutes private constructor(override val millis: Long) : TimeUnit {
 
     override val value: Long
         get() = toSeconds().value / Conversions.SECONDS_MINUTES_CONST
@@ -215,8 +212,7 @@ value class Minutes private constructor(override val millis: Long) : TimeUnit {
 }
 
 @Serializable(with = LongAsHoursSerializer::class)
-@JvmInline
-value class Hours private constructor(override val millis: Long) : TimeUnit {
+class Hours private constructor(override val millis: Long) : TimeUnit {
 
     internal constructor(unit: TimeUnit) : this(unit.millis)
 
@@ -244,8 +240,7 @@ value class Hours private constructor(override val millis: Long) : TimeUnit {
 }
 
 @Serializable(with = LongAsDaysSerializer::class)
-@JvmInline
-value class Days private constructor(override val millis: Long) : TimeUnit {
+class Days private constructor(override val millis: Long) : TimeUnit {
 
     internal constructor(unit: TimeUnit) : this(unit.millis)
 
@@ -273,8 +268,7 @@ value class Days private constructor(override val millis: Long) : TimeUnit {
 }
 
 @Serializable(with = LongAsWeeksSerializer::class)
-@JvmInline
-value class Weeks private constructor(override val millis: Long) : TimeUnit {
+class Weeks private constructor(override val millis: Long) : TimeUnit {
 
     internal constructor(unit: TimeUnit) : this(unit.millis)
 

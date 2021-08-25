@@ -96,5 +96,5 @@ internal actual object Logger {
     }
 
     actual val TAG: String
-        get() = TODO("Not yet implemented")
+        get() = "Logger"
 }

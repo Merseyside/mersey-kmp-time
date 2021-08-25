@@ -5,13 +5,12 @@ import com.merseyside.merseyLib.time.ranges.TimeRange
 import com.merseyside.merseyLib.time.ranges.MonthRange
 import com.merseyside.merseyLib.time.ranges.TimeUnitRange
 
-
 object Time {
     enum class TimeZone { SYSTEM, GMT }
 
     val now: TimeUnit
         get() {
-            return getCurrentTimeMillis()
+            return getCurrentTime()
         }
 
     val today: TimeUnit
@@ -43,7 +42,7 @@ object Time {
     }
 }
 
-expect fun getCurrentTimeMillis(): Millis
+expect fun getCurrentTime(): TimeUnit
 
 internal expect fun getDayOfMonth(
     timeUnit: TimeUnit,
