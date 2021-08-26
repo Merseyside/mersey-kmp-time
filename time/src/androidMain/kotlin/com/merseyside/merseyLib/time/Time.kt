@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.TimeZone as SystemTimeZone
 
-actual fun getCurrentTimeMillis(): Millis {
+actual fun getCurrentTime(): TimeUnit {
     return Millis(System.currentTimeMillis())
 }
 
@@ -35,7 +35,7 @@ actual fun getDayOfMonth(timeUnit: TimeUnit, timeZone: String): Days {
 actual fun getFormattedDate(
     timeUnit: TimeUnit,
     pattern: String,
-    timeZone: String,
+    timeZone: String
 ): FormattedDate {
     return try {
         val sdf = SimpleDateFormat(pattern, TimeConfiguration.getLocale())

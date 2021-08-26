@@ -1,10 +1,10 @@
 {
   "name": "MultiPlatformLibrary",
-  "version": "0.1.0",
+  "version": "1.0.2",
   "homepage": "Link to a Kotlin/Native module homepage",
   "source": {
     "git": "Not Published",
-    "tag": "Cocoapods/MultiPlatformLibrary/0.1.0"
+    "tag": "Cocoapods/MultiPlatformLibrary/1.0.2"
   },
   "authors": "Merseyside",
   "license": "",
@@ -30,7 +30,7 @@
       "name": "Compile Kotlin/Native",
       "execution_position": "before_compile",
       "shell_path": "/bin/sh",
-      "script": "                MPP_PROJECT_ROOT=\"$SRCROOT/../../mpp-library\"\n\n                MPP_OUTPUT_DIR=\"$MPP_PROJECT_ROOT/build/cocoapods/framework\"\n                MPP_OUTPUT_NAME=\"$MPP_OUTPUT_DIR/MultiPlatformLibrary.framework\"\n\n                \"$MPP_PROJECT_ROOT/../gradlew\" -p \"$MPP_PROJECT_ROOT\" \"$GRADLE_TASK\"\n"
+      "script": "                MPP_PROJECT_ROOT=\"$SRCROOT/../../time\"\n\n                MPP_OUTPUT_DIR=\"$MPP_PROJECT_ROOT/build/cocoapods/framework\"\n                MPP_OUTPUT_NAME=\"$MPP_OUTPUT_DIR/MultiPlatformLibrary.framework\"\n\n                \"$MPP_PROJECT_ROOT/../gradlew\" -p \"$MPP_PROJECT_ROOT\" \"$GRADLE_TASK\"\n"
     }
   ]
 }
