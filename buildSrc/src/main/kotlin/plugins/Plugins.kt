@@ -22,11 +22,11 @@ object Plugins {
 
     val sqlDelight = GradlePlugin(
         id = "com.squareup.sqldelight",
-        module = "com.squareup.sqldelight:gradle-core.plugins.plugin:${Versions.Plugins.sqlDelight}"
+        module = "com.squareup.sqldelight:gradle-core.plugins.plugin:${LibraryVersions.Plugins.sqlDelight}"
     )
 
     val kotlinSerialization = GradlePlugin(
         id = "kotlinx-serialization",
-        module = "org.jetbrains.kotlin:kotlin-serialization:${Versions.Plugins.serialization}"
+        module = "org.jetbrains.kotlin:kotlin-serialization:${LibraryVersions.Plugins.serialization}"
     )
 }

@@ -50,7 +50,7 @@ fun TimeUnit.toDayOfMonth(timeZone: String = TimeConfiguration.timeZone): Days {
 }
 
 fun TimeUnit.getHumanDate(pattern: String = TimeConfiguration.defaultPattern): FormattedDate {
-    return if (!isMoreThanDay()) toHoursMinutesOfDay().toFormattedDate(pattern)
+    return if (!isMoreThanDay()) toFormattedHoursMinutesOfDay()
     else toFormattedDate(pattern)
 }
 

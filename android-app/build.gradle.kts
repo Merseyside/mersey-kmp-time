@@ -88,8 +88,8 @@ val merseyLibs = listOf(
 )
 
 val merseyModules = listOf(
-    Modules.Android.MerseyLibs.archy,
-    Modules.Android.MerseyLibs.utils
+    LibraryModules.archy,
+    LibraryModules.utils
 )
 
 dependencies {
