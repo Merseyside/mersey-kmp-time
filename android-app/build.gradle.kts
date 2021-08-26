@@ -84,6 +84,11 @@ val merseyLibs = listOf(
     LibraryDeps.Libs.MerseyLibs.utils
 )
 
+val merseyModules = listOf(
+    LibraryModules.archy,
+    LibraryModules.utils
+)
+
 dependencies {
     androidLibs.forEach { lib -> implementation(lib) }
     merseyLibs.forEach { lib -> implementation(lib) }

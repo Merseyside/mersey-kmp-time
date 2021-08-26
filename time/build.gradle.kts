@@ -22,11 +22,6 @@ android {
         targetSdkVersion(LibraryVersions.Application.targetSdk)
     }
 
-    packagingOptions {
-        exclude("META-INF/DEPENDENCIES")
-        exclude("META-INF/*.kotlin_module")
-    }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8

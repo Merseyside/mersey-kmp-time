@@ -10,6 +10,11 @@ object Plugins {
     val mobileMultiplatform = GradlePlugin(id = "dev.icerock.mobile.multiplatform")
     val iosFramework = GradlePlugin(id = "dev.icerock.mobile.multiplatform.ios-framework")
 
+    val sqlDelight = GradlePlugin(
+        id = "com.squareup.sqldelight",
+        module = "com.squareup.sqldelight:gradle-core.plugins.plugin:${LibraryVersions.Plugins.sqlDelight}"
+    )
+
     val kotlinSerialization = GradlePlugin(
         id = "kotlinx-serialization",
         module = "org.jetbrains.kotlin:kotlin-serialization:${LibraryVersions.Plugins.serialization}"
