@@ -1,5 +1,4 @@
 @file:JvmName("AndroidTime")
-
 package com.merseyside.merseyLib.time
 
 import java.text.SimpleDateFormat
@@ -76,12 +75,8 @@ actual fun getDayOfWeekHuman(
 }
 
 actual fun getDayOfWeek(timeUnit: TimeUnit, timeZone: String): DayOfWeek {
-    val newIndex = getUnit(timeUnit, Calendar.DAY_OF_WEEK, timeZone).let { day ->
-        if (day == 1) 6
-        else day - 2
-
-    }
-    return DayOfWeek.getByIndex(newIndex)
+    val index = getUnit(timeUnit, Calendar.DAY_OF_WEEK, timeZone)
+    return DayOfWeek.getByPlatformIndex(index)
 }
 
 actual fun getMonth(timeUnit: TimeUnit, timeZone: String): Month {
