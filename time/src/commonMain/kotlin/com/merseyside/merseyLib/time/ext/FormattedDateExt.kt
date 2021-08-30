@@ -1,7 +1,9 @@
 package com.merseyside.merseyLib.time.ext
 
 import com.merseyside.merseyLib.logger.Logger
-import com.merseyside.merseyLib.time.*
+import com.merseyside.merseyLib.time.FormattedDate
+import com.merseyside.merseyLib.time.TimeConfiguration
+import com.merseyside.merseyLib.time.TimeUnit
 
 fun FormattedDate.toSecondsOfDay(timeZone: String = TimeConfiguration.timeZone): FormattedDate {
     return toTimeUnit().toSecondsOfDay().toFormattedDate()
@@ -24,7 +26,7 @@ fun FormattedDate.toTimeUnit(vararg pattern: String): TimeUnit {
 
     patternsList.forEach {
         try {
-            value.toTimeUnit(it)?.let { timestamp -> return timestamp.toMillis() }
+            value.toTimeUnit(it)?.let { timeUnit -> return timeUnit }
         } catch (e: Exception) {
             Logger.logErr(tag = "TimeUnit", msg = "$it is wrong pattern to format time")
         }

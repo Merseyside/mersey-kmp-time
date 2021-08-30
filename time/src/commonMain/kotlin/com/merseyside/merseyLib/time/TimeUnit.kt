@@ -3,7 +3,6 @@
 package com.merseyside.merseyLib.time
 
 import kotlinx.serialization.Serializable
-import kotlin.jvm.JvmInline
 
 object Conversions {
     const val MILLIS_CONST = 1000L
@@ -122,6 +121,8 @@ interface TimeUnit : Comparable<TimeUnit> {
         return value.toString()
     }
 
+    override fun equals(other: Any?): Boolean
+
     companion object {
         fun getEmpty(): TimeUnit {
             return Millis(0)
@@ -129,7 +130,7 @@ interface TimeUnit : Comparable<TimeUnit> {
     }
 }
 
-@Serializable
+@Serializable(with = LongAsMillisSerializer::class)
 class Millis(override val millis: Long) : TimeUnit {
 
     override val value: Long
@@ -152,6 +153,11 @@ class Millis(override val millis: Long) : TimeUnit {
 
     override fun toString(): String {
         return getString()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is TimeUnit) return false
+        return isEqual(other)
     }
 }
 
@@ -181,6 +187,11 @@ class Seconds private constructor(override val millis: Long) : TimeUnit {
     override fun toString(): String {
         return getString()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is TimeUnit) return false
+        return isEqual(other)
+    }
 }
 
 @Serializable(with = LongAsMinutesSerializer::class)
@@ -208,6 +219,11 @@ class Minutes private constructor(override val millis: Long) : TimeUnit {
 
     override fun toString(): String {
         return getString()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is TimeUnit) return false
+        return isEqual(other)
     }
 }
 
@@ -237,6 +253,11 @@ class Hours private constructor(override val millis: Long) : TimeUnit {
     override fun toString(): String {
         return getString()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is TimeUnit) return false
+        return isEqual(other)
+    }
 }
 
 @Serializable(with = LongAsDaysSerializer::class)
@@ -265,6 +286,11 @@ class Days private constructor(override val millis: Long) : TimeUnit {
     override fun toString(): String {
         return getString()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is TimeUnit) return false
+        return isEqual(other)
+    }
 }
 
 @Serializable(with = LongAsWeeksSerializer::class)
@@ -292,5 +318,10 @@ class Weeks private constructor(override val millis: Long) : TimeUnit {
 
     override fun toString(): String {
         return getString()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is TimeUnit) return false
+        return isEqual(other)
     }
 }
