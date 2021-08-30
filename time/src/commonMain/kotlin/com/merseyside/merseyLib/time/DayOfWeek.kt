@@ -18,5 +18,17 @@ enum class DayOfWeek(val index: Int) {
             return values().find { it.index == index }
                 ?: throw IllegalArgumentException("Index must be in 0..6 range")
         }
+
+        fun getByPlatformIndex(index: Int): DayOfWeek {
+            val newIndex = if (index == 1) 6
+            else index - 2
+
+            return getByIndex(newIndex)
+        }
+    }
+
+    fun toPlatformIndex(): Int {
+        return if (index == 6) 1
+        else index - 2
     }
 }

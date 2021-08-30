@@ -1,19 +1,23 @@
 package com.merseyside.merseyLib.time
 
-import com.merseyside.merseyLib.logger.Logger
 import platform.Foundation.*
-import platform.darwin.NSInteger
 
 actual fun getCurrentTime(): TimeUnit {
     return Seconds(NSDate().timeIntervalSince1970)
 }
 
 actual fun getDayOfMonth(timeUnit: TimeUnit, timeZone: String): Days {
-    return Days(getUnit(timeUnit, 0, timeZone))
+    return Days(getComponents(timeUnit, NSDayCalendarUnit, timeZone).day)
 }
 
 actual fun getDayOfWeek(timeUnit: TimeUnit, timeZone: String): DayOfWeek {
-    return DayOfWeek.MONDAY
+    return DayOfWeek.getByPlatformIndex(
+        getComponents(
+            timeUnit,
+            NSWeekdayCalendarUnit,
+            timeZone
+        ).weekday.toInt()
+    )
 }
 
 actual fun getDayOfWeekHuman(
@@ -49,22 +53,20 @@ actual fun getYear(timeUnit: TimeUnit, timeZone: String): Years {
     return Years(0)
 }
 
-private fun getDate(millis: TimeUnit): NSDate {
-    return NSDate(millis.millis.toDouble())
+private fun getDate(timeUnit: TimeUnit): NSDate {
+    return NSDate.dateWithTimeIntervalSince1970(timeUnit.toSeconds().value.toDouble())
 }
 
-private fun getUnit(timeUnit: TimeUnit, unit: NSInteger, timeZone: String): Int {
+private fun getComponents(timeUnit: TimeUnit, unit: NSCalendarUnit, timeZone: String): NSDateComponents {
     val date = getDate(timeUnit)
     val calendar = getCalendar(timeZone)
 
-    val components = NSDateComponents()
-    calendar.dateFromComponents(components)
-    Logger.log("Time", components.day)
-    return 0
+    return calendar.components(unit, date)
 }
 
 private fun getCalendar(timeZone: String): NSCalendar {
-    return NSCalendar().apply {
+    val calendar = NSCalendar.currentCalendar
+    return calendar.apply {
         this.timeZone = if (timeZone != Time.TimeZone.SYSTEM.name) {
             NSTimeZone.timeZoneWithAbbreviation(timeZone) ?: NSTimeZone.systemTimeZone
         } else {
