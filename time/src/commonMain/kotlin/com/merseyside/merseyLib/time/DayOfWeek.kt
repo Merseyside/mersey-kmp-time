@@ -1,17 +1,16 @@
 package com.merseyside.merseyLib.time
 
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@Serializable
+@Serializable(with = DayOfWeekSerializer::class)
 enum class DayOfWeek(val index: Int) {
-    @SerialName("0") MONDAY(0),
-    @SerialName("1") TUESDAY(1),
-    @SerialName("2") WEDNESDAY(2),
-    @SerialName("3") THURSDAY(3),
-    @SerialName("4") FRIDAY(4),
-    @SerialName("5") SATURDAY(5),
-    @SerialName("6") SUNDAY(6);
+    MONDAY(0),
+    TUESDAY(1),
+    WEDNESDAY(2),
+    THURSDAY(3),
+    FRIDAY(4),
+    SATURDAY(5),
+    SUNDAY(6);
 
     companion object {
         fun getByIndex(index: Int): DayOfWeek {
@@ -29,6 +28,6 @@ enum class DayOfWeek(val index: Int) {
 
     fun toPlatformIndex(): Int {
         return if (index == 6) 1
-        else index - 2
+        else index + 2
     }
 }

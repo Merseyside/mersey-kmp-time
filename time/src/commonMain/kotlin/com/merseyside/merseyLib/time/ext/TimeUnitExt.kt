@@ -81,7 +81,7 @@ fun TimeUnit.getPrevDay(): Days {
     return --currentDay
 }
 
-fun TimeUnit.getWeekRange(): TimeRange {
+fun TimeUnit.toWeekRange(): TimeRange {
     val dayOfWeek = toDayOfWeek()
     val days = toDays().round()
 
@@ -95,7 +95,7 @@ fun TimeUnit.toMonth(): Month {
     return getMonth(this)
 }
 
-fun TimeUnit.getMonthRange(): MonthRange {
+fun TimeUnit.toMonthRange(): MonthRange {
     val days: Days = toDays().round()
 
     val dayOfMonth = getDayOfMonth(this)

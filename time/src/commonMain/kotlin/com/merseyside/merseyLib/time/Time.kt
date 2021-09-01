@@ -30,11 +30,11 @@ object Time {
     fun getEndOfDay(): TimeUnit = Days(1) - Minutes(1)
 
     fun getCurrentWeekRange(): TimeRange {
-        return now.getWeekRange()
+        return now.toWeekRange()
     }
 
     fun getCurrentMonthRange(): MonthRange {
-        return now.getMonthRange()
+        return now.toMonthRange()
     }
 
     fun getCurrentYear(): Years {

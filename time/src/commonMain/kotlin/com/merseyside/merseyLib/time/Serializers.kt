@@ -112,3 +112,21 @@ class LongAsWeeksSerializer : KSerializer<Weeks> {
         encoder.encodeLong(value.value)
     }
 }
+
+class DayOfWeekSerializer : KSerializer<DayOfWeek> {
+
+    override val descriptor: SerialDescriptor =
+        PrimitiveSerialDescriptor(
+            "com.merseyside.merseyLib.time.DayOfWeekSerializer",
+            PrimitiveKind.INT
+        )
+
+    override fun deserialize(decoder: Decoder): DayOfWeek {
+        val value = decoder.decodeInt()
+        return DayOfWeek.getByPlatformIndex(value)
+    }
+
+    override fun serialize(encoder: Encoder, value: DayOfWeek) {
+        encoder.encodeInt(value.toPlatformIndex())
+    }
+}
