@@ -10,3 +10,12 @@ fun Month.getDayCount(year: Years = TimeConfiguration.year): Days {
         else days
     }
 }
+
+fun Month.getHuman(
+    pattern: String = TimeConfiguration.monthPattern,
+    language: Language = TimeConfiguration.language,
+    country: Country = TimeConfiguration.country,
+): String {
+    val timeUnit = Days(31 * index)
+    return timeUnit.toFormattedDate(pattern, language = language, country = country).value
+}

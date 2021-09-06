@@ -93,9 +93,8 @@ fun TimeRange.toHoursMinutesOfDay(): TimeUnitRange {
 }
 
 fun TimeRange.isIntersect(other: TimeRange, includeLast: Boolean = true): Boolean {
-    return start <= other.getEndValue(includeLast) && start >= other.start ||
-            getEndValue(includeLast) > other.start && getEndValue(includeLast) < other.getEndValue(includeLast) ||
-            start >= other.start && getEndValue(includeLast) <= other.getEndValue(includeLast)
+    return contains(other.start, includeLast) || contains(other.end, includeLast)
+        || other.contains(start, includeLast) || other.contains(end, includeLast)
 }
 
 fun TimeRange.contains(other: TimeRange, includeLast: Boolean = true): Boolean {

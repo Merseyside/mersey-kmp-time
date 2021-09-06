@@ -17,7 +17,7 @@ object LibraryVersions {
         const val coroutines = "1.5.0-native-mt"
         const val serialization = "1.2.1"
         const val koin = "3.1.2"
-        const val merseyLibs = "1.4.3"
+        const val merseyLibs = "1.4.5"
     }
 
     const val kotlin = "1.5.30-RC"
