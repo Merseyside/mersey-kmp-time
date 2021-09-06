@@ -6,12 +6,17 @@ import com.merseyside.merseyLib.time.ranges.MonthRange
 import com.merseyside.merseyLib.time.ranges.TimeRange
 import com.merseyside.merseyLib.time.ranges.TimeUnitRange
 
-fun TimeUnit.toFormattedDate(pattern: String = TimeConfiguration.defaultPattern): FormattedDate {
-    return getFormattedDate(this, pattern)
+fun TimeUnit.toFormattedDate(
+    pattern: String = TimeConfiguration.defaultPattern,
+    timeZone: String = TimeConfiguration.timeZone,
+    language: String = TimeConfiguration.language,
+    country: String = TimeConfiguration.country
+): FormattedDate {
+    return getFormattedDate(this, pattern, timeZone, language, country)
 }
 
-fun TimeUnit.toSecondsOfDay(timeZone: String = TimeConfiguration.timeZone): Seconds {
-    return getSecondsOfDay(this, timeZone)
+fun TimeUnit.toSecondsOfMinute(timeZone: String = TimeConfiguration.timeZone): Seconds {
+    return getSecondsOfMinute(this, timeZone)
 }
 
 fun TimeUnit.toMinutesOfHour(timeZone: String = TimeConfiguration.timeZone): Minutes {
@@ -43,6 +48,15 @@ fun TimeUnit.toFormattedHoursMinutesOfDay(
 
 fun TimeUnit.toDayOfWeek(timeZone: String = TimeConfiguration.timeZone): DayOfWeek {
     return getDayOfWeek(this, timeZone)
+}
+
+fun TimeUnit.toDayOfWeekHuman(
+    pattern: String = TimeConfiguration.dayOfWeekPattern,
+    timeZone: String = TimeConfiguration.timeZone,
+    language: Language = TimeConfiguration.language,
+    country: String = TimeConfiguration.country
+): String {
+    return toFormattedDate(pattern, timeZone, language, country).value
 }
 
 fun TimeUnit.toDayOfMonth(timeZone: String = TimeConfiguration.timeZone): Days {
@@ -91,8 +105,8 @@ fun TimeUnit.toWeekRange(): TimeRange {
     return TimeUnitRange(monday, endOfSunday)
 }
 
-fun TimeUnit.toMonth(): Month {
-    return getMonth(this)
+fun TimeUnit.toMonth(timeZone: String = TimeConfiguration.timeZone): Month {
+    return getMonth(this, timeZone)
 }
 
 fun TimeUnit.toMonthRange(): MonthRange {

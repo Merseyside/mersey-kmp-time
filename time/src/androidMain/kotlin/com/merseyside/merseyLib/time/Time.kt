@@ -9,7 +9,7 @@ actual fun getCurrentTime(): TimeUnit {
     return Millis(System.currentTimeMillis())
 }
 
-actual fun getSecondsOfDay(timeUnit: TimeUnit, timeZone: String): Seconds {
+actual fun getSecondsOfMinute(timeUnit: TimeUnit, timeZone: String): Seconds {
     return Seconds(getUnit(timeUnit, Calendar.SECOND, timeZone))
 }
 
@@ -34,10 +34,12 @@ actual fun getDayOfMonth(timeUnit: TimeUnit, timeZone: String): Days {
 actual fun getFormattedDate(
     timeUnit: TimeUnit,
     pattern: String,
-    timeZone: String
+    timeZone: String,
+    language: String,
+    country: String
 ): FormattedDate {
     return try {
-        val sdf = SimpleDateFormat(pattern, TimeConfiguration.getLocale())
+        val sdf = SimpleDateFormat(pattern, getLocale(language, country))
 
         val netDate = Date(timeUnit.millis)
 
@@ -49,29 +51,6 @@ actual fun getFormattedDate(
         e.printStackTrace()
         throw IllegalArgumentException("Can not format date!")
     }
-}
-
-actual fun getDayOfWeekHuman(
-    timeUnit: TimeUnit,
-    language: String,
-    pattern: String,
-    timeZone: String
-): FormattedDate {
-    val result = try {
-        val sdf = SimpleDateFormat(pattern, Locale(language))
-
-        val netDate = Date(timeUnit.millis)
-
-        if (timeZone != Time.TimeZone.SYSTEM.toString()) {
-            sdf.timeZone = SystemTimeZone.getTimeZone(timeZone)
-        }
-        FormattedDate(sdf.format(netDate))
-    } catch (e: Exception) {
-        e.printStackTrace()
-        throw IllegalArgumentException("Can not format date!")
-    }
-
-    return result
 }
 
 actual fun getDayOfWeek(timeUnit: TimeUnit, timeZone: String): DayOfWeek {

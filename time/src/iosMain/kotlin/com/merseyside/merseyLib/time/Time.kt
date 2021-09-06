@@ -20,44 +20,48 @@ actual fun getDayOfWeek(timeUnit: TimeUnit, timeZone: String): DayOfWeek {
     )
 }
 
-actual fun getDayOfWeekHuman(
+actual fun getFormattedDate(
     timeUnit: TimeUnit,
-    language: Language,
     pattern: String,
-    timeZone: String
+    timeZone: String,
+    language: String,
+    country: String
 ): FormattedDate {
-    return FormattedDate("")
+    val date = getDate(timeUnit)
+    val dateFormatter = NSDateFormatter()
+    dateFormatter.dateFormat = pattern
+    return FormattedDate(dateFormatter.stringFromDate(date))
 }
 
-actual fun getFormattedDate(timeUnit: TimeUnit, pattern: String, timeZone: String): FormattedDate {
-    return FormattedDate("")
-}
-
-actual fun getSecondsOfDay(timeUnit: TimeUnit, timeZone: String): Seconds {
-    return Seconds(0)
+actual fun getSecondsOfMinute(timeUnit: TimeUnit, timeZone: String): Seconds {
+    return Seconds(getComponents(timeUnit, NSSecondCalendarUnit, timeZone).second)
 }
 
 actual fun getMinutesOfHour(timeUnit: TimeUnit, timeZone: String): Minutes {
-    return Minutes(0)
+    return Minutes(getComponents(timeUnit, NSMinuteCalendarUnit, timeZone).minute)
 }
 
 actual fun getHoursOfDay(timeUnit: TimeUnit, timeZone: String): Hours {
-    return Hours(0)
+    return Hours(getComponents(timeUnit, NSHourCalendarUnit, timeZone).hour)
 }
 
 actual fun getMonth(timeUnit: TimeUnit, timeZone: String): Month {
-    return Month.APRIL
+    return Month.getByIndex(getComponents(timeUnit, NSMonthCalendarUnit, timeZone).month.toInt())
 }
 
 actual fun getYear(timeUnit: TimeUnit, timeZone: String): Years {
-    return Years(0)
+    return Years(getComponents(timeUnit, NSYearCalendarUnit, timeZone).year.toInt())
 }
 
 private fun getDate(timeUnit: TimeUnit): NSDate {
     return NSDate.dateWithTimeIntervalSince1970(timeUnit.toSeconds().value.toDouble())
 }
 
-private fun getComponents(timeUnit: TimeUnit, unit: NSCalendarUnit, timeZone: String): NSDateComponents {
+private fun getComponents(
+    timeUnit: TimeUnit,
+    unit: NSCalendarUnit,
+    timeZone: String
+): NSDateComponents {
     val date = getDate(timeUnit)
     val calendar = getCalendar(timeZone)
 
