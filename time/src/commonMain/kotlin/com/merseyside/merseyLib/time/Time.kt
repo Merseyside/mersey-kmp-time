@@ -1,8 +1,11 @@
 package com.merseyside.merseyLib.time
 
-import com.merseyside.merseyLib.time.ext.*
-import com.merseyside.merseyLib.time.ranges.TimeRange
+import com.merseyside.merseyLib.time.ext.includeLastValue
+import com.merseyside.merseyLib.time.ext.toHoursMinutesOfDay
+import com.merseyside.merseyLib.time.ext.toMonthRange
+import com.merseyside.merseyLib.time.ext.toWeekRange
 import com.merseyside.merseyLib.time.ranges.MonthRange
+import com.merseyside.merseyLib.time.ranges.TimeRange
 import com.merseyside.merseyLib.time.ranges.TimeUnitRange
 
 object Time {
@@ -13,7 +16,7 @@ object Time {
             return getCurrentTime()
         }
 
-    val today: TimeUnit
+    val today: Days
         get() {
             return now.toDays().round()
         }
@@ -27,7 +30,11 @@ object Time {
         return now.toHoursMinutesOfDay(timeZone)
     }
 
-    fun getEndOfDay(): TimeUnit = Days(1) - Minutes(1)
+    fun getDay(includeLastMilli: Boolean = true): TimeUnit =
+        Days(1).includeLastValue(includeLastMilli)
+
+    fun getWeek(includeLastMilli: Boolean = true): TimeUnit =
+        Weeks(1).includeLastValue(includeLastMilli)
 
     fun getCurrentWeekRange(): TimeRange {
         return now.toWeekRange()
