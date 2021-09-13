@@ -49,7 +49,7 @@ object Time {
     }
 }
 
-expect fun getCurrentTime(): TimeUnit
+internal expect fun getCurrentTime(): TimeUnit
 
 internal expect fun getDayOfMonth(
     timeUnit: TimeUnit,
@@ -60,14 +60,6 @@ internal expect fun getDayOfWeek(
     timeUnit: TimeUnit,
     timeZone: String = TimeConfiguration.timeZone
 ): DayOfWeek
-
-//internal expect fun getDayOfWeekHuman(
-//    timeUnit: TimeUnit,
-//    pattern: String = TimeConfiguration.dayOfWeekPattern,
-//    timeZone: String = TimeConfiguration.timeZone,
-//    language: Language = TimeConfiguration.language,
-//    country: String = TimeConfiguration.country
-//): FormattedDate
 
 internal expect fun getFormattedDate(
     timeUnit: TimeUnit,

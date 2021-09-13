@@ -3,12 +3,9 @@ package com.merseyside.merseyLib.time.ext
 import com.merseyside.merseyLib.time.*
 
 fun Month.getDayCount(year: Years = TimeConfiguration.year): Days {
-    return if (this != Month.FEBRUARY) {
-        days
-    } else {
-        if (year.isLeap()) days + 1
-        else days
-    }
+    return if (this == Month.FEBRUARY && year.isLeap()) {
+        days + 1
+    } else days
 }
 
 fun Month.getHuman(

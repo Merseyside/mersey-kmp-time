@@ -15,16 +15,16 @@ operator fun <T : TimeUnit> T.plus(increment: Number): T {
     return this + newInstance(increment.toLong())
 }
 
+operator fun <T : TimeUnit> T.minus(unary: Number): T {
+    return this - newInstance(unary.toLong())
+}
+
 operator fun <T : TimeUnit> T.div(divider: Number): T {
-    return this / newInstance(divider.toLong())
+    return newInstanceMillis(this.millis / divider.toLong()) as T
 }
 
 operator fun <T : TimeUnit> T.times(times: Number): T {
-    return this * newInstance(times.toLong())
-}
-
-operator fun <T : TimeUnit> T.minus(unary: Number): T {
-    return this - newInstance(unary.toLong())
+    return newInstanceMillis(this.millis * times.toLong()) as T
 }
 
 operator fun <T : TimeUnit> T.plus(increment: TimeUnit): T {
@@ -170,14 +170,14 @@ class Seconds private constructor(override val millis: Long) : TimeUnit {
     internal constructor(unit: TimeUnit) : this(unit.millis)
 
     constructor(number: Number) : this(
-        (Millis(Conversions.MILLIS_CONST) * number).millis
+        Conversions.MILLIS_CONST * number.toLong()
     )
 
     constructor(str: String) : this(number = str.toLong())
     constructor() : this(0)
 
     override fun newInstance(value: Long): Seconds {
-        return Seconds(Millis(Conversions.MILLIS_CONST).millis * value)
+        return Seconds(Conversions.MILLIS_CONST * value)
     }
 
     override fun newInstanceMillis(millis: Long): Seconds {
