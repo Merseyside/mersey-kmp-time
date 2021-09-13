@@ -8,6 +8,7 @@ plugins {
     plugin(LibraryDeps.Plugins.kotlinSerialization)
     plugin(LibraryDeps.Plugins.mavenPublish)
     plugin(LibraryDeps.Plugins.iosFramework)
+    plugin(LibraryDeps.Plugins.swiftPackage) version "2.0.3"
 }
 
 group = LibraryVersions.Application.groupId
@@ -35,6 +36,15 @@ tasks.withType<KotlinCompile> {
 }
 
 kotlin {
+    multiplatformSwiftPackage {
+        packageName("Time")
+        swiftToolsVersion("5.3")
+        targetPlatforms {
+            iOS { v("13") }
+        }
+        outputDirectory(File(rootDir, "/TimePackage"))
+    }
+
     android {
         publishLibraryVariants("release", "debug")
         publishLibraryVariantsGroupedByFlavor = true

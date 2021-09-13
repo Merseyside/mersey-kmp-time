@@ -92,22 +92,18 @@ fun TimeRange.toHoursMinutesOfDay(): TimeUnitRange {
     return TimeUnitRange(start.toHoursMinutesOfDay(), end.toHoursMinutesOfDay())
 }
 
-fun TimeRange.isIntersect(other: TimeRange): Boolean {
-    return start <= other.end && start >= other.start ||
-            end > other.start && end < other.end ||
-            start >= other.start && end <= other.end
+fun TimeRange.isIntersect(other: TimeRange, includeLast: Boolean = true): Boolean {
+    return start <= other.getEndValue(includeLast) && start >= other.start ||
+            getEndValue(includeLast) > other.start && getEndValue(includeLast) < other.getEndValue(includeLast) ||
+            start >= other.start && getEndValue(includeLast) <= other.getEndValue(includeLast)
 }
 
-fun TimeRange.contains(other: TimeRange): Boolean {
-    return start <= other.start && end >= other.end
+fun TimeRange.contains(other: TimeRange, includeLast: Boolean = true): Boolean {
+    return start <= other.start && getEndValue(includeLast) >= other.getEndValue(includeLast)
 }
 
-fun TimeRange.contains(timeUnit: TimeUnit): Boolean {
-    return timeUnit in start..end
-}
-
-fun TimeRange.isIntersect(timeUnit: TimeUnit): Boolean {
-    return timeUnit in start..end
+fun TimeRange.contains(timeUnit: TimeUnit, includeLast: Boolean = true): Boolean {
+    return timeUnit in start..getEndValue(includeLast)
 }
 
 fun TimeRange.getGap(): TimeUnit {
@@ -130,6 +126,19 @@ fun TimeRange.shiftOnGap(): TimeRange {
 fun TimeRange.shiftBackOnGap(): TimeRange {
     val gap = getGap()
     return TimeUnitRange(start - gap, end - gap)
+}
+
+fun TimeRange.uniteWith(other: TimeRange): TimeRange {
+    checkIntersection(other)
+
+    val start = min(start, other.start)
+    val end = max(end, other.end)
+
+    return TimeUnitRange(start, end)
+}
+
+private fun TimeRange.checkIntersection(other: TimeRange) {
+    if (!isIntersect(other)) throw IllegalArgumentException("Ranges don't intersect!")
 }
 
 /**
@@ -161,4 +170,9 @@ fun <T : TimeRange> List<T>.logHuman(
 ): List<T> {
     forEach { it.logHuman(tag, prefix) }
     return this
+}
+
+fun TimeRange.getEndValue(includeLast: Boolean = true): TimeUnit {
+    return if (includeLast) end
+    else end.toEndValue()
 }

@@ -8,7 +8,6 @@ object Plugins {
     val kotlinKapt = GradlePlugin(id = "kotlin-kapt")
     val kotlinAndroid = GradlePlugin(id = "kotlin-android")
     val mobileMultiplatform = GradlePlugin(id = "dev.icerock.mobile.multiplatform")
-    val updateDependencies = GradlePlugin(id = "plugins.update-dependencies")
     val iosFramework = GradlePlugin(id = "dev.icerock.mobile.multiplatform.ios-framework")
 
     val sqlDelight = GradlePlugin(

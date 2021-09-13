@@ -7,6 +7,23 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
+class LongAsMillisSerializer : KSerializer<Millis> {
+
+    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(
+        "com.merseyside.merseyLib.time.LongAsMillisSerializer",
+        PrimitiveKind.LONG
+    )
+
+    override fun deserialize(decoder: Decoder): Millis {
+        val value = decoder.decodeLong()
+        return Millis(value)
+    }
+
+    override fun serialize(encoder: Encoder, value: Millis) {
+        encoder.encodeLong(value.value)
+    }
+}
+
 class LongAsSecondsSerializer : KSerializer<Seconds> {
 
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(

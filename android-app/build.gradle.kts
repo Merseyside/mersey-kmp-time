@@ -76,9 +76,6 @@ tasks.withType<KotlinCompile> {
 
 val androidLibs = listOf(
     LibraryDeps.Libs.appCompat,
-    LibraryDeps.Libs.navigation,
-    LibraryDeps.Libs.navigationUi,
-    LibraryDeps.Libs.constraintLayout,
     LibraryDeps.Libs.material
 )
 

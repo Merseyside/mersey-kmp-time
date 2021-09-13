@@ -41,3 +41,13 @@ fun <T : CharSequence> T.toHours(): Hours {
 fun <T : CharSequence> T.toDays(): Days {
     return this.toString().toLong().toDays()
 }
+
+fun min(first: TimeUnit, second: TimeUnit): TimeUnit {
+    return if (first <= second) first
+    else second
+}
+
+fun max(first: TimeUnit, second: TimeUnit): TimeUnit {
+    return if (first >= second) first
+    else second
+}
