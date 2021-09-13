@@ -105,7 +105,7 @@ interface TimeUnit : Comparable<TimeUnit> {
      * Returns true if value == 0
      */
     fun isEmpty(): Boolean {
-        return millis <= 0L
+        return millis == 0L
     }
 
     fun isNotEmpty() = !isEmpty()
