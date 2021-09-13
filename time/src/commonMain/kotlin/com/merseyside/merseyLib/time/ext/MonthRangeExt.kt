@@ -8,11 +8,11 @@ import com.merseyside.merseyLib.time.ranges.MonthRange
 import com.merseyside.merseyLib.time.ranges.TimeRange
 
 fun MonthRange.getNextMonth(): MonthRange {
-    return end.getMonthRange()
+    return end.toMonthRange()
 }
 
 fun MonthRange.getPrevMonth(): MonthRange {
-    return (start - Days(1)).getMonthRange()
+    return (start - Days(1)).toMonthRange()
 }
 
 fun MonthRange.getFirstDay(): TimeRange {

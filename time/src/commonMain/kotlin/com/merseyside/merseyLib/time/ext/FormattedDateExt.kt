@@ -5,8 +5,8 @@ import com.merseyside.merseyLib.time.FormattedDate
 import com.merseyside.merseyLib.time.TimeConfiguration
 import com.merseyside.merseyLib.time.TimeUnit
 
-fun FormattedDate.toSecondsOfDay(timeZone: String = TimeConfiguration.timeZone): FormattedDate {
-    return toTimeUnit().toSecondsOfDay().toFormattedDate()
+fun FormattedDate.toSecondsOfMinute(timeZone: String = TimeConfiguration.timeZone): FormattedDate {
+    return toTimeUnit().toSecondsOfMinute().toFormattedDate()
 }
 
 fun FormattedDate.toMinutesOfHour(timeZone: String = TimeConfiguration.timeZone): FormattedDate {

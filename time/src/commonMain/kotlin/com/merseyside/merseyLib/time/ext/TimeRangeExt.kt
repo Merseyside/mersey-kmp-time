@@ -146,10 +146,11 @@ private fun TimeRange.checkIntersection(other: TimeRange) {
  */
 fun TimeRange.toHumanString(
     format: String,
-    pattern: String = TimeConfiguration.defaultPattern
+    pattern: String = TimeConfiguration.defaultPattern,
+    includeLast: Boolean = true
 ): String {
     return format.replace("$1", start.toFormattedDate(pattern).value)
-        .replace("$2", end.toFormattedDate(pattern).value)
+        .replace("$2", getEndValue(includeLast).toFormattedDate(pattern).value)
 }
 
 fun <T : TimeRange> T.logHuman(

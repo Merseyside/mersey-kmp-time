@@ -30,11 +30,11 @@ object Time {
     fun getEndOfDay(): TimeUnit = Days(1) - Minutes(1)
 
     fun getCurrentWeekRange(): TimeRange {
-        return now.getWeekRange()
+        return now.toWeekRange()
     }
 
     fun getCurrentMonthRange(): MonthRange {
-        return now.getMonthRange()
+        return now.toMonthRange()
     }
 
     fun getCurrentYear(): Years {
@@ -54,20 +54,23 @@ internal expect fun getDayOfWeek(
     timeZone: String = TimeConfiguration.timeZone
 ): DayOfWeek
 
-internal expect fun getDayOfWeekHuman(
-    timeUnit: TimeUnit,
-    language: Language = TimeConfiguration.language,
-    pattern: String = TimeConfiguration.dayOfWeekPattern,
-    timeZone: String = TimeConfiguration.timeZone
-): FormattedDate
+//internal expect fun getDayOfWeekHuman(
+//    timeUnit: TimeUnit,
+//    pattern: String = TimeConfiguration.dayOfWeekPattern,
+//    timeZone: String = TimeConfiguration.timeZone,
+//    language: Language = TimeConfiguration.language,
+//    country: String = TimeConfiguration.country
+//): FormattedDate
 
 internal expect fun getFormattedDate(
     timeUnit: TimeUnit,
     pattern: String,
-    timeZone: String = TimeConfiguration.timeZone
+    timeZone: String = TimeConfiguration.timeZone,
+    language: String = TimeConfiguration.language,
+    country: String = TimeConfiguration.country
 ): FormattedDate
 
-internal expect fun getSecondsOfDay(
+internal expect fun getSecondsOfMinute(
     timeUnit: TimeUnit,
     timeZone: String = TimeConfiguration.timeZone
 ): Seconds

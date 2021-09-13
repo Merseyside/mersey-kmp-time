@@ -33,7 +33,19 @@ struct PersistenceController {
     let container: NSPersistentContainer
 
     init(inMemory: Bool = false) {
-        NSLog("kek %d", Time().now.millis)
+        let time = Time()
+        let now = time.now
+        let timeConfiguration = TimeConfiguration()
+        
+        NSLog("current time = %lld", now.value)
+        NSLog("day of month = %d", TimeUnitExtKt.toDayOfMonth(now, timeZone: timeConfiguration.timeZone).value)
+        NSLog("day of week = %d", TimeUnitExtKt.toDayOfWeek(now, timeZone: timeConfiguration.timeZone).index)
+        TimeUnitExtKt.toDayOfWeekHuman(now, pattern: timeConfiguration.dayOfWeekPattern, timeZone: timeConfiguration.timeZone, language: timeConfiguration.language, country: timeConfiguration.country)
+        NSLog("seconds of minute = %d", TimeUnitExtKt.toSecondsOfMinute(now, timeZone: timeConfiguration.timeZone).value)
+        NSLog("minutes of hour = %d", TimeUnitExtKt.toMinutesOfHour(now, timeZone: timeConfiguration.timeZone).value)
+        NSLog("hours of day = %d", TimeUnitExtKt.toHoursOfDay(now, timeZone: timeConfiguration.timeZone).value)
+        NSLog("month = %d", TimeUnitExtKt.toMonth(now, timeZone: timeConfiguration.timeZone).index)
+        
         
         container = NSPersistentContainer(name: "ios_app_swiftui")
         if inMemory {
