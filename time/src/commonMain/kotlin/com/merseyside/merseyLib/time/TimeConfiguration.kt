@@ -9,9 +9,11 @@ object TimeConfiguration {
 
     var language: Language = "en"
     var country: Country = "US"
-    var defaultPattern: String = "dd-MM-YYYY hh:mm"
     var hoursMinutesPattern: String = "HH:mm"
     var dayOfWeekPattern: String = "EE"
+    var monthPattern: String = "MMMM"
+    var yearPattern: String = "YYYY"
+    var defaultPattern: String = "dd-MM-YYYY hh:mm"
     var year = Time.getCurrentYear()
 
     var formatPatterns = listOf(

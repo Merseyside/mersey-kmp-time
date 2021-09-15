@@ -1,9 +1,15 @@
 package com.merseyside.merseyLib.time
 
-import com.merseyside.merseyLib.time.ext.*
-import com.merseyside.merseyLib.time.ranges.TimeRange
+import com.merseyside.merseyLib.time.ext.includeLastValue
+import com.merseyside.merseyLib.time.ext.toHoursMinutesOfDay
+import com.merseyside.merseyLib.time.ext.toMonthRange
+import com.merseyside.merseyLib.time.ext.toWeekRange
 import com.merseyside.merseyLib.time.ranges.MonthRange
+import com.merseyside.merseyLib.time.ranges.TimeRange
 import com.merseyside.merseyLib.time.ranges.TimeUnitRange
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
+import kotlinx.serialization.modules.subclass
 
 object Time {
     enum class TimeZone { SYSTEM, GMT }
@@ -13,7 +19,7 @@ object Time {
             return getCurrentTime()
         }
 
-    val today: TimeUnit
+    val today: Days
         get() {
             return now.toDays().round()
         }
@@ -27,7 +33,11 @@ object Time {
         return now.toHoursMinutesOfDay(timeZone)
     }
 
-    fun getEndOfDay(): TimeUnit = Days(1) - Minutes(1)
+    fun getDay(includeLastMilli: Boolean = true): TimeUnit =
+        Days(1).includeLastValue(includeLastMilli)
+
+    fun getWeek(includeLastMilli: Boolean = true): TimeUnit =
+        Weeks(1).includeLastValue(includeLastMilli)
 
     fun getCurrentWeekRange(): TimeRange {
         return now.toWeekRange()
@@ -40,9 +50,24 @@ object Time {
     fun getCurrentYear(): Years {
         return getYear(now)
     }
+
+    val serializersModule = SerializersModule {
+        polymorphic(TimeUnit::class) {
+            subclass(Millis::class)
+            subclass(Seconds::class)
+            subclass(Minutes::class)
+            subclass(Hours::class)
+            subclass(Days::class)
+            subclass(Weeks::class)
+        }
+
+        polymorphic(TimeRange::class) {
+            subclass(TimeUnitRange::class)
+        }
+    }
 }
 
-expect fun getCurrentTime(): TimeUnit
+internal expect fun getCurrentTime(): TimeUnit
 
 internal expect fun getDayOfMonth(
     timeUnit: TimeUnit,
@@ -53,14 +78,6 @@ internal expect fun getDayOfWeek(
     timeUnit: TimeUnit,
     timeZone: String = TimeConfiguration.timeZone
 ): DayOfWeek
-
-//internal expect fun getDayOfWeekHuman(
-//    timeUnit: TimeUnit,
-//    pattern: String = TimeConfiguration.dayOfWeekPattern,
-//    timeZone: String = TimeConfiguration.timeZone,
-//    language: Language = TimeConfiguration.language,
-//    country: String = TimeConfiguration.country
-//): FormattedDate
 
 internal expect fun getFormattedDate(
     timeUnit: TimeUnit,

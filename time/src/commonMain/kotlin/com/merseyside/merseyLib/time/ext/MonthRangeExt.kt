@@ -29,14 +29,14 @@ fun MonthRange.getDay(number: Int): TimeRange {
     else throw IllegalArgumentException("Month has only ${getMonth().days} days.")
 }
 
-fun MonthRange.isIntersect(other: TimeRange, includeLast: Boolean = false): Boolean {
-    return (this as TimeRange).isIntersect(other, includeLast)
+fun MonthRange.isIntersect(other: TimeRange, includeLastMilli: Boolean = false): Boolean {
+    return (this as TimeRange).isIntersect(other, includeLastMilli)
 }
 
-fun MonthRange.contains(other: TimeRange, includeLast: Boolean = false): Boolean {
-    return (this as TimeRange).contains(other, includeLast)
+fun MonthRange.contains(other: TimeRange, includeLastMilli: Boolean = false): Boolean {
+    return (this as TimeRange).contains(other, includeLastMilli)
 }
 
-fun MonthRange.contains(timeUnit: TimeUnit, includeLast: Boolean = false): Boolean {
-    return (this as TimeRange).contains(timeUnit, includeLast)
+fun MonthRange.contains(timeUnit: TimeUnit, includeLastMilli: Boolean = false): Boolean {
+    return (this as TimeRange).contains(timeUnit, includeLastMilli)
 }

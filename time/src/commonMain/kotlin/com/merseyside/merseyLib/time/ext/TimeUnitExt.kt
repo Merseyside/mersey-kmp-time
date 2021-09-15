@@ -10,9 +10,10 @@ fun TimeUnit.toFormattedDate(
     pattern: String = TimeConfiguration.defaultPattern,
     timeZone: String = TimeConfiguration.timeZone,
     language: String = TimeConfiguration.language,
-    country: String = TimeConfiguration.country
+    country: String = TimeConfiguration.country,
+    includeLastMilli: Boolean = true
 ): FormattedDate {
-    return getFormattedDate(this, pattern, timeZone, language, country)
+    return getFormattedDate(includeLastValue(includeLastMilli), pattern, timeZone, language, country)
 }
 
 fun TimeUnit.toSecondsOfMinute(timeZone: String = TimeConfiguration.timeZone): Seconds {
@@ -81,8 +82,14 @@ fun TimeUnit.toDayTimeRange(): TimeRange {
     return TimeUnitRange(day, day + Days(1))
 }
 
-fun TimeUnit.toTimeRange(startShift: TimeUnit): TimeRange {
-    return TimeUnitRange(this, this + startShift)
+fun TimeUnit.toTimeRange(
+    startShift: TimeUnit = TimeUnit.getEmpty(),
+    backShift: TimeUnit = TimeUnit.getEmpty()
+): TimeRange {
+    if (startShift.isEmpty() && backShift.isEmpty())
+        throw IllegalArgumentException("Pass at least one shift value!")
+
+    return TimeUnitRange(this - backShift, this + startShift)
 }
 
 fun TimeUnit.getNextDay(): Days {
@@ -95,14 +102,18 @@ fun TimeUnit.getPrevDay(): Days {
     return --currentDay
 }
 
-fun TimeUnit.toWeekRange(): TimeRange {
+fun TimeUnit.toWeekRange(onlyCurrentMonth: Boolean = false): TimeRange {
     val dayOfWeek = toDayOfWeek()
     val days = toDays().round()
 
     val monday = days - dayOfWeek.toTimeUnit()
     val endOfSunday = monday + Days(7)
 
-    return TimeUnitRange(monday, endOfSunday)
+    val weekRange = TimeUnitRange(monday, endOfSunday)
+    return if (onlyCurrentMonth) {
+        val currentMonth = toMonthRange()
+        currentMonth.intersect(weekRange) ?: throw Exception("Should never happened.")
+    } else weekRange
 }
 
 fun TimeUnit.toMonth(timeZone: String = TimeConfiguration.timeZone): Month {
@@ -150,6 +161,16 @@ fun <T : TimeUnit> List<T>.logHuman(
     return this
 }
 
-fun TimeUnit.toEndValue(): TimeUnit {
-    return this - Millis(1)
+fun TimeUnit.includeLastValue(includeLastMilli: Boolean): TimeUnit {
+    return if (!includeLastMilli) this - Millis(1)
+    else this
+}
+
+fun TimeUnit.roundByDivider(divider: TimeUnit): TimeUnit {
+    val mod = this % divider
+    return if (divider / 2 > mod) {
+        this - mod
+    } else {
+        this - mod + divider
+    }
 }

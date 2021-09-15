@@ -6,19 +6,19 @@ import com.merseyside.merseyLib.time.TimeConfiguration
 import com.merseyside.merseyLib.time.TimeUnit
 
 fun FormattedDate.toSecondsOfMinute(timeZone: String = TimeConfiguration.timeZone): FormattedDate {
-    return toTimeUnit().toSecondsOfMinute().toFormattedDate()
+    return toTimeUnit().toSecondsOfMinute().toFormattedDate(timeZone = timeZone)
 }
 
 fun FormattedDate.toMinutesOfHour(timeZone: String = TimeConfiguration.timeZone): FormattedDate {
-    return toTimeUnit().toMinutesOfHour(timeZone).toFormattedDate()
+    return toTimeUnit().toMinutesOfHour(timeZone).toFormattedDate(timeZone = timeZone)
 }
 
 fun FormattedDate.toHoursOfDay(timeZone: String = TimeConfiguration.timeZone): FormattedDate {
-    return toTimeUnit().toHoursOfDay(timeZone).toFormattedDate()
+    return toTimeUnit().toHoursOfDay(timeZone).toFormattedDate(timeZone = timeZone)
 }
 
 fun FormattedDate.toHoursMinutesOfDay(timeZone: String = TimeConfiguration.timeZone): FormattedDate {
-    return toTimeUnit().toHoursMinutesOfDay(timeZone).toFormattedDate()
+    return toTimeUnit().toHoursMinutesOfDay(timeZone).toFormattedDate(timeZone = timeZone)
 }
 
 fun FormattedDate.toTimeUnit(vararg pattern: String): TimeUnit {

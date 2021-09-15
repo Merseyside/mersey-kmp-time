@@ -67,6 +67,36 @@ fun <T : TimeRange> List<T>.toDaysOfWeek(): List<DayOfWeek> {
     return range.toDaysOfWeek()
 }
 
+fun TimeRange.toRangeList(gap: TimeUnit): List<TimeRange> {
+    val list = mutableListOf<TimeRange>()
+    var newRange: TimeRange = TimeUnitRange(start, start + gap)
+    list.add(intersect(newRange) ?: throw Exception("Should never happened"))
+
+    while(newRange.end < end) {
+        newRange = newRange.shift(gap)
+        list.add(newRange)
+    }
+
+    return list
+}
+
+fun TimeRange.toTimeUnitList(gap: TimeUnit): List<TimeUnit> {
+    val list = mutableListOf<TimeUnit>()
+    var timeUnit: TimeUnit = start
+    list.add(timeUnit)
+
+    while(timeUnit < end) {
+        timeUnit += gap
+        if (contains(timeUnit)) {
+            list.add(timeUnit )
+        } else {
+            end
+        }
+    }
+
+    return list
+}
+
 fun TimeRange.toDayRanges(): List<TimeRange> {
     var nextDay = start.getNextDay()
     val dayRanges = mutableListOf<TimeRange>()
@@ -92,18 +122,17 @@ fun TimeRange.toHoursMinutesOfDay(): TimeUnitRange {
     return TimeUnitRange(start.toHoursMinutesOfDay(), end.toHoursMinutesOfDay())
 }
 
-fun TimeRange.isIntersect(other: TimeRange, includeLast: Boolean = true): Boolean {
-    return start <= other.getEndValue(includeLast) && start >= other.start ||
-            getEndValue(includeLast) > other.start && getEndValue(includeLast) < other.getEndValue(includeLast) ||
-            start >= other.start && getEndValue(includeLast) <= other.getEndValue(includeLast)
+fun TimeRange.isIntersect(other: TimeRange, includeLastMilli: Boolean = false): Boolean {
+    return contains(other.start, includeLastMilli) || contains(other.end, includeLastMilli)
+        || other.contains(start, includeLastMilli) || other.contains(end, includeLastMilli)
 }
 
-fun TimeRange.contains(other: TimeRange, includeLast: Boolean = true): Boolean {
-    return start <= other.start && getEndValue(includeLast) >= other.getEndValue(includeLast)
+fun TimeRange.contains(other: TimeRange, includeLastMilli: Boolean = true): Boolean {
+    return start <= other.start && getEndValue(includeLastMilli) >= other.getEndValue(includeLastMilli)
 }
 
-fun TimeRange.contains(timeUnit: TimeUnit, includeLast: Boolean = true): Boolean {
-    return timeUnit in start..getEndValue(includeLast)
+fun TimeRange.contains(timeUnit: TimeUnit, includeLastMilli: Boolean = true): Boolean {
+    return timeUnit in start..getEndValue(includeLastMilli)
 }
 
 fun TimeRange.getGap(): TimeUnit {
@@ -137,8 +166,27 @@ fun TimeRange.uniteWith(other: TimeRange): TimeRange {
     return TimeUnitRange(start, end)
 }
 
+fun TimeRange.intersect(other: TimeRange, includeLastMilli: Boolean = true): TimeRange? {
+    return if (isIntersect(other, includeLastMilli)) {
+        when {
+            contains(other, includeLastMilli) -> other
+            other.contains(this, includeLastMilli) -> this
+            else -> {
+                val start = if (contains(other.start, includeLastMilli)) other.start else this.start
+                val end = if (contains(other.end, includeLastMilli)) other.end else this.end
+
+                TimeUnitRange(start, end)
+            }
+        }
+    } else null
+}
+
 private fun TimeRange.checkIntersection(other: TimeRange) {
     if (!isIntersect(other)) throw IllegalArgumentException("Ranges don't intersect!")
+}
+
+fun TimeRange.roundByDivider(divider: TimeUnit): TimeRange {
+    return TimeUnitRange(start.roundByDivider(divider), end.roundByDivider(divider))
 }
 
 /**
@@ -147,10 +195,10 @@ private fun TimeRange.checkIntersection(other: TimeRange) {
 fun TimeRange.toHumanString(
     format: String,
     pattern: String = TimeConfiguration.defaultPattern,
-    includeLast: Boolean = true
+    includeLastMilli: Boolean = true
 ): String {
     return format.replace("$1", start.toFormattedDate(pattern).value)
-        .replace("$2", getEndValue(includeLast).toFormattedDate(pattern).value)
+        .replace("$2", getEndValue(includeLastMilli).toFormattedDate(pattern).value)
 }
 
 fun <T : TimeRange> T.logHuman(
@@ -173,7 +221,6 @@ fun <T : TimeRange> List<T>.logHuman(
     return this
 }
 
-fun TimeRange.getEndValue(includeLast: Boolean = true): TimeUnit {
-    return if (includeLast) end
-    else end.toEndValue()
+fun TimeRange.getEndValue(includeLastMilli: Boolean = true): TimeUnit {
+    return end.includeLastValue(includeLastMilli)
 }

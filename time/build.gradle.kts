@@ -1,25 +1,23 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    plugin(LibraryDeps.Plugins.androidLibrary)
-    plugin(LibraryDeps.Plugins.kotlinMultiplatform)
-    plugin(LibraryDeps.Plugins.kotlinKapt)
-    plugin(LibraryDeps.Plugins.mobileMultiplatform)
-    plugin(LibraryDeps.Plugins.kotlinSerialization)
-    plugin(LibraryDeps.Plugins.mavenPublish)
-    plugin(LibraryDeps.Plugins.iosFramework)
-    plugin(LibraryDeps.Plugins.swiftPackage) version "2.0.3"
+    plugin(Plugins.androidLibrary)
+    plugin(Plugins.kotlinMultiplatform)
+    plugin(Plugins.kotlinKapt)
+    plugin(Plugins.mobileMultiplatform)
+    plugin(Plugins.kotlinSerialization)
+    plugin(Plugins.mavenPublish)
+    plugin(Plugins.iosFramework)
+    plugin(Plugins.swiftPackage)
+    `maven-publish-config`
 }
 
-group = LibraryVersions.Application.groupId
-version = LibraryVersions.Application.version
-
 android {
-    compileSdkVersion(LibraryVersions.Application.compileSdk)
+    compileSdkVersion(Application.compileSdk)
 
     defaultConfig {
-        minSdkVersion(LibraryVersions.Application.minSdk)
-        targetSdkVersion(LibraryVersions.Application.targetSdk)
+        minSdkVersion(Application.minSdk)
+        targetSdkVersion(Application.targetSdk)
     }
 
     compileOptions {
@@ -52,12 +50,11 @@ kotlin {
 }
 
 val mppLibs = listOf(
-    LibraryDeps.Libs.MultiPlatform.kotlinStdLib,
-    LibraryDeps.Libs.MultiPlatform.serializationJson,
+    multiplatformLibs.serialization
 )
 
 dependencies {
-    mppLibs.forEach { mppLibrary(it) }
+    mppLibs.forEach { commonMainImplementation(it) }
 }
 
 framework {
