@@ -67,6 +67,36 @@ fun <T : TimeRange> List<T>.toDaysOfWeek(): List<DayOfWeek> {
     return range.toDaysOfWeek()
 }
 
+fun TimeRange.toRangeList(gap: TimeUnit): List<TimeRange> {
+    val list = mutableListOf<TimeRange>()
+    var newRange: TimeRange = TimeUnitRange(start, start + gap)
+    list.add(intersect(newRange) ?: throw Exception("Should never happened"))
+
+    while(newRange.end < end) {
+        newRange = newRange.shift(gap)
+        list.add(newRange)
+    }
+
+    return list
+}
+
+fun TimeRange.toTimeUnitList(gap: TimeUnit): List<TimeUnit> {
+    val list = mutableListOf<TimeUnit>()
+    var timeUnit: TimeUnit = start
+    list.add(timeUnit)
+
+    while(timeUnit < end) {
+        timeUnit += gap
+        if (contains(timeUnit)) {
+            list.add(timeUnit )
+        } else {
+            end
+        }
+    }
+
+    return list
+}
+
 fun TimeRange.toDayRanges(): List<TimeRange> {
     var nextDay = start.getNextDay()
     val dayRanges = mutableListOf<TimeRange>()
@@ -153,6 +183,10 @@ fun TimeRange.intersect(other: TimeRange, includeLastMilli: Boolean = true): Tim
 
 private fun TimeRange.checkIntersection(other: TimeRange) {
     if (!isIntersect(other)) throw IllegalArgumentException("Ranges don't intersect!")
+}
+
+fun TimeRange.roundByDivider(divider: TimeUnit): TimeRange {
+    return TimeUnitRange(start.roundByDivider(divider), end.roundByDivider(divider))
 }
 
 /**

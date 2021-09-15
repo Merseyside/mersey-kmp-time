@@ -82,8 +82,14 @@ fun TimeUnit.toDayTimeRange(): TimeRange {
     return TimeUnitRange(day, day + Days(1))
 }
 
-fun TimeUnit.toTimeRange(startShift: TimeUnit): TimeRange {
-    return TimeUnitRange(this, this + startShift)
+fun TimeUnit.toTimeRange(
+    startShift: TimeUnit = TimeUnit.getEmpty(),
+    backShift: TimeUnit = TimeUnit.getEmpty()
+): TimeRange {
+    if (startShift.isEmpty() && backShift.isEmpty())
+        throw IllegalArgumentException("Pass at least one shift value!")
+
+    return TimeUnitRange(this - backShift, this + startShift)
 }
 
 fun TimeUnit.getNextDay(): Days {
@@ -158,4 +164,13 @@ fun <T : TimeUnit> List<T>.logHuman(
 fun TimeUnit.includeLastValue(includeLastMilli: Boolean): TimeUnit {
     return if (!includeLastMilli) this - Millis(1)
     else this
+}
+
+fun TimeUnit.roundByDivider(divider: TimeUnit): TimeUnit {
+    val mod = this % divider
+    return if (divider / 2 > mod) {
+        this - mod
+    } else {
+        this - mod + divider
+    }
 }

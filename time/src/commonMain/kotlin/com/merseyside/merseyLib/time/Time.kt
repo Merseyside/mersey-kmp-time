@@ -7,6 +7,9 @@ import com.merseyside.merseyLib.time.ext.toWeekRange
 import com.merseyside.merseyLib.time.ranges.MonthRange
 import com.merseyside.merseyLib.time.ranges.TimeRange
 import com.merseyside.merseyLib.time.ranges.TimeUnitRange
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
+import kotlinx.serialization.modules.subclass
 
 object Time {
     enum class TimeZone { SYSTEM, GMT }
@@ -46,6 +49,21 @@ object Time {
 
     fun getCurrentYear(): Years {
         return getYear(now)
+    }
+
+    val serializersModule = SerializersModule {
+        polymorphic(TimeUnit::class) {
+            subclass(Millis::class)
+            subclass(Seconds::class)
+            subclass(Minutes::class)
+            subclass(Hours::class)
+            subclass(Days::class)
+            subclass(Weeks::class)
+        }
+
+        polymorphic(TimeRange::class) {
+            subclass(TimeUnitRange::class)
+        }
     }
 }
 

@@ -59,6 +59,10 @@ operator fun <T : TimeUnit> T.compareTo(value: Number): Int {
     return this.millis.compareTo(newInstanceMillis(value.toLong()).millis)
 }
 
+operator fun <T : TimeUnit> T.rem(other: TimeUnit): T {
+    return newInstanceMillis(millis % other.millis) as T
+}
+
 fun <T : TimeUnit> T.isNotEqual(other: T) = !isEqual(other)
 
 fun <T : TimeUnit> T.round() = newInstance(value) as T
@@ -130,7 +134,7 @@ interface TimeUnit : Comparable<TimeUnit> {
     }
 }
 
-@Serializable(with = LongAsMillisSerializer::class)
+@Serializable
 class Millis(override val millis: Long) : TimeUnit {
 
     override val value: Long
@@ -161,7 +165,7 @@ class Millis(override val millis: Long) : TimeUnit {
     }
 }
 
-@Serializable(with = LongAsSecondsSerializer::class)
+@Serializable
 class Seconds private constructor(override val millis: Long) : TimeUnit {
 
     override val value: Long
@@ -194,7 +198,7 @@ class Seconds private constructor(override val millis: Long) : TimeUnit {
     }
 }
 
-@Serializable(with = LongAsMinutesSerializer::class)
+@Serializable
 class Minutes private constructor(override val millis: Long) : TimeUnit {
 
     override val value: Long
@@ -227,7 +231,7 @@ class Minutes private constructor(override val millis: Long) : TimeUnit {
     }
 }
 
-@Serializable(with = LongAsHoursSerializer::class)
+@Serializable
 class Hours private constructor(override val millis: Long) : TimeUnit {
 
     internal constructor(unit: TimeUnit) : this(unit.millis)
@@ -260,7 +264,7 @@ class Hours private constructor(override val millis: Long) : TimeUnit {
     }
 }
 
-@Serializable(with = LongAsDaysSerializer::class)
+@Serializable
 class Days private constructor(override val millis: Long) : TimeUnit {
 
     internal constructor(unit: TimeUnit) : this(unit.millis)
@@ -293,7 +297,7 @@ class Days private constructor(override val millis: Long) : TimeUnit {
     }
 }
 
-@Serializable(with = LongAsWeeksSerializer::class)
+@Serializable
 class Weeks private constructor(override val millis: Long) : TimeUnit {
 
     internal constructor(unit: TimeUnit) : this(unit.millis)
