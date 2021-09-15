@@ -7,18 +7,16 @@ plugins {
 }
 
 android {
-    compileSdkVersion(AndroidConfig.COMPILE_SDK_VERSION)
+    compileSdkVersion(Application.compileSdk)
 
     defaultConfig {
-        minSdkVersion(AndroidConfig.MIN_SDK_VERSION)
-        targetSdkVersion(AndroidConfig.TARGET_SDK_VERSION)
+        minSdkVersion(Application.minSdk)
+        targetSdkVersion(Application.targetSdk)
 
-        applicationId = AndroidConfig.APPLICATION_ID
+        applicationId = Application.applicationId
 
-        versionCode = AndroidConfig.VERSION_CODE
-        versionName = AndroidConfig.VERSION_NAME
-
-        vectorDrawables.useSupportLibrary = AndroidConfig.SUPPORT_LIBRARY_VECTOR_DRAWABLES
+        versionCode = Application.versionCode
+        versionName = Application.version
     }
 
     buildTypes {
@@ -74,23 +72,18 @@ tasks.withType<KotlinCompile> {
     }
 }
 
-val androidLibs = listOf(
-    LibraryDeps.Libs.appCompat,
-    LibraryDeps.Libs.material
+val android = listOf(
+    androidLibs.appCompat,
+    androidLibs.material
 )
 
 val merseyLibs = listOf(
-    LibraryDeps.Libs.MerseyLibs.archy,
-    LibraryDeps.Libs.MerseyLibs.utils
-)
-
-val merseyModules = listOf(
-    LibraryModules.archy,
-    LibraryModules.utils
+    androidLibs.merseyLib.archy,
+    androidLibs.merseyLib.utils
 )
 
 dependencies {
-    androidLibs.forEach { lib -> implementation(lib) }
+    android.forEach { lib -> implementation(lib) }
     merseyLibs.forEach { lib -> implementation(lib) }
 
     compileOnly("javax.annotation:javax.annotation-api:1.3.2")
