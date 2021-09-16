@@ -7,7 +7,7 @@ dependencyResolutionManagement {
         mavenLocal()
     }
 
-    val catalogVersions = "1.0.2"
+    val catalogVersions = "1.0.3"
     val group = "io.github.merseyside"
     versionCatalogs {
         create("multiplatformLibs") {

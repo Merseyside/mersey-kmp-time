@@ -6,7 +6,6 @@ plugins {
     plugin(Plugins.kotlinKapt)
     plugin(Plugins.mobileMultiplatform)
     plugin(Plugins.kotlinSerialization)
-    plugin(Plugins.mavenPublish)
     plugin(Plugins.iosFramework)
     plugin(Plugins.swiftPackage)
     `maven-publish-config`
