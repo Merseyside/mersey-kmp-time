@@ -3,11 +3,11 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 dependencyResolutionManagement {
     repositories {
-        mavenCentral()
         mavenLocal()
+        mavenCentral()
     }
 
-    val catalogVersions = "1.0.3"
+    val catalogVersions = "1.0.4"
     val group = "io.github.merseyside"
     versionCatalogs {
         create("multiplatformLibs") {
