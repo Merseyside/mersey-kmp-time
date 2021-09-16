@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     plugin(Plugins.androidApplication)
     plugin(Plugins.kotlinAndroid)
@@ -30,11 +28,6 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
     buildFeatures.dataBinding = true
 
     dexOptions {
@@ -50,11 +43,6 @@ android {
         exclude("META-INF/NOTICE.txt")
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
     sourceSets.getByName("main") {
         res.srcDir("src/main/res/")
         res.srcDir("src/main/res/layouts/fragments")
@@ -63,12 +51,6 @@ android {
         res.srcDir("src/main/res/layouts/views")
         res.srcDir("src/main/res/value/values-light")
         res.srcDir("src/main/res/value/values-night")
-    }
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        jvmTarget = "1.8"
     }
 }
 
