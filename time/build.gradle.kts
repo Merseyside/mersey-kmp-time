@@ -1,29 +1,12 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-    plugin(Plugins.androidLibrary)
-    plugin(Plugins.kotlinMultiplatform)
-    plugin(Plugins.kotlinKapt)
-    plugin(Plugins.mobileMultiplatform)
-    plugin(Plugins.kotlinSerialization)
-    plugin(Plugins.iosFramework)
-    plugin(Plugins.swiftPackage)
+    `android-convention`
+    id(Plugins.kotlinMultiplatform)
+    id(Plugins.kotlinKapt)
+    id(Plugins.mobileMultiplatform)
+    id(Plugins.kotlinSerialization)
+    id(Plugins.iosFramework)
+    id(Plugins.swiftPackage) version "2.0.3"
     `maven-publish-config`
-}
-
-android {
-    compileSdkVersion(Application.compileSdk)
-
-    defaultConfig {
-        minSdkVersion(Application.minSdk)
-        targetSdkVersion(Application.targetSdk)
-    }
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs = listOf("-Xinline-classes", "-Xopt-in=org.mylibrary.OptInAnnotation")
-    }
 }
 
 kotlin {
