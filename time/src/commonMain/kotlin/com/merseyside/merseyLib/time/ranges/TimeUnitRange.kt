@@ -10,5 +10,8 @@ data class TimeUnitRange(
     override val start: TimeUnit,
     override val end: TimeUnit
 ): TimeRange {
+
+    constructor(timeRange: TimeRange): this(timeRange.start, timeRange.end)
+
     init { requireValid() }
 }

@@ -19,7 +19,7 @@ interface TimeRange : Comparable<TimeRange> {
     }
 }
 
-operator fun TimeRange.compareTo(timeUnit: TimeUnit): Int {
+operator fun <T: TimeUnit> TimeRange.compareTo(timeUnit: T): Int {
     return when {
         contains(timeUnit) -> 0
         start > timeUnit -> 1

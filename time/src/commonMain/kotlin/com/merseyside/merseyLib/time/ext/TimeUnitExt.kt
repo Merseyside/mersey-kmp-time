@@ -5,6 +5,7 @@ import com.merseyside.merseyLib.time.*
 import com.merseyside.merseyLib.time.ranges.MonthRange
 import com.merseyside.merseyLib.time.ranges.TimeRange
 import com.merseyside.merseyLib.time.ranges.TimeUnitRange
+import com.merseyside.merseyLib.time.ranges.WeekRange
 
 fun TimeUnit.toFormattedDate(
     pattern: String = TimeConfiguration.defaultPattern,
@@ -102,18 +103,14 @@ fun TimeUnit.getPrevDay(): Days {
     return --currentDay
 }
 
-fun TimeUnit.toWeekRange(onlyCurrentMonth: Boolean = false): TimeRange {
+fun TimeUnit.toWeekRange(): WeekRange {
     val dayOfWeek = toDayOfWeek()
     val days = toDays().round()
 
     val monday = days - dayOfWeek.toTimeUnit()
     val endOfSunday = monday + Days(7)
 
-    val weekRange = TimeUnitRange(monday, endOfSunday)
-    return if (onlyCurrentMonth) {
-        val currentMonth = toMonthRange()
-        currentMonth.intersect(weekRange) ?: throw Exception("Should never happened.")
-    } else weekRange
+    return WeekRange(monday, endOfSunday)
 }
 
 fun TimeUnit.toMonth(timeZone: String = TimeConfiguration.timeZone): Month {

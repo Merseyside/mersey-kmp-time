@@ -7,6 +7,7 @@ import com.merseyside.merseyLib.time.ext.toWeekRange
 import com.merseyside.merseyLib.time.ranges.MonthRange
 import com.merseyside.merseyLib.time.ranges.TimeRange
 import com.merseyside.merseyLib.time.ranges.TimeUnitRange
+import com.merseyside.merseyLib.time.ranges.WeekRange
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
@@ -39,7 +40,7 @@ object Time {
     fun getWeek(includeLastMilli: Boolean = true): TimeUnit =
         Weeks(1).includeLastValue(includeLastMilli)
 
-    fun getCurrentWeekRange(): TimeRange {
+    fun getCurrentWeekRange(): WeekRange {
         return now.toWeekRange()
     }
 
