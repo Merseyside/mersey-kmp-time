@@ -5,8 +5,13 @@ import com.merseyside.merseyLib.time.*
 import com.merseyside.merseyLib.time.ranges.TimeRange
 import com.merseyside.merseyLib.time.ranges.TimeUnitRange
 
+fun TimeRange.isEmpty(): Boolean {
+    return start.isEmpty() && end.isEmpty()
+}
+
 fun TimeRange.toTimeUnitRange(): TimeUnitRange {
-    return TimeUnitRange(start, end)
+    return if (this is TimeUnitRange) this
+    else TimeUnitRange(start, end)
 }
 
 fun <T : TimeRange> List<T>.findEdge(): TimeUnitRange {

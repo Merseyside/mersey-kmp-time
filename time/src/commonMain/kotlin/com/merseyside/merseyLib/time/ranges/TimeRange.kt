@@ -17,6 +17,12 @@ interface TimeRange : Comparable<TimeRange> {
     override fun compareTo(other: TimeRange): Int {
         return start.compareTo(other.start)
     }
+
+    companion object {
+        fun empty(): TimeRange {
+            return TimeUnitRange(TimeUnit.getEmpty(), TimeUnit.getEmpty())
+        }
+    }
 }
 
 operator fun <T: TimeUnit> TimeRange.compareTo(timeUnit: T): Int {
