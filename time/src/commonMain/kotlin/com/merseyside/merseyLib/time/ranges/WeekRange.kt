@@ -8,7 +8,6 @@ class WeekRange internal constructor(
     override val start: TimeUnit,
     override val end: TimeUnit
 ): TimeRange {
-
     internal constructor(timeRange: TimeRange) : this(timeRange.start, timeRange.end)
 }
 
