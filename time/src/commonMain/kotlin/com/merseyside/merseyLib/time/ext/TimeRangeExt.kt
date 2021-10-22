@@ -198,7 +198,7 @@ fun TimeRange.roundByDivider(divider: TimeUnit): TimeRange {
  * Use %1 and %2 for start and end values accordingly.
  */
 fun TimeRange.toHumanString(
-    format: String,
+    format: String = "$1 - $2",
     pattern: String = TimeConfiguration.defaultPattern,
     includeLastMilli: Boolean = true
 ): String {

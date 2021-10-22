@@ -125,6 +125,19 @@ interface TimeUnit : Comparable<TimeUnit> {
         return value.toString()
     }
 
+    fun roundWithFraction(): TimeUnit {
+        val rounded = round()
+        val one = newInstance(1)
+        val half = one / 2
+
+        val fraction = this - rounded
+        return if (fraction >= half) {
+            rounded + one
+        } else {
+            rounded
+        }
+    }
+
     override fun equals(other: Any?): Boolean
 
     companion object {
