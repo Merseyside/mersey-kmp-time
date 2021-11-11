@@ -16,7 +16,7 @@ object TimeConfiguration {
     var dayPattern: String = "dd"
     var monthPattern: String = "MM"
     var yearPattern: String = "yy"
-    var datePattern: String = ""
+    var datePattern: String = "dd.MM.yyyy"
         get() {
             return if (field.isEmpty()) "$dayPattern$d$monthPattern$d$yearPattern"
             else field
