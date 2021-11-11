@@ -21,12 +21,18 @@ fun FormattedDate.toHoursMinutesOfDay(timeZone: String = TimeConfiguration.timeZ
     return toTimeUnit().toHoursMinutesOfDay(timeZone).toFormattedDate(timeZone = timeZone)
 }
 
-fun FormattedDate.toTimeUnit(vararg pattern: String): TimeUnit {
+fun FormattedDate.toTimeUnit(
+    vararg pattern: String,
+    timeZone: String = TimeConfiguration.timeZone
+): TimeUnit {
     val patternsList: List<String> = if (pattern.isNotEmpty()) pattern.toList() else TimeConfiguration.formatPatterns
 
     patternsList.forEach {
         try {
-            value.toTimeUnit(it)?.let { timeUnit -> return timeUnit }
+            value.toTimeUnit(
+                dateFormat = it,
+                timeZone = timeZone
+            )?.let { timeUnit -> return timeUnit }
         } catch (e: Exception) {
             Logger.logErr(tag = "TimeUnit", msg = "$it is wrong pattern to format time")
         }

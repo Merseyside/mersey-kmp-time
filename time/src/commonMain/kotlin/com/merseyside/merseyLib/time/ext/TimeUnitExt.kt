@@ -30,11 +30,11 @@ fun TimeUnit.toHoursOfDay(timeZone: String = TimeConfiguration.timeZone): Hours 
 }
 
 fun TimeUnit.getDate(): FormattedDate {
-    return getFormattedDate(this, "dd.MM.YYYY")
+    return getFormattedDate(this, TimeConfiguration.datePattern)
 }
 
 fun TimeUnit.getDateWithTime(): FormattedDate {
-    return getFormattedDate(this, "dd-MM-YYYY hh:mm")
+    return getFormattedDate(this, TimeConfiguration.dateWithTimePattern)
 }
 
 fun TimeUnit.toHoursMinutesOfDay(timeZone: String = TimeConfiguration.timeZone): TimeUnit {
