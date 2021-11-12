@@ -15,6 +15,7 @@ object TimeConfiguration {
     var dayOfWeekPattern: String = "EE"
     var dayPattern: String = "dd"
     var monthPattern: String = "MM"
+    var timePattern = "HH:mm:ss.SSS"
     var yearPattern: String = "yy"
     var datePattern: String = "dd.MM.yyyy"
         get() {
@@ -36,7 +37,9 @@ object TimeConfiguration {
     var year = Time.getCurrentYear()
 
     private val d: String
-        get() { return divider.log("time", "get devider") }
+        get() {
+            return divider.log("time", "get devider")
+        }
 
     var formatPatterns = listOf(
         "yyyy-MM-dd'T'HH:mm:ss'Z'",
