@@ -14,7 +14,13 @@ fun TimeUnit.toFormattedDate(
     country: String = TimeConfiguration.country,
     includeLastMilli: Boolean = true
 ): FormattedDate {
-    return getFormattedDate(includeLastValue(includeLastMilli), pattern, timeZone, language, country)
+    return getFormattedDate(
+        includeLastValue(includeLastMilli),
+        pattern,
+        timeZone,
+        language,
+        country
+    )
 }
 
 fun TimeUnit.toSecondsOfMinute(timeZone: String = TimeConfiguration.timeZone): Seconds {
@@ -31,6 +37,10 @@ fun TimeUnit.toHoursOfDay(timeZone: String = TimeConfiguration.timeZone): Hours 
 
 fun TimeUnit.getDate(): FormattedDate {
     return getFormattedDate(this, TimeConfiguration.datePattern)
+}
+
+fun TimeUnit.getDateTimeUnit(): TimeUnit {
+    return getFormattedDate(this, TimeConfiguration.datePattern).toTimeUnit(TimeConfiguration.datePattern)
 }
 
 fun TimeUnit.getDateWithTime(): FormattedDate {
@@ -129,7 +139,7 @@ fun TimeUnit.toMonthRange(): MonthRange {
     return MonthRange(monthStart, monthEnd)
 }
 
-fun <T: TimeUnit> List<T>.findEdge(): TimeRange {
+fun <T : TimeUnit> List<T>.findEdge(): TimeRange {
     if (size > 1) {
         val min = minByOrNull { it.millis }
         val max = maxByOrNull { it.millis }
