@@ -1,6 +1,7 @@
 package com.merseyside.merseyLib.time.ext
 
 import com.merseyside.merseyLib.logger.Logger
+import com.merseyside.merseyLib.logger.log
 import com.merseyside.merseyLib.time.*
 import com.merseyside.merseyLib.time.ranges.MonthRange
 import com.merseyside.merseyLib.time.ranges.TimeRange
@@ -39,8 +40,18 @@ fun TimeUnit.getDate(): FormattedDate {
     return getFormattedDate(this, TimeConfiguration.datePattern)
 }
 
-fun TimeUnit.getDateTimeUnit(): TimeUnit {
-    return getFormattedDate(this, TimeConfiguration.datePattern).toTimeUnit(TimeConfiguration.datePattern)
+fun TimeUnit.getStartOfDateTimeUnit(): TimeUnit {
+    return getFormattedDate(
+        this,
+        TimeConfiguration.datePattern
+    ).toTimeUnit(TimeConfiguration.datePattern)
+}
+
+fun TimeUnit.getEndOfDateTimeUnit(): TimeUnit {
+    val currentDate = getStartOfDateTimeUnit()
+    val dayAtMs = Days(1).millis - 1
+    return currentDate.plus(dayAtMs)
+
 }
 
 fun TimeUnit.getDateWithTime(): FormattedDate {
