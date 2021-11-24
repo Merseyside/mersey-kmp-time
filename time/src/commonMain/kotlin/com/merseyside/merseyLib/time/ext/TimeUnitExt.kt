@@ -49,7 +49,7 @@ fun TimeUnit.getMonth(): TimeUnit {
 
 fun TimeUnit.getEndOfDateTimeUnit(): TimeUnit {
     val currentDays = toDays().round()
-    return currentDays + Days(1) - Millis(2)
+    return currentDays + Days(1) - Millis(1)
 }
 
 fun TimeUnit.getDateWithTime(): FormattedDate {
