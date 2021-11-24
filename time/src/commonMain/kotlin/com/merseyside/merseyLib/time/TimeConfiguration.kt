@@ -17,13 +17,13 @@ object TimeConfiguration {
     var monthPattern: String = "MM"
     var timePattern = "HH:mm:ss.SSS"
     var yearPattern: String = "yy"
-    var datePattern: String = "dd.MM.yyyy"
-    var dateAndMonthPattern: String = "MM.yyyy"
 
+    var datePattern: String = ""
         get() {
             return if (field.isEmpty()) "$dayPattern$d$monthPattern$d$yearPattern"
             else field
         }
+
     var dateWithTimePattern = ""
         get() {
             return if (field.isEmpty()) "$datePattern $hoursMinutesPattern"

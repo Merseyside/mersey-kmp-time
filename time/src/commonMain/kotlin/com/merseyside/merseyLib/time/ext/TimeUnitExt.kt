@@ -2,7 +2,6 @@ package com.merseyside.merseyLib.time.ext
 
 import com.merseyside.merseyLib.logger.Logger
 import com.merseyside.merseyLib.time.*
-import com.merseyside.merseyLib.time.TimeConfiguration.dateAndMonthPattern
 import com.merseyside.merseyLib.time.ranges.MonthRange
 import com.merseyside.merseyLib.time.ranges.TimeRange
 import com.merseyside.merseyLib.time.ranges.TimeUnitRange
@@ -38,13 +37,6 @@ fun TimeUnit.toHoursOfDay(timeZone: String = TimeConfiguration.timeZone): Hours 
 
 fun TimeUnit.getDate(): FormattedDate {
     return getFormattedDate(this, TimeConfiguration.datePattern)
-}
-
-fun TimeUnit.getMonth(): TimeUnit {
-    return getFormattedDate(
-        this,
-        dateAndMonthPattern
-    ).toTimeUnit(dateAndMonthPattern)
 }
 
 fun TimeUnit.getEndOfDateTimeUnit(): TimeUnit {
