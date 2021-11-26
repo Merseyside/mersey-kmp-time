@@ -157,6 +157,13 @@ fun <T : TimeUnit> List<T>.findEdge(): TimeRange {
     } else throw IllegalArgumentException("Size must be > 1")
 }
 
+fun TimeUnit.isTheSameDate(other: TimeUnit): Boolean {
+    val thisDay = toDays()
+    val otherDays = other.toDays()
+
+    return thisDay.value == otherDays.value
+}
+
 fun <T : TimeUnit> T.logHuman(
     tag: String = this::class.simpleName ?: "TimeUnit",
     prefix: String = ""

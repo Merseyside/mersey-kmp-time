@@ -193,12 +193,12 @@ fun TimeRange.intersect(other: TimeRange, includeLastMilli: Boolean = true): Tim
     } else null
 }
 
-private fun TimeRange.checkIntersection(other: TimeRange) {
-    if (!isIntersect(other)) throw IllegalArgumentException("Ranges don't intersect!")
-}
-
 fun TimeRange.roundByDivider(divider: TimeUnit): TimeRange {
     return TimeUnitRange(start.roundByDivider(divider), end.roundByDivider(divider))
+}
+
+fun TimeRange.isTheSameDate(): Boolean {
+    return start.isTheSameDate(end)
 }
 
 /**
@@ -235,4 +235,8 @@ fun <T : TimeRange> List<T>.logHuman(
 
 fun TimeRange.getEndValue(includeLastMilli: Boolean = true): TimeUnit {
     return end.includeLastValue(includeLastMilli)
+}
+
+private fun TimeRange.checkIntersection(other: TimeRange) {
+    if (!isIntersect(other)) throw IllegalArgumentException("Ranges don't intersect!")
 }
