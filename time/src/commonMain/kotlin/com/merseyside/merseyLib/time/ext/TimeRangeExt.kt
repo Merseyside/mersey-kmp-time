@@ -124,7 +124,14 @@ fun TimeRange.toDayRanges(): List<TimeRange> {
 
 @Throws(IllegalArgumentException::class)
 fun TimeRange.toHoursMinutesOfDay(): TimeUnitRange {
-    return TimeUnitRange(start.toHoursMinutesOfDay(), end.toHoursMinutesOfDay())
+    val start = start.toHoursMinutesOfDay()
+    var end = end.toHoursMinutesOfDay()
+
+    if (end.isEmpty()) {
+       end = Days(1).includeLastValue(false)
+    }
+
+    return TimeUnitRange(start, end)
 }
 
 fun TimeRange.isIntersect(other: TimeRange, includeLastMilli: Boolean = false): Boolean {

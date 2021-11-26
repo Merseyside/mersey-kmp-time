@@ -39,9 +39,13 @@ fun TimeUnit.getDate(): FormattedDate {
     return getFormattedDate(this, TimeConfiguration.datePattern)
 }
 
+fun TimeUnit.getStartOfDate(): TimeUnit {
+    return toDays().round()
+}
+
 fun TimeUnit.getEndOfDateTimeUnit(): TimeUnit {
-    val currentDays = toDays().round()
-    return currentDays + Days(1) - Millis(1)
+    val currentDays = getStartOfDate()
+    return currentDays + Days(1).includeLastValue(false)
 }
 
 fun TimeUnit.getDateWithTime(): FormattedDate {
