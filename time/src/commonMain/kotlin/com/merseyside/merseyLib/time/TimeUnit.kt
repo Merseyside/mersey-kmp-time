@@ -176,6 +176,10 @@ class Millis(override val millis: Long) : TimeUnit {
         if (other !is TimeUnit) return false
         return isEqual(other)
     }
+
+    override fun hashCode(): Int {
+        return millis.hashCode()
+    }
 }
 
 @Serializable
@@ -242,6 +246,10 @@ class Minutes private constructor(override val millis: Long) : TimeUnit {
         if (other !is TimeUnit) return false
         return isEqual(other)
     }
+
+    override fun hashCode(): Int {
+        return millis.hashCode()
+    }
 }
 
 @Serializable
@@ -274,6 +282,10 @@ class Hours private constructor(override val millis: Long) : TimeUnit {
     override fun equals(other: Any?): Boolean {
         if (other !is TimeUnit) return false
         return isEqual(other)
+    }
+
+    override fun hashCode(): Int {
+        return millis.hashCode()
     }
 }
 
@@ -308,6 +320,10 @@ class Days private constructor(override val millis: Long) : TimeUnit {
         if (other !is TimeUnit) return false
         return isEqual(other)
     }
+
+    override fun hashCode(): Int {
+        return millis.hashCode()
+    }
 }
 
 @Serializable
@@ -340,5 +356,9 @@ class Weeks private constructor(override val millis: Long) : TimeUnit {
     override fun equals(other: Any?): Boolean {
         if (other !is TimeUnit) return false
         return isEqual(other)
+    }
+
+    override fun hashCode(): Int {
+        return millis.hashCode()
     }
 }
