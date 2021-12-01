@@ -15,7 +15,7 @@ repositories {
 val multiplatform = "0.12.0"
 val kotlin = "1.5.30"
 val gradle = "4.2.1"
-val navigation = "2.3.5"
+val navigation = "2.4.0-beta02"
 val nexus = "1.1.0"
 
 dependencies {
