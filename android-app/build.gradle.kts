@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion(Application.compileSdk)
+    compileSdk = Application.compileSdk
 
     defaultConfig {
-        minSdkVersion(Application.minSdk)
-        targetSdkVersion(Application.targetSdk)
+        minSdk = Application.minSdk
+        targetSdk = Application.targetSdk
 
         applicationId = Application.applicationId
 
@@ -28,11 +28,12 @@ android {
         }
     }
 
-    buildFeatures.dataBinding = true
-
-    dexOptions {
-        javaMaxHeapSize = "2g"
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
+
+    buildFeatures.dataBinding = true
 
     packagingOptions {
         exclude("META-INF/*.kotlin_module")

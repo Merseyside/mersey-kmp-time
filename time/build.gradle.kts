@@ -1,6 +1,6 @@
 plugins {
-    `android-convention`
-    id(Plugins.kotlinMultiplatform)
+    id(Plugins.androidConvention)
+    id(Plugins.kotlinMultiplatformConvention)
     id(Plugins.kotlinKapt)
     id(Plugins.mobileMultiplatform)
     id(Plugins.kotlinSerialization)
