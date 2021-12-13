@@ -26,6 +26,7 @@ kotlin {
 }
 
 val mppLibs = listOf(
+    common.merseyLib.kotlin.ext,
     multiplatformLibs.serialization
 )
 

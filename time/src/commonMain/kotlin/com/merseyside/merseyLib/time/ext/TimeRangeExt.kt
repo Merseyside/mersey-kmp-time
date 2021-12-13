@@ -1,6 +1,6 @@
 package com.merseyside.merseyLib.time.ext
 
-import com.merseyside.merseyLib.logger.Logger
+import com.merseyside.merseyLib.kotlin.Logger
 import com.merseyside.merseyLib.time.*
 import com.merseyside.merseyLib.time.ranges.TimeRange
 import com.merseyside.merseyLib.time.ranges.TimeUnitRange

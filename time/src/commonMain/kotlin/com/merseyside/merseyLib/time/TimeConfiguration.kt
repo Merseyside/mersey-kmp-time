@@ -1,6 +1,6 @@
 package com.merseyside.merseyLib.time
 
-import com.merseyside.merseyLib.logger.log
+import com.merseyside.merseyLib.kotlin.extensions.log
 import kotlin.native.concurrent.ThreadLocal
 
 @ThreadLocal
