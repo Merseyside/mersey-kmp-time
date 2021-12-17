@@ -56,6 +56,10 @@ fun TimeUnit.toHoursMinutesOfDay(timeZone: String = TimeConfiguration.timeZone):
     return (getHoursOfDay(this, timeZone) + getMinutesOfHour(this, timeZone))
 }
 
+fun TimeUnit.toYears(timeZone: String = TimeConfiguration.timeZone): Years {
+    return getYear(this, timeZone)
+}
+
 fun TimeUnit.toFormattedHoursMinutesOfDay(
     pattern: String = TimeConfiguration.hoursMinutesPattern,
     timeZone: String = TimeConfiguration.timeZone
@@ -96,6 +100,12 @@ fun TimeUnit.isMoreThanDay(): Boolean {
 fun TimeUnit.toDayTimeRange(): TimeRange {
     val day = toDays().round()
     return TimeUnitRange(day, day + Days(1))
+}
+
+fun TimeUnit.toTimeRange(
+    shift: TimeUnit,
+): TimeRange {
+    return toTimeRange(shift, shift)
 }
 
 fun TimeUnit.toTimeRange(

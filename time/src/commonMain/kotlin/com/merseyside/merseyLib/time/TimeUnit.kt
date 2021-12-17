@@ -138,6 +138,9 @@ interface TimeUnit : Comparable<TimeUnit> {
         }
     }
 
+    val intValue: Int
+        get() { return value.toInt() }
+
     override fun equals(other: Any?): Boolean
 
     companion object {

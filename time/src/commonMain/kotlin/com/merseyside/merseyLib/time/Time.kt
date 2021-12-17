@@ -48,6 +48,14 @@ object Time {
         return now.toMonthRange()
     }
 
+    fun getCurrentDayOfMonth(): Days {
+        return getDayOfMonth(now)
+    }
+
+    fun getCurrentMonth(): Month {
+        return getMonth(now)
+    }
+
     fun getCurrentYear(): Years {
         return getYear(now)
     }
