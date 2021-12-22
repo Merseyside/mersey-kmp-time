@@ -3,7 +3,9 @@ package com.merseyside.merseyLib.time.ranges
 import com.merseyside.merseyLib.time.TimeUnit
 import com.merseyside.merseyLib.time.ext.getNextWeek
 import com.merseyside.merseyLib.time.ext.getPrevWeek
+import kotlinx.serialization.Serializable
 
+@Serializable
 class WeekRange internal constructor(
     override val start: TimeUnit,
     override val end: TimeUnit

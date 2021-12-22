@@ -72,6 +72,8 @@ object Time {
 
         polymorphic(TimeRange::class) {
             subclass(TimeUnitRange::class)
+            subclass(WeekRange::class)
+            subclass(MonthRange::class)
         }
     }
 }

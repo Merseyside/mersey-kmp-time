@@ -93,7 +93,7 @@ fun TimeRange.toTimeUnitList(gap: TimeUnit): List<TimeUnit> {
     while(timeUnit < end) {
         timeUnit += gap
         if (contains(timeUnit)) {
-            list.add(timeUnit )
+            list.add(timeUnit)
         } else {
             end
         }

@@ -5,7 +5,9 @@ import com.merseyside.merseyLib.time.TimeUnit
 import com.merseyside.merseyLib.time.ext.getNextMonth
 import com.merseyside.merseyLib.time.ext.getPrevMonth
 import com.merseyside.merseyLib.time.ext.toMonth
+import kotlinx.serialization.Serializable
 
+@Serializable
 class MonthRange internal constructor(
     override val start: TimeUnit,
     override val end: TimeUnit
