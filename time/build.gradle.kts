@@ -26,11 +26,16 @@ kotlin {
 }
 
 val mppLibs = listOf(
-    common.merseyLib.kotlin.ext,
     multiplatformLibs.serialization
 )
 
 dependencies {
+    if (isLocalKotlinExtLibrary()) {
+        commonMainImplementation(project(Modules.MultiPlatform.MerseyLibs.kotlinExt))
+    } else {
+        commonMainImplementation(common.merseyLib.kotlin.ext)
+    }
+
     mppLibs.forEach { commonMainImplementation(it) }
 }
 

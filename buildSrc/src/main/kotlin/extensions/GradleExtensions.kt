@@ -15,10 +15,11 @@ inline fun <reified T> Project.findTypedProperty(propertyName: String): T {
     } as? T ?: throw NotFoundException("Property $propertyName not found")
 }
 
-fun Project.isLocalDependencies(): Boolean {
-    return findTypedProperty("build.localDependencies")
-}
+fun Project.isLocalDependencies(): Boolean =
+    findTypedProperty("build.localDependencies")
 
-fun Project.isLocalAndroidDependencies(): Boolean {
-    return findTypedProperty("build.localAndroidDependencies")
-}
+fun Project.isLocalAndroidDependencies(): Boolean =
+    findTypedProperty("build.localAndroidDependencies")
+
+fun Project.isLocalKotlinExtLibrary(): Boolean =
+    findTypedProperty("build.localKotlinExtLibrary")

@@ -194,7 +194,7 @@ fun TimeRange.intersect(other: TimeRange, includeLastMilli: Boolean = true): Tim
 }
 
 fun TimeRange.roundByDivider(divider: TimeUnit): TimeRange {
-    return TimeUnitRange(start.roundByDivider(divider), end.roundByDivider(divider))
+    return TimeUnitRange(start.roundByDivider(divider).logHuman("kek", prefix = "rounded"), end.roundByDivider(divider))
 }
 
 fun TimeRange.isTheSameDate(): Boolean {

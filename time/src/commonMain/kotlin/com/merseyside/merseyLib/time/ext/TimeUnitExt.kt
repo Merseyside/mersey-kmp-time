@@ -203,3 +203,7 @@ fun TimeUnit.roundByDivider(divider: TimeUnit): TimeUnit {
         this - mod + divider
     }
 }
+
+fun <T : TimeUnit> T.addTimeZone(timeZone: String = TimeConfiguration.timeZone): T {
+    return this + getTimeZoneOffset(timeZone)
+}

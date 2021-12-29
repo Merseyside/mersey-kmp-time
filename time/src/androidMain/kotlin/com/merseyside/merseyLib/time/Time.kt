@@ -1,6 +1,7 @@
 @file:JvmName("AndroidTime")
 package com.merseyside.merseyLib.time
 
+import com.merseyside.merseyLib.kotlin.extensions.log
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.TimeZone as SystemTimeZone
@@ -43,7 +44,7 @@ actual fun getFormattedDate(
 
         val netDate = Date(timeUnit.millis)
 
-        if (timeZone != Time.TimeZone.SYSTEM.toString()) {
+        if (!isSystemTimeZone(timeZone)) {
             sdf.timeZone = SystemTimeZone.getTimeZone(timeZone)
         }
         FormattedDate(sdf.format(netDate))
@@ -66,6 +67,14 @@ actual fun getYear(timeUnit: TimeUnit, timeZone: String): Years {
     return Years(getUnit(timeUnit, Calendar.YEAR, timeZone))
 }
 
+actual fun getTimeZoneOffset(timeZone: String): TimeUnit {
+    val tz = if (isSystemTimeZone(timeZone)) {
+        SystemTimeZone.getDefault().id
+    } else timeZone
+
+    return Millis(SystemTimeZone.getTimeZone(tz).rawOffset)
+}
+
 private fun getUnit(
     timeUnit: TimeUnit,
     unit: Int,
@@ -74,9 +83,13 @@ private fun getUnit(
     val calendar = Calendar.getInstance()
     calendar.time = Date(timeUnit.millis)
 
-    if (timeZone != Time.TimeZone.SYSTEM.toString()) {
+    if (!isSystemTimeZone(timeZone)) {
         calendar.timeZone = SystemTimeZone.getTimeZone(timeZone)
     }
 
     return calendar.get(unit)
+}
+
+private fun isSystemTimeZone(timeZone: String) : Boolean {
+    return timeZone == Time.TimeZone.SYSTEM.toString()
 }
