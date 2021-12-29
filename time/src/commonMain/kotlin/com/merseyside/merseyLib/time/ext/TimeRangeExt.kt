@@ -1,6 +1,6 @@
 package com.merseyside.merseyLib.time.ext
 
-import com.merseyside.merseyLib.logger.Logger
+import com.merseyside.merseyLib.kotlin.Logger
 import com.merseyside.merseyLib.time.*
 import com.merseyside.merseyLib.time.ranges.TimeRange
 import com.merseyside.merseyLib.time.ranges.TimeUnitRange
@@ -93,7 +93,7 @@ fun TimeRange.toTimeUnitList(gap: TimeUnit): List<TimeUnit> {
     while(timeUnit < end) {
         timeUnit += gap
         if (contains(timeUnit)) {
-            list.add(timeUnit )
+            list.add(timeUnit)
         } else {
             end
         }
@@ -194,7 +194,7 @@ fun TimeRange.intersect(other: TimeRange, includeLastMilli: Boolean = true): Tim
 }
 
 fun TimeRange.roundByDivider(divider: TimeUnit): TimeRange {
-    return TimeUnitRange(start.roundByDivider(divider), end.roundByDivider(divider))
+    return TimeUnitRange(start.roundByDivider(divider).logHuman("kek", prefix = "rounded"), end.roundByDivider(divider))
 }
 
 fun TimeRange.isTheSameDate(): Boolean {

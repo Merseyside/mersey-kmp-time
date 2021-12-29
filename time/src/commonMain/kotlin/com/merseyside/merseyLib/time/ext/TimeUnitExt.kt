@@ -1,6 +1,6 @@
 package com.merseyside.merseyLib.time.ext
 
-import com.merseyside.merseyLib.logger.Logger
+import com.merseyside.merseyLib.kotlin.Logger
 import com.merseyside.merseyLib.time.*
 import com.merseyside.merseyLib.time.ranges.MonthRange
 import com.merseyside.merseyLib.time.ranges.TimeRange
@@ -56,6 +56,10 @@ fun TimeUnit.toHoursMinutesOfDay(timeZone: String = TimeConfiguration.timeZone):
     return (getHoursOfDay(this, timeZone) + getMinutesOfHour(this, timeZone))
 }
 
+fun TimeUnit.toYears(timeZone: String = TimeConfiguration.timeZone): Years {
+    return getYear(this, timeZone)
+}
+
 fun TimeUnit.toFormattedHoursMinutesOfDay(
     pattern: String = TimeConfiguration.hoursMinutesPattern,
     timeZone: String = TimeConfiguration.timeZone
@@ -96,6 +100,12 @@ fun TimeUnit.isMoreThanDay(): Boolean {
 fun TimeUnit.toDayTimeRange(): TimeRange {
     val day = toDays().round()
     return TimeUnitRange(day, day + Days(1))
+}
+
+fun TimeUnit.toTimeRange(
+    shift: TimeUnit,
+): TimeRange {
+    return toTimeRange(shift, shift)
 }
 
 fun TimeUnit.toTimeRange(
@@ -192,4 +202,8 @@ fun TimeUnit.roundByDivider(divider: TimeUnit): TimeUnit {
     } else {
         this - mod + divider
     }
+}
+
+fun <T : TimeUnit> T.addTimeZone(timeZone: String = TimeConfiguration.timeZone): T {
+    return this + getTimeZoneOffset(timeZone)
 }

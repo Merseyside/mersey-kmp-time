@@ -1,6 +1,5 @@
 package com.merseyside.merseyLib.time
 
-import com.merseyside.merseyLib.logger.log
 import kotlin.native.concurrent.ThreadLocal
 
 @ThreadLocal
@@ -20,27 +19,27 @@ object TimeConfiguration {
 
     var datePattern: String = ""
         get() {
-            return if (field.isEmpty()) "$dayPattern$d$monthPattern$d$yearPattern"
-            else field
+            return field.ifEmpty { "$dayPattern$d$monthPattern$d$yearPattern" }
         }
 
     var dateWithTimePattern = ""
         get() {
-            return if (field.isEmpty()) "$datePattern $hoursMinutesPattern"
-            else field
+            return field.ifEmpty { "$datePattern $hoursMinutesPattern" }
         }
 
     var defaultPattern: String = ""
         get() {
-            return if (field.isEmpty()) dateWithTimePattern
-            else field
+            return field.ifEmpty { dateWithTimePattern }
         }
+
+    var dayMonthPattern: String = ""
+        get() = field.ifEmpty { "dd MMMM" }
 
     var year = Time.getCurrentYear()
 
     private val d: String
         get() {
-            return divider.log("time", "get devider")
+            return divider
         }
 
     var formatPatterns = listOf(

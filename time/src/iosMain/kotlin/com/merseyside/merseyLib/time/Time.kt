@@ -53,6 +53,10 @@ actual fun getYear(timeUnit: TimeUnit, timeZone: String): Years {
     return Years(getComponents(timeUnit, NSYearCalendarUnit, timeZone).year.toInt())
 }
 
+actual fun getTimeZoneOffset(timeZone: String): TimeUnit {
+    return Millis(0)
+}
+
 private fun getDate(timeUnit: TimeUnit): NSDate {
     return NSDate.dateWithTimeIntervalSince1970(timeUnit.toSeconds().value.toDouble())
 }

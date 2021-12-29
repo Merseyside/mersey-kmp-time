@@ -1,13 +1,15 @@
 enableFeaturePreview("VERSION_CATALOGS")
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
+private val isLocalKotlinExtLibrary = false
+
 dependencyResolutionManagement {
     repositories {
         mavenLocal()
         mavenCentral()
     }
 
-    val catalogVersions = "1.1.9"
+    val catalogVersions = "1.2.2"
     val group = "io.github.merseyside"
     versionCatalogs {
         val multiplatformLibs by creating {
@@ -28,5 +30,11 @@ include(
     ":time",
     ":android-app",
 )
+
+if (isLocalKotlinExtLibrary) {
+    include(":kotlin-ext")
+    project(":kotlin-ext").projectDir =
+        File(rootDir.parent, "mersey-kotlin-ext/kotlin-ext")
+}
 
 rootProject.name = "kmm-time-library"

@@ -30,6 +30,12 @@ val mppLibs = listOf(
 )
 
 dependencies {
+    if (isLocalKotlinExtLibrary()) {
+        commonMainImplementation(project(Modules.MultiPlatform.MerseyLibs.kotlinExt))
+    } else {
+        commonMainImplementation(common.merseyLib.kotlin.ext)
+    }
+
     mppLibs.forEach { commonMainImplementation(it) }
 }
 

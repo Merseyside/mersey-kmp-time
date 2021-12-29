@@ -138,6 +138,9 @@ interface TimeUnit : Comparable<TimeUnit> {
         }
     }
 
+    val intValue: Int
+        get() { return value.toInt() }
+
     override fun equals(other: Any?): Boolean
 
     companion object {
@@ -150,13 +153,11 @@ interface TimeUnit : Comparable<TimeUnit> {
 @Serializable
 class Millis(override val millis: Long) : TimeUnit {
 
-    override val value: Long
-        get() = millis
-
+    override val value: Long = millis
 
     internal constructor(unit: TimeUnit) : this(unit.millis)
 
-    constructor(number: Number) : this(number.toLong())
+    constructor(number: Number = 0) : this(number.toLong())
     constructor(str: String) : this(str.toLong())
     constructor() : this(0)
 
@@ -185,12 +186,11 @@ class Millis(override val millis: Long) : TimeUnit {
 @Serializable
 class Seconds private constructor(override val millis: Long) : TimeUnit {
 
-    override val value: Long
-        get() = millis / Conversions.MILLIS_CONST
+    override val value: Long = millis / Conversions.MILLIS_CONST
 
     internal constructor(unit: TimeUnit) : this(unit.millis)
 
-    constructor(number: Number) : this(
+    constructor(number: Number = 0) : this(
         Conversions.MILLIS_CONST * number.toLong()
     )
 
@@ -213,17 +213,20 @@ class Seconds private constructor(override val millis: Long) : TimeUnit {
         if (other !is TimeUnit) return false
         return isEqual(other)
     }
+
+    override fun hashCode(): Int {
+        return millis.hashCode()
+    }
 }
 
 @Serializable
 class Minutes private constructor(override val millis: Long) : TimeUnit {
 
-    override val value: Long
-        get() = toSeconds().value / Conversions.SECONDS_MINUTES_CONST
+    override val value: Long = toSeconds().value / Conversions.SECONDS_MINUTES_CONST
 
     internal constructor(unit: TimeUnit) : this(unit.millis)
 
-    constructor(number: Number) : this(
+    constructor(number: Number = 0) : this(
         (Seconds(Conversions.SECONDS_MINUTES_CONST).millis * number.toLong())
     )
 
@@ -255,17 +258,16 @@ class Minutes private constructor(override val millis: Long) : TimeUnit {
 @Serializable
 class Hours private constructor(override val millis: Long) : TimeUnit {
 
+    override val value: Long = toMinutes().value / Conversions.SECONDS_MINUTES_CONST
+
     internal constructor(unit: TimeUnit) : this(unit.millis)
 
-    constructor(number: Number) : this(
+    constructor(number: Number = 0) : this(
         (Minutes(Conversions.SECONDS_MINUTES_CONST).millis * number.toLong())
     )
 
     constructor(str: String) : this(number = str.toLong())
     constructor() : this(0)
-
-    override val value: Long
-        get() = toMinutes().value / Conversions.SECONDS_MINUTES_CONST
 
     override fun newInstance(value: Long): TimeUnit {
         return Hours(Minutes(Conversions.SECONDS_MINUTES_CONST).millis * value)
@@ -292,17 +294,16 @@ class Hours private constructor(override val millis: Long) : TimeUnit {
 @Serializable
 class Days private constructor(override val millis: Long) : TimeUnit {
 
+    override val value: Long = toHours().value / Conversions.HOURS_CONST
+
     internal constructor(unit: TimeUnit) : this(unit.millis)
 
-    constructor(number: Number) : this(
+    constructor(number: Number = 0) : this(
         (Hours(Conversions.HOURS_CONST).millis * number.toLong())
     )
 
     constructor(str: String) : this(number = str.toLong())
     constructor() : this(0)
-
-    override val value: Long
-        get() = toHours().value / Conversions.HOURS_CONST
 
     override fun newInstance(value: Long): TimeUnit {
         return Days(Hours(Conversions.HOURS_CONST).millis * value)
@@ -329,17 +330,16 @@ class Days private constructor(override val millis: Long) : TimeUnit {
 @Serializable
 class Weeks private constructor(override val millis: Long) : TimeUnit {
 
+    override val value: Long = toDays().value / Conversions.WEEK_CONST
+
     internal constructor(unit: TimeUnit) : this(unit.millis)
 
-    constructor(number: Number) : this(
+    constructor(number: Number = 0) : this(
         (Days(Conversions.WEEK_CONST).millis * number.toLong())
     )
 
     constructor(str: String) : this(number = str.toLong())
     constructor() : this(0)
-
-    override val value: Long
-        get() = toDays().value / Conversions.WEEK_CONST
 
     override fun newInstance(value: Long): TimeUnit {
         return Weeks(Days(Conversions.WEEK_CONST).millis * value)

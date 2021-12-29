@@ -16,9 +16,7 @@ object Time {
     enum class TimeZone { SYSTEM, GMT }
 
     val now: TimeUnit
-        get() {
-            return getCurrentTime()
-        }
+        get() = getCurrentTime()
 
     val today: Days
         get() {
@@ -30,7 +28,7 @@ object Time {
             return TimeUnitRange(today, today + Days(1))
         }
 
-    fun getCurrentDayTime(timeZone: String = TimeZone.SYSTEM.toString()): TimeUnit {
+    fun getCurrentDayTime(timeZone: String = TimeConfiguration.timeZone): TimeUnit {
         return now.toHoursMinutesOfDay(timeZone)
     }
 
@@ -46,6 +44,14 @@ object Time {
 
     fun getCurrentMonthRange(): MonthRange {
         return now.toMonthRange()
+    }
+
+    fun getCurrentDayOfMonth(): Days {
+        return getDayOfMonth(now)
+    }
+
+    fun getCurrentMonth(): Month {
+        return getMonth(now)
     }
 
     fun getCurrentYear(): Years {
@@ -64,6 +70,8 @@ object Time {
 
         polymorphic(TimeRange::class) {
             subclass(TimeUnitRange::class)
+            subclass(WeekRange::class)
+            subclass(MonthRange::class)
         }
     }
 }
@@ -112,3 +120,5 @@ internal expect fun getYear(
     timeUnit: TimeUnit,
     timeZone: String = TimeConfiguration.timeZone
 ): Years
+
+internal expect fun getTimeZoneOffset(timeZone: String): TimeUnit
