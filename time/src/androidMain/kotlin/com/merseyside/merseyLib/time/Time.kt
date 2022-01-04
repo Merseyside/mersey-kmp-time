@@ -28,8 +28,25 @@ actual fun getHoursOfDay(
     return Hours(getUnit(timeUnit, Calendar.HOUR_OF_DAY, timeZone))
 }
 
+actual fun getDayOfWeek(timeUnit: TimeUnit, timeZone: String): DayOfWeek {
+    val index = getUnit(timeUnit, Calendar.DAY_OF_WEEK, timeZone)
+    return DayOfWeek.getByPlatformIndex(index)
+}
+
 actual fun getDayOfMonth(timeUnit: TimeUnit, timeZone: String): Days {
     return Days(getUnit(timeUnit, Calendar.DAY_OF_MONTH, timeZone))
+}
+
+internal actual fun getDayOfYear(timeUnit: TimeUnit, timeZone: String): Days {
+    return Days(getUnit(timeUnit, Calendar.DAY_OF_YEAR, timeZone))
+}
+
+actual fun getMonth(timeUnit: TimeUnit, timeZone: String): Month {
+    return Month.getByIndex(getUnit(timeUnit, Calendar.MONTH, timeZone))
+}
+
+actual fun getYear(timeUnit: TimeUnit, timeZone: String): Years {
+    return Years(getUnit(timeUnit, Calendar.YEAR, timeZone))
 }
 
 actual fun getFormattedDate(
@@ -54,18 +71,6 @@ actual fun getFormattedDate(
     }
 }
 
-actual fun getDayOfWeek(timeUnit: TimeUnit, timeZone: String): DayOfWeek {
-    val index = getUnit(timeUnit, Calendar.DAY_OF_WEEK, timeZone)
-    return DayOfWeek.getByPlatformIndex(index)
-}
-
-actual fun getMonth(timeUnit: TimeUnit, timeZone: String): Month {
-    return Month.getByIndex(getUnit(timeUnit, Calendar.MONTH, timeZone))
-}
-
-actual fun getYear(timeUnit: TimeUnit, timeZone: String): Years {
-    return Years(getUnit(timeUnit, Calendar.YEAR, timeZone))
-}
 
 actual fun getTimeZoneOffset(timeZone: String): TimeUnit {
     val tz = if (isSystemTimeZone(timeZone)) {

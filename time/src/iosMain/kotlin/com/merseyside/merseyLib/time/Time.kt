@@ -6,20 +6,6 @@ actual fun getCurrentTime(): TimeUnit {
     return Seconds(NSDate().timeIntervalSince1970)
 }
 
-actual fun getDayOfMonth(timeUnit: TimeUnit, timeZone: String): Days {
-    return Days(getComponents(timeUnit, NSDayCalendarUnit, timeZone).day)
-}
-
-actual fun getDayOfWeek(timeUnit: TimeUnit, timeZone: String): DayOfWeek {
-    return DayOfWeek.getByPlatformIndex(
-        getComponents(
-            timeUnit,
-            NSWeekdayCalendarUnit,
-            timeZone
-        ).weekday.toInt()
-    )
-}
-
 actual fun getFormattedDate(
     timeUnit: TimeUnit,
     pattern: String,
@@ -43,6 +29,24 @@ actual fun getMinutesOfHour(timeUnit: TimeUnit, timeZone: String): Minutes {
 
 actual fun getHoursOfDay(timeUnit: TimeUnit, timeZone: String): Hours {
     return Hours(getComponents(timeUnit, NSHourCalendarUnit, timeZone).hour)
+}
+
+actual fun getDayOfWeek(timeUnit: TimeUnit, timeZone: String): DayOfWeek {
+    return DayOfWeek.getByPlatformIndex(
+        getComponents(
+            timeUnit,
+            NSWeekdayCalendarUnit,
+            timeZone
+        ).weekday.toInt()
+    )
+}
+
+actual fun getDayOfMonth(timeUnit: TimeUnit, timeZone: String): Days {
+    return Days(getComponents(timeUnit, NSDayCalendarUnit, timeZone).day)
+}
+
+internal actual fun getDayOfYear(timeUnit: TimeUnit, timeZone: String): Days {
+    return Days(getComponents(timeUnit, NSCalendarUnitYear, timeZone).day)
 }
 
 actual fun getMonth(timeUnit: TimeUnit, timeZone: String): Month {

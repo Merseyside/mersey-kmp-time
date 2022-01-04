@@ -42,6 +42,10 @@ inline fun <reified T : TimeUnit> T.equalsTo(other: TimeUnit): Boolean {
     }
 }
 
+inline fun <reified T : TimeUnit> T.notEqualsTo(other: TimeUnit): Boolean {
+    return !equalsTo(other)
+}
+
 inline fun <reified T : TimeUnit> T.moreThen(other: TimeUnit): Boolean {
     return when (compareTo<T>(other)) {
         1 -> true

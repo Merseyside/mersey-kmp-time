@@ -84,6 +84,10 @@ fun TimeUnit.toDayOfMonth(timeZone: String = TimeConfiguration.timeZone): Days {
     return getDayOfMonth(this, timeZone)
 }
 
+fun TimeUnit.toDayOfYear(timeZone: String = TimeConfiguration.timeZone): Days {
+    return getDayOfYear(this, timeZone)
+}
+
 fun TimeUnit.getHumanDate(pattern: String = TimeConfiguration.defaultPattern): FormattedDate {
     return if (!isMoreThanDay()) toFormattedHoursMinutesOfDay()
     else toFormattedDate(pattern)
