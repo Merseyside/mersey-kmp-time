@@ -1,6 +1,6 @@
 package com.merseyside.merseyLib.time.ext
 
-import com.merseyside.merseyLib.time.*
+import com.merseyside.merseyLib.time.units.*
 import kotlin.reflect.KClass
 
 fun <T : TimeUnit> TimeUnit.castTo(clazz: KClass<out T>): T {

@@ -1,9 +1,9 @@
 package com.merseyside.merseyLib.time.ext
 
-import com.merseyside.merseyLib.time.Days
-import com.merseyside.merseyLib.time.TimeUnit
-import com.merseyside.merseyLib.time.minus
-import com.merseyside.merseyLib.time.plus
+import com.merseyside.merseyLib.time.units.Days
+import com.merseyside.merseyLib.time.units.TimeUnit
+import com.merseyside.merseyLib.time.units.minus
+import com.merseyside.merseyLib.time.units.plus
 import com.merseyside.merseyLib.time.ranges.MonthRange
 import com.merseyside.merseyLib.time.ranges.TimeRange
 

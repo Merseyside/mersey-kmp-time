@@ -1,7 +1,7 @@
 package com.merseyside.merseyLib.time.ext
 
-import com.merseyside.merseyLib.time.TimeUnit
-import com.merseyside.merseyLib.time.plus
+import com.merseyside.merseyLib.time.units.TimeUnit
+import com.merseyside.merseyLib.time.units.plus
 
 fun List<TimeUnit>.sum(): TimeUnit {
     var sum = TimeUnit.getEmpty()

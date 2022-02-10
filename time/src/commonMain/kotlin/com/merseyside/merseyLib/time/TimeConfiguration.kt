@@ -1,39 +1,60 @@
 package com.merseyside.merseyLib.time
 
+import com.merseyside.merseyLib.time.utils.Pattern
 import kotlin.native.concurrent.ThreadLocal
+import com.merseyside.merseyLib.time.utils.Pattern.*
 
 @ThreadLocal
 object TimeConfiguration {
 
-    var timeZone: String = Time.TimeZone.SYSTEM.toString()
+    var checkPatternedDates = true
+
+    var timeZone: TimeZone = TimeZone.NOT_SET_ZONE
+        get() {
+            if (field == TimeZone.NOT_SET_ZONE) {
+                field = TimeZone.SYSTEM
+            }
+            return field
+        }
 
     var language: Language = "en"
     var country: Country = "US"
+
     var divider = "."
-    var hoursMinutesPattern: String = "HH:mm"
-    var dayOfWeekPattern: String = "EE"
-    var dayPattern: String = "dd"
-    var monthPattern: String = "MM"
-    var timePattern = "HH:mm:ss.SSS"
-    var yearPattern: String = "yy"
+    var hoursMinutesPattern = CUSTOM("HH:mm")
+    var dayOfWeekPattern = CUSTOM("EE")
+    var dayPattern = CUSTOM("dd")
+    var monthPattern = CUSTOM("MM")
+    var timePattern = CUSTOM("HH:mm:ss.SSS")
+    var yearPattern = CUSTOM("yy")
 
-    var datePattern: String = ""
+    var datePattern: Pattern = EMPTY
         get() {
-            return field.ifEmpty { "$dayPattern$d$monthPattern$d$yearPattern" }
+            return if (field == EMPTY) {
+                CUSTOM("$dayPattern$d$monthPattern$d$yearPattern")
+            } else field
         }
 
-    var dateWithTimePattern = ""
+    var dateWithTimePattern: Pattern = EMPTY
         get() {
-            return field.ifEmpty { "$datePattern $hoursMinutesPattern" }
+            return if (field == EMPTY) {
+                CUSTOM("$datePattern $hoursMinutesPattern")
+            } else field
         }
 
-    var defaultPattern: String = ""
+    var defaultPattern: Pattern = EMPTY
         get() {
-            return field.ifEmpty { dateWithTimePattern }
+            return if (field == EMPTY) {
+                dateWithTimePattern
+            } else field
         }
 
-    var dayMonthPattern: String = ""
-        get() = field.ifEmpty { "dd MMMM" }
+    var zonedDefaultPattern: Offset = Offset.ISO_OFFSET_DATE_TIME
+
+    var dayMonthPattern: Pattern = EMPTY
+        get() = if (field == EMPTY) {
+            CUSTOM("dd MMMM")
+        } else field
 
     var year = Time.getCurrentYear()
 
@@ -42,15 +63,32 @@ object TimeConfiguration {
             return divider
         }
 
-    var formatPatterns = listOf(
-        "yyyy-MM-dd'T'HH:mm:ss'Z'",
-        "yyyy-MM-dd'T'HH:mm:ss.SSS",
-        "yyyy-MM-dd'T'HH:mm:ssZ",
-        "HH:mm"
+    var patterns = listOf(
+        ISO_DATE_TIME,
+        ISO_INSTANT,
+        ISO_LOCAL_DATE,
+        ISO_LOCAL_TIME,
+        ISO_LOCAL_FULL_TIME
     )
 
+    var offsetPatterns = listOf(
+        Offset.ISO_OFFSET_DATE_TIME,
+        Offset.ISO_OFFSET_DATE,
+        Offset.ISO_OFFSET_TIME,
+        Offset.ISO_OFFSET_FULL_TIME
+    )
+
+    fun addFormatPattern(pattern: Pattern) {
+        patterns = patterns.toMutableList().apply { add(0, pattern) }
+    }
+
     fun addFormatPattern(pattern: String) {
-        formatPatterns = formatPatterns.toMutableList().apply { add(pattern) }
+        addFormatPattern(CUSTOM(pattern))
+    }
+
+    fun addFormatPatterns(vararg patterns: String) {
+        val newPatterns: MutableList<Pattern> = patterns.map { CUSTOM(it) }.toMutableList()
+        this.patterns = newPatterns.apply { addAll(this@TimeConfiguration.patterns) }
     }
 }
 

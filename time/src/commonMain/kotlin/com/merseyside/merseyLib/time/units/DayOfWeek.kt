@@ -1,5 +1,6 @@
-package com.merseyside.merseyLib.time
+package com.merseyside.merseyLib.time.units
 
+import com.merseyside.merseyLib.time.utils.serializers.DayOfWeekSerializer
 import kotlinx.serialization.Serializable
 
 @Serializable(with = DayOfWeekSerializer::class)

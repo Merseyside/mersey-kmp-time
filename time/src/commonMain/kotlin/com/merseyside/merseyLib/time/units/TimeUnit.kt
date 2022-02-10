@@ -1,6 +1,6 @@
 @file:Suppress("UNCHECKED_CAST")
 
-package com.merseyside.merseyLib.time
+package com.merseyside.merseyLib.time.units
 
 import kotlinx.serialization.Serializable
 
@@ -122,7 +122,7 @@ interface TimeUnit : Comparable<TimeUnit> {
     }
 
     fun getString(): String {
-        return value.toString()
+        return "${this::class.simpleName} $value"
     }
 
     fun roundWithFraction(): TimeUnit {

@@ -1,43 +1,50 @@
 package com.merseyside.merseyLib.time.ext
 
 import com.merseyside.merseyLib.kotlin.Logger
-import com.merseyside.merseyLib.time.FormattedDate
-import com.merseyside.merseyLib.time.TimeConfiguration
-import com.merseyside.merseyLib.time.TimeUnit
+import com.merseyside.merseyLib.time.*
+import com.merseyside.merseyLib.time.exception.TimeParseException
+import com.merseyside.merseyLib.time.units.TimeUnit
+import com.merseyside.merseyLib.time.utils.Pattern
 
-fun FormattedDate.toSecondsOfMinute(timeZone: String = TimeConfiguration.timeZone): FormattedDate {
-    return toTimeUnit().toSecondsOfMinute().toFormattedDate(timeZone = timeZone)
+@Throws(TimeParseException::class)
+fun FormattedDate.toPatternedFormattedDate(
+    oldPattern: Pattern,
+    newPattern: Pattern
+): PatternedFormattedDate {
+    val timeUnit = toTimeUnit(oldPattern)
+    return PatternedFormattedDate(timeUnit.toFormattedDate(newPattern).date, newPattern)
 }
 
-fun FormattedDate.toMinutesOfHour(timeZone: String = TimeConfiguration.timeZone): FormattedDate {
-    return toTimeUnit().toMinutesOfHour(timeZone).toFormattedDate(timeZone = timeZone)
+fun FormattedDate.toSecondsOfMinute(): FormattedDate {
+    return toTimeUnit().toSecondsOfMinute().toFormattedDate()
 }
 
-fun FormattedDate.toHoursOfDay(timeZone: String = TimeConfiguration.timeZone): FormattedDate {
-    return toTimeUnit().toHoursOfDay(timeZone).toFormattedDate(timeZone = timeZone)
+fun FormattedDate.toMinutesOfHour(): FormattedDate {
+    return toTimeUnit().toMinutesOfHour().toFormattedDate()
 }
 
-fun FormattedDate.toHoursMinutesOfDay(timeZone: String = TimeConfiguration.timeZone): FormattedDate {
-    return toTimeUnit().toHoursMinutesOfDay(timeZone).toFormattedDate(timeZone = timeZone)
+fun FormattedDate.toHoursOfDay(): FormattedDate {
+    return toTimeUnit().toHoursOfDay().toFormattedDate()
 }
 
-fun FormattedDate.toTimeUnit(
-    vararg pattern: String,
-    timeZone: String = TimeConfiguration.timeZone
-): TimeUnit {
-    val patternsList: List<String> = if (pattern.isNotEmpty()) pattern.toList() else TimeConfiguration.formatPatterns
+fun FormattedDate.toHoursMinutesOfDay(): FormattedDate {
+    return toTimeUnit().toHoursMinutesOfDay().toFormattedDate()
+}
+
+@Throws(TimeParseException::class)
+fun FormattedDate.toTimeUnit(vararg pattern: Pattern): TimeUnit {
+    val patternsList: List<Pattern> =
+        if (pattern.isNotEmpty()) pattern.toList()
+        else TimeConfiguration.patterns
 
     patternsList.forEach {
         try {
-            value.toTimeUnit(
-                dateFormat = it,
-                timeZone = timeZone
-            )?.let { timeUnit -> return timeUnit }
-        } catch (e: Exception) {
-            Logger.logErr(tag = "TimeUnit", msg = "$it is wrong pattern to format time")
+            return date.toTimeUnit(pattern = it)
+        } catch (e: TimeParseException) {
+            Logger.logErr(tag = "TimeUnit", msg = "$it is wrong pattern to format ${this.date}")
         }
     }
 
-    throw Exception("Can not format $value with suggested patterns!")
+    throw TimeParseException("Can not format $date with suggested patterns!")
 }
 

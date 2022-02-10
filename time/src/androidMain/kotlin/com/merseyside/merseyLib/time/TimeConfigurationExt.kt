@@ -10,7 +10,7 @@ fun TimeConfiguration.setupWithLocale(locale: Locale) {
     country = locale.country
 }
 
-fun getLocale(
+internal fun getLocale(
     language: String = TimeConfiguration.language,
     country: String = TimeConfiguration.country
 ): Locale {
