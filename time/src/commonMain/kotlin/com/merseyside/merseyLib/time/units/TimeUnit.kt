@@ -51,10 +51,6 @@ operator fun <T : TimeUnit> T.dec(): T {
     return this - newInstance(1)
 }
 
-fun <T : TimeUnit> T.isEqual(other: T): Boolean {
-    return this.millis == other.millis
-}
-
 operator fun <T : TimeUnit> T.compareTo(value: Number): Int {
     return this.millis.compareTo(newInstanceMillis(value.toLong()).millis)
 }
@@ -62,8 +58,6 @@ operator fun <T : TimeUnit> T.compareTo(value: Number): Int {
 operator fun <T : TimeUnit> T.rem(other: TimeUnit): T {
     return newInstanceMillis(millis % other.millis) as T
 }
-
-fun <T : TimeUnit> T.isNotEqual(other: T) = !isEqual(other)
 
 fun <T : TimeUnit> T.round() = newInstance(value) as T
 
@@ -175,7 +169,7 @@ class Millis(override val millis: Long) : TimeUnit {
 
     override fun equals(other: Any?): Boolean {
         if (other !is TimeUnit) return false
-        return isEqual(other)
+        return this.millis == other.millis
     }
 
     override fun hashCode(): Int {
@@ -211,7 +205,7 @@ class Seconds private constructor(override val millis: Long) : TimeUnit {
 
     override fun equals(other: Any?): Boolean {
         if (other !is TimeUnit) return false
-        return isEqual(other)
+        return this.millis == other.millis
     }
 
     override fun hashCode(): Int {
@@ -247,7 +241,7 @@ class Minutes private constructor(override val millis: Long) : TimeUnit {
 
     override fun equals(other: Any?): Boolean {
         if (other !is TimeUnit) return false
-        return isEqual(other)
+        return this.millis == other.millis
     }
 
     override fun hashCode(): Int {
@@ -283,7 +277,7 @@ class Hours private constructor(override val millis: Long) : TimeUnit {
 
     override fun equals(other: Any?): Boolean {
         if (other !is TimeUnit) return false
-        return isEqual(other)
+        return this.millis == other.millis
     }
 
     override fun hashCode(): Int {
@@ -319,7 +313,7 @@ class Days private constructor(override val millis: Long) : TimeUnit {
 
     override fun equals(other: Any?): Boolean {
         if (other !is TimeUnit) return false
-        return isEqual(other)
+        return this.millis == other.millis
     }
 
     override fun hashCode(): Int {
@@ -355,7 +349,7 @@ class Weeks private constructor(override val millis: Long) : TimeUnit {
 
     override fun equals(other: Any?): Boolean {
         if (other !is TimeUnit) return false
-        return isEqual(other)
+        return this.millis == other.millis
     }
 
     override fun hashCode(): Int {
