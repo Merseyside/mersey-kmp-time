@@ -1,100 +1,100 @@
 @file:JvmName("AndroidTime")
+
 package com.merseyside.merseyLib.time
 
-import com.merseyside.merseyLib.kotlin.extensions.log
+import com.merseyside.merseyLib.time.exception.TimeParseException
+import com.merseyside.merseyLib.time.units.*
+import com.merseyside.merseyLib.time.units.DayOfWeek
+import com.merseyside.merseyLib.time.units.Month
+import com.merseyside.merseyLib.time.utils.Pattern
+import com.merseyside.merseyLib.time.utils.patternToDateTimeFormatter
 import java.text.SimpleDateFormat
+import java.time.*
+import java.time.temporal.ChronoUnit
 import java.util.*
 import java.util.TimeZone as SystemTimeZone
 
-actual fun getCurrentTime(): TimeUnit {
+actual fun getCurrentTimeGMT(): TimeUnit {
     return Millis(System.currentTimeMillis())
 }
 
-actual fun getSecondsOfMinute(timeUnit: TimeUnit, timeZone: String): Seconds {
-    return Seconds(getUnit(timeUnit, Calendar.SECOND, timeZone))
+actual fun getSecondsOfMinute(timeUnit: TimeUnit): Seconds {
+    return Seconds(getUnit(timeUnit, Calendar.SECOND))
 }
 
-actual fun getMinutesOfHour(
+actual fun getMinutesOfHour(timeUnit: TimeUnit): Minutes {
+    return Minutes(getUnit(timeUnit, Calendar.MINUTE))
+}
+
+actual fun getHoursOfDay(timeUnit: TimeUnit): Hours {
+    return Hours(getUnit(timeUnit, Calendar.HOUR_OF_DAY))
+}
+
+actual fun getDayOfMonth(timeUnit: TimeUnit): Days {
+    return Days(getUnit(timeUnit, Calendar.DAY_OF_MONTH))
+}
+
+@Throws(TimeParseException::class)
+actual fun getFormattedDate(
     timeUnit: TimeUnit,
-    timeZone: String
-): Minutes {
-    return Minutes(getUnit(timeUnit, Calendar.MINUTE, timeZone))
+    pattern: Pattern,
+    language: String,
+    country: String
+): PatternedFormattedDate {
+    if (pattern.isOffsetPattern()) throw TimeParseException("Time unit can not be parsed with " +
+            "offset pattern. Only ZonedTimeUnit can be parsed with this $pattern")
+
+    val formatter = patternToDateTimeFormatter(pattern)
+    var instant = Instant.ofEpochMilli(timeUnit.millis)
+
+    if (pattern.isTruncatesToMinutes()) {
+        instant = instant.truncatedTo(ChronoUnit.MINUTES)
+    }
+
+    val formattedDate = when(pattern) {
+        is Pattern.EMPTY -> throw TimeParseException("Can not parse with empty pattern!")
+        is Pattern.CUSTOM -> parseCustomDate(timeUnit, pattern.value)
+        else -> formatter.format(instant)
+    }
+
+    return PatternedFormattedDate(formattedDate, pattern)
 }
 
-actual fun getHoursOfDay(
-    timeUnit: TimeUnit,
-    timeZone: String
-): Hours {
-    return Hours(getUnit(timeUnit, Calendar.HOUR_OF_DAY, timeZone))
-}
-
-actual fun getDayOfWeek(timeUnit: TimeUnit, timeZone: String): DayOfWeek {
-    val index = getUnit(timeUnit, Calendar.DAY_OF_WEEK, timeZone)
+actual fun getDayOfWeek(timeUnit: TimeUnit): DayOfWeek {
+    val index = getUnit(timeUnit, Calendar.DAY_OF_WEEK)
     return DayOfWeek.getByPlatformIndex(index)
 }
 
-actual fun getDayOfMonth(timeUnit: TimeUnit, timeZone: String): Days {
-    return Days(getUnit(timeUnit, Calendar.DAY_OF_MONTH, timeZone))
+actual fun getMonth(timeUnit: TimeUnit): Month {
+    return Month.getByIndex(getUnit(timeUnit, Calendar.MONTH))
 }
 
-internal actual fun getDayOfYear(timeUnit: TimeUnit, timeZone: String): Days {
-    return Days(getUnit(timeUnit, Calendar.DAY_OF_YEAR, timeZone))
-}
-
-actual fun getMonth(timeUnit: TimeUnit, timeZone: String): Month {
-    return Month.getByIndex(getUnit(timeUnit, Calendar.MONTH, timeZone))
-}
-
-actual fun getYear(timeUnit: TimeUnit, timeZone: String): Years {
-    return Years(getUnit(timeUnit, Calendar.YEAR, timeZone))
-}
-
-actual fun getFormattedDate(
-    timeUnit: TimeUnit,
-    pattern: String,
-    timeZone: String,
-    language: String,
-    country: String
-): FormattedDate {
-    return try {
-        val sdf = SimpleDateFormat(pattern, getLocale(language, country))
-
-        val netDate = Date(timeUnit.millis)
-
-        if (!isSystemTimeZone(timeZone)) {
-            sdf.timeZone = SystemTimeZone.getTimeZone(timeZone)
-        }
-        FormattedDate(sdf.format(netDate))
-    } catch (e: Exception) {
-        e.printStackTrace()
-        throw IllegalArgumentException("Can not format date!")
-    }
-}
-
-
-actual fun getTimeZoneOffset(timeZone: String): TimeUnit {
-    val tz = if (isSystemTimeZone(timeZone)) {
-        SystemTimeZone.getDefault().id
-    } else timeZone
-
-    return Millis(SystemTimeZone.getTimeZone(tz).rawOffset)
+actual fun getYear(timeUnit: TimeUnit): Years {
+    return Years(getUnit(timeUnit, Calendar.YEAR))
 }
 
 private fun getUnit(
     timeUnit: TimeUnit,
-    unit: Int,
-    timeZone: String = TimeConfiguration.timeZone
+    unit: Int
 ): Int {
     val calendar = Calendar.getInstance()
     calendar.time = Date(timeUnit.millis)
-
-    if (!isSystemTimeZone(timeZone)) {
-        calendar.timeZone = SystemTimeZone.getTimeZone(timeZone)
-    }
+    calendar.timeZone = SystemTimeZone.getTimeZone(TimeZone.GMT.zoneId)
 
     return calendar.get(unit)
 }
 
-private fun isSystemTimeZone(timeZone: String) : Boolean {
-    return timeZone == Time.TimeZone.SYSTEM.toString()
+@Throws(TimeParseException::class)
+private fun parseCustomDate(timeUnit: TimeUnit, pattern: String): String {
+    return try {
+        val sdf = SimpleDateFormat(pattern, getLocale())
+
+        val netDate = Date(timeUnit.millis)
+
+        sdf.timeZone = SystemTimeZone.getTimeZone(TimeZone.GMT.zoneId)
+        sdf.format(netDate)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        throw TimeParseException()
+    }
 }

@@ -1,6 +1,6 @@
 package com.merseyside.merseyLib.time.ext
 
-import com.merseyside.merseyLib.time.*
+import com.merseyside.merseyLib.time.units.*
 
 fun <T : Number> T.toMillis(): Millis {
     return Millis(this.toLong())

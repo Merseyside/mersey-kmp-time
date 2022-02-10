@@ -4,6 +4,8 @@ import com.merseyside.merseyLib.kotlin.Logger
 import com.merseyside.merseyLib.time.*
 import com.merseyside.merseyLib.time.ranges.TimeRange
 import com.merseyside.merseyLib.time.ranges.TimeUnitRange
+import com.merseyside.merseyLib.time.units.*
+import com.merseyside.merseyLib.time.utils.Pattern
 
 fun TimeRange.isEmpty(): Boolean {
     return start.isEmpty() && end.isEmpty()
@@ -128,7 +130,7 @@ fun TimeRange.toHoursMinutesOfDay(): TimeUnitRange {
     var end = end.toHoursMinutesOfDay()
 
     if (end.isEmpty()) {
-       end = Days(1).includeLastValue(false)
+       end = Days(1).excludeMilli()
     }
 
     return TimeUnitRange(start, end)
@@ -194,11 +196,7 @@ fun TimeRange.intersect(other: TimeRange, includeLastMilli: Boolean = true): Tim
 }
 
 fun TimeRange.roundByDivider(divider: TimeUnit): TimeRange {
-    return TimeUnitRange(start.roundByDivider(divider).logHuman("kek", prefix = "rounded"), end.roundByDivider(divider))
-}
-
-fun TimeRange.isTheSameDate(): Boolean {
-    return start.isTheSameDate(end)
+    return TimeUnitRange(start.roundByDivider(divider), end.roundByDivider(divider))
 }
 
 /**
@@ -206,11 +204,19 @@ fun TimeRange.isTheSameDate(): Boolean {
  */
 fun TimeRange.toHumanString(
     format: String = "$1 - $2",
-    pattern: String = TimeConfiguration.defaultPattern,
+    pattern: Pattern = TimeConfiguration.defaultPattern,
     includeLastMilli: Boolean = true
 ): String {
-    return format.replace("$1", start.toFormattedDate(pattern).value)
-        .replace("$2", getEndValue(includeLastMilli).toFormattedDate(pattern).value)
+    return format.replace("$1", start.toFormattedDate(pattern).date)
+        .replace("$2", getEndValue(includeLastMilli).toFormattedDate(pattern).date)
+}
+
+fun TimeRange.toHumanString(
+    format: String = "$1 - $2",
+    pattern: String,
+    includeLastMilli: Boolean = true
+): String {
+    return toHumanString(format, Pattern.CUSTOM(pattern), includeLastMilli)
 }
 
 fun <T : TimeRange> T.logHuman(
@@ -234,7 +240,11 @@ fun <T : TimeRange> List<T>.logHuman(
 }
 
 fun TimeRange.getEndValue(includeLastMilli: Boolean = true): TimeUnit {
-    return end.includeLastValue(includeLastMilli)
+    return end.includeMilli(includeLastMilli)
+}
+
+fun TimeRange.excludeMilli(): TimeRange {
+    return TimeUnitRange(start, end.excludeMilli())
 }
 
 private fun TimeRange.checkIntersection(other: TimeRange) {

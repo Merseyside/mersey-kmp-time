@@ -1,7 +1,7 @@
 package com.merseyside.merseyLib.time.ranges
 
-import com.merseyside.merseyLib.time.Month
-import com.merseyside.merseyLib.time.TimeUnit
+import com.merseyside.merseyLib.time.units.Month
+import com.merseyside.merseyLib.time.units.TimeUnit
 import com.merseyside.merseyLib.time.ext.getNextMonth
 import com.merseyside.merseyLib.time.ext.getPrevMonth
 import com.merseyside.merseyLib.time.ext.toMonth

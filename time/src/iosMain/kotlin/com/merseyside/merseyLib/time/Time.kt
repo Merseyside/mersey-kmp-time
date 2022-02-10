@@ -1,88 +1,88 @@
 package com.merseyside.merseyLib.time
 
+import com.merseyside.merseyLib.time.exception.TimeParseException
+import com.merseyside.merseyLib.time.units.*
+import com.merseyside.merseyLib.time.utils.Pattern
+import com.merseyside.merseyLib.time.utils.patternToFormattedOptions
 import platform.Foundation.*
 
-actual fun getCurrentTime(): TimeUnit {
+actual fun getCurrentTimeGMT(): TimeUnit {
     return Seconds(NSDate().timeIntervalSince1970)
 }
 
-actual fun getFormattedDate(
-    timeUnit: TimeUnit,
-    pattern: String,
-    timeZone: String,
-    language: String,
-    country: String
-): FormattedDate {
-    val date = getDate(timeUnit)
-    val dateFormatter = NSDateFormatter()
-    dateFormatter.dateFormat = pattern
-    return FormattedDate(dateFormatter.stringFromDate(date))
+actual fun getDayOfMonth(timeUnit: TimeUnit): Days {
+    return Days(getComponents(timeUnit, NSDayCalendarUnit).day)
 }
 
-actual fun getSecondsOfMinute(timeUnit: TimeUnit, timeZone: String): Seconds {
-    return Seconds(getComponents(timeUnit, NSSecondCalendarUnit, timeZone).second)
-}
-
-actual fun getMinutesOfHour(timeUnit: TimeUnit, timeZone: String): Minutes {
-    return Minutes(getComponents(timeUnit, NSMinuteCalendarUnit, timeZone).minute)
-}
-
-actual fun getHoursOfDay(timeUnit: TimeUnit, timeZone: String): Hours {
-    return Hours(getComponents(timeUnit, NSHourCalendarUnit, timeZone).hour)
-}
-
-actual fun getDayOfWeek(timeUnit: TimeUnit, timeZone: String): DayOfWeek {
+actual fun getDayOfWeek(timeUnit: TimeUnit): DayOfWeek {
     return DayOfWeek.getByPlatformIndex(
         getComponents(
             timeUnit,
-            NSWeekdayCalendarUnit,
-            timeZone
+            NSWeekdayCalendarUnit
         ).weekday.toInt()
     )
 }
 
-actual fun getDayOfMonth(timeUnit: TimeUnit, timeZone: String): Days {
-    return Days(getComponents(timeUnit, NSDayCalendarUnit, timeZone).day)
+actual fun getFormattedDate(
+    timeUnit: TimeUnit,
+    pattern: Pattern,
+    language: String,
+    country: String
+): PatternedFormattedDate {
+    val date = getDate(timeUnit)
+
+    return if (pattern is Pattern.CUSTOM) {
+        val dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = pattern.value
+
+        PatternedFormattedDate(dateFormatter.stringFromDate(date), pattern)
+    } else {
+        val formatter = NSISO8601DateFormatter()
+        formatter.formatOptions = patternToFormattedOptions(pattern)
+
+        PatternedFormattedDate(formatter.stringFromDate(date), pattern)
+    }
 }
 
-internal actual fun getDayOfYear(timeUnit: TimeUnit, timeZone: String): Days {
-    return Days(getComponents(timeUnit, NSCalendarUnitYear, timeZone).day)
+actual fun getSecondsOfMinute(timeUnit: TimeUnit): Seconds {
+    return Seconds(getComponents(timeUnit, NSSecondCalendarUnit).second)
 }
 
-actual fun getMonth(timeUnit: TimeUnit, timeZone: String): Month {
-    return Month.getByIndex(getComponents(timeUnit, NSMonthCalendarUnit, timeZone).month.toInt())
+actual fun getMinutesOfHour(timeUnit: TimeUnit): Minutes {
+    return Minutes(getComponents(timeUnit, NSMinuteCalendarUnit).minute)
 }
 
-actual fun getYear(timeUnit: TimeUnit, timeZone: String): Years {
-    return Years(getComponents(timeUnit, NSYearCalendarUnit, timeZone).year.toInt())
+actual fun getHoursOfDay(timeUnit: TimeUnit): Hours {
+    return Hours(getComponents(timeUnit, NSHourCalendarUnit).hour)
 }
 
-actual fun getTimeZoneOffset(timeZone: String): TimeUnit {
-    return Millis(0)
+actual fun getMonth(timeUnit: TimeUnit): Month {
+    return Month.getByIndex(getComponents(timeUnit, NSMonthCalendarUnit).month.toInt())
+}
+
+actual fun getYear(timeUnit: TimeUnit): Years {
+    return Years(getComponents(timeUnit, NSYearCalendarUnit).year.toInt())
 }
 
 private fun getDate(timeUnit: TimeUnit): NSDate {
     return NSDate.dateWithTimeIntervalSince1970(timeUnit.toSeconds().value.toDouble())
 }
 
-private fun getComponents(
-    timeUnit: TimeUnit,
-    unit: NSCalendarUnit,
-    timeZone: String
-): NSDateComponents {
+private fun getComponents(timeUnit: TimeUnit, unit: NSCalendarUnit): NSDateComponents {
     val date = getDate(timeUnit)
-    val calendar = getCalendar(timeZone)
+    val calendar = getCalendar()
 
     return calendar.components(unit, date)
 }
 
-private fun getCalendar(timeZone: String): NSCalendar {
+private fun getCalendar(): NSCalendar {
     val calendar = NSCalendar.currentCalendar
     return calendar.apply {
-        this.timeZone = if (timeZone != Time.TimeZone.SYSTEM.name) {
-            NSTimeZone.timeZoneWithAbbreviation(timeZone) ?: NSTimeZone.systemTimeZone
-        } else {
-            NSTimeZone.systemTimeZone
-        }
+        //this.timeZone = if (timeZone != Time.TimeZone.SYSTEM.name) {
+        NSTimeZone.timeZoneWithAbbreviation("GMT")
+            ?: throw TimeParseException("Can not get time zone!")
+//        } else {
+//            NSTimeZone.systemTimeZone
+//        }
     }
 }

@@ -6,36 +6,58 @@ import com.merseyside.merseyLib.time.ranges.MonthRange
 import com.merseyside.merseyLib.time.ranges.TimeRange
 import com.merseyside.merseyLib.time.ranges.TimeUnitRange
 import com.merseyside.merseyLib.time.ranges.WeekRange
+import com.merseyside.merseyLib.time.units.*
+import com.merseyside.merseyLib.time.utils.Pattern
 
 fun TimeUnit.toFormattedDate(
-    pattern: String = TimeConfiguration.defaultPattern,
-    timeZone: String = TimeConfiguration.timeZone,
+    pattern: Pattern = TimeConfiguration.defaultPattern,
+    includeLastMilli: Boolean = true,
     language: String = TimeConfiguration.language,
-    country: String = TimeConfiguration.country,
-    includeLastMilli: Boolean = true
-): FormattedDate {
+    country: String = TimeConfiguration.country
+): PatternedFormattedDate {
     return getFormattedDate(
-        includeLastValue(includeLastMilli),
+        includeMilli(includeLastMilli),
         pattern,
-        timeZone,
         language,
         country
     )
 }
 
-fun TimeUnit.toSecondsOfMinute(timeZone: String = TimeConfiguration.timeZone): Seconds {
-    return getSecondsOfMinute(this, timeZone)
+fun TimeUnit.toFormattedDate(
+    pattern: String,
+    includeLastMilli: Boolean = true,
+    language: String = TimeConfiguration.language,
+    country: String = TimeConfiguration.country
+): PatternedFormattedDate {
+    return toFormattedDate(
+        Pattern.CUSTOM(pattern),
+        includeLastMilli,
+        language,
+        country
+    )
 }
 
-fun TimeUnit.toMinutesOfHour(timeZone: String = TimeConfiguration.timeZone): Minutes {
-    return getMinutesOfHour(this, timeZone)
+fun TimeUnit.toZonedTimeUnit(timeZone: TimeZone = TimeZone.SYSTEM): ZonedTimeUnit {
+    return com.merseyside.merseyLib.time.units.ZonedTimeUnit.ofLocalTime(this, timeZone)
 }
 
-fun TimeUnit.toHoursOfDay(timeZone: String = TimeConfiguration.timeZone): Hours {
-    return getHoursOfDay(this, timeZone)
+fun TimeUnit.abs(): TimeUnit {
+    return newInstance(kotlin.math.abs(value))
 }
 
-fun TimeUnit.getDate(): FormattedDate {
+fun TimeUnit.toSecondsOfMinute(): Seconds {
+    return getSecondsOfMinute(this)
+}
+
+fun TimeUnit.toMinutesOfHour(): Minutes {
+    return getMinutesOfHour(this)
+}
+
+fun TimeUnit.toHoursOfDay(): Hours {
+    return getHoursOfDay(this)
+}
+
+fun TimeUnit.getDate(): PatternedFormattedDate {
     return getFormattedDate(this, TimeConfiguration.datePattern)
 }
 
@@ -45,65 +67,64 @@ fun TimeUnit.getStartOfDate(): TimeUnit {
 
 fun TimeUnit.getEndOfDateTimeUnit(): TimeUnit {
     val currentDays = getStartOfDate()
-    return currentDays + Days(1).includeLastValue(false)
+    return currentDays + Days(1).excludeMilli()
 }
 
-fun TimeUnit.getDateWithTime(): FormattedDate {
+fun TimeUnit.getDateWithTime(): PatternedFormattedDate {
     return getFormattedDate(this, TimeConfiguration.dateWithTimePattern)
 }
 
-fun TimeUnit.toHoursMinutesOfDay(timeZone: String = TimeConfiguration.timeZone): TimeUnit {
-    return (getHoursOfDay(this, timeZone) + getMinutesOfHour(this, timeZone))
+fun TimeUnit.toHoursMinutesOfDay(): TimeUnit {
+    return (getHoursOfDay(this) + getMinutesOfHour(this))
 }
 
-fun TimeUnit.toYears(timeZone: String = TimeConfiguration.timeZone): Years {
-    return getYear(this, timeZone)
+fun TimeUnit.toYears(): Years {
+    return getYear(this)
 }
 
 fun TimeUnit.toFormattedHoursMinutesOfDay(
-    pattern: String = TimeConfiguration.hoursMinutesPattern,
-    timeZone: String = TimeConfiguration.timeZone
-): FormattedDate {
-    return toHoursMinutesOfDay(timeZone).toFormattedDate(pattern)
+    pattern: Pattern = TimeConfiguration.hoursMinutesPattern
+): PatternedFormattedDate {
+    return toHoursMinutesOfDay().toFormattedDate(pattern)
 }
 
-fun TimeUnit.toDayOfWeek(timeZone: String = TimeConfiguration.timeZone): DayOfWeek {
-    return getDayOfWeek(this, timeZone)
+fun TimeUnit.toDayOfWeek(): DayOfWeek {
+    return getDayOfWeek(this)
 }
 
 fun TimeUnit.toDayOfWeekHuman(
-    pattern: String = TimeConfiguration.dayOfWeekPattern,
-    timeZone: String = TimeConfiguration.timeZone,
+    pattern: Pattern = TimeConfiguration.dayOfWeekPattern,
     language: Language = TimeConfiguration.language,
     country: String = TimeConfiguration.country
 ): String {
-    return toFormattedDate(pattern, timeZone, language, country).value
+    return toFormattedDate(pattern, includeLastMilli = true, language, country).date
 }
 
-fun TimeUnit.toDayOfMonth(timeZone: String = TimeConfiguration.timeZone): Days {
-    return getDayOfMonth(this, timeZone)
+fun TimeUnit.toDayOfMonth(): Days {
+    return getDayOfMonth(this)
 }
 
-fun TimeUnit.toDayOfYear(timeZone: String = TimeConfiguration.timeZone): Days {
-    return getDayOfYear(this, timeZone)
-}
-
-fun TimeUnit.getHumanDate(pattern: String = TimeConfiguration.defaultPattern): FormattedDate {
+fun TimeUnit.getHumanDate(pattern: Pattern = TimeConfiguration.dateWithTimePattern): PatternedFormattedDate {
     return if (!isMoreThanDay()) toFormattedHoursMinutesOfDay()
     else toFormattedDate(pattern)
 }
 
+fun TimeUnit.getHumanDate(pattern: String): PatternedFormattedDate {
+    return getHumanDate(Pattern.CUSTOM(pattern))
+}
+
+
 fun TimeUnit.isExpired(): Boolean {
-    return Time.now - this > TimeUnit.getEmpty()
+    return Time.nowGMT - this > TimeUnit.getEmpty()
 }
 
 fun TimeUnit.isMoreThanDay(): Boolean {
     return Days(1) < this
 }
 
-fun TimeUnit.toDayTimeRange(): TimeRange {
+fun TimeUnit.toDayTimeRange(includeMilli: Boolean = true): TimeRange {
     val day = toDays().round()
-    return TimeUnitRange(day, day + Days(1))
+    return day.toTimeRange(startShift = Days(1).includeMilli(includeMilli))
 }
 
 fun TimeUnit.toTimeRange(
@@ -142,8 +163,8 @@ fun TimeUnit.toWeekRange(): WeekRange {
     return WeekRange(monday, endOfSunday)
 }
 
-fun TimeUnit.toMonth(timeZone: String = TimeConfiguration.timeZone): Month {
-    return getMonth(this, timeZone)
+fun TimeUnit.toMonth(): Month {
+    return getMonth(this)
 }
 
 fun TimeUnit.toMonthRange(): MonthRange {
@@ -190,13 +211,17 @@ fun <T : TimeUnit> List<T>.logHuman(
     tag: String = this::class.simpleName ?: "TimeUnit",
     prefix: String = ""
 ): List<T> {
-    Logger.log(tag, "$prefix ${joinToString(separator = ", ") { it.getHumanDate().value }}")
+    Logger.log(tag, "$prefix ${joinToString(separator = ", ") { it.getHumanDate().date }}")
     return this
 }
 
-fun TimeUnit.includeLastValue(includeLastMilli: Boolean): TimeUnit {
+internal fun TimeUnit.includeMilli(includeLastMilli: Boolean): TimeUnit {
     return if (!includeLastMilli) this - Millis(1)
     else this
+}
+
+fun TimeUnit.excludeMilli(): TimeUnit {
+    return includeMilli(false)
 }
 
 fun TimeUnit.roundByDivider(divider: TimeUnit): TimeUnit {
@@ -206,8 +231,4 @@ fun TimeUnit.roundByDivider(divider: TimeUnit): TimeUnit {
     } else {
         this - mod + divider
     }
-}
-
-fun <T : TimeUnit> T.addTimeZone(timeZone: String = TimeConfiguration.timeZone): T {
-    return this + getTimeZoneOffset(timeZone)
 }

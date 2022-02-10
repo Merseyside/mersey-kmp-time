@@ -29,6 +29,12 @@ val mppLibs = listOf(
     multiplatformLibs.serialization
 )
 
+android {
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+    }
+}
+
 dependencies {
     if (isLocalKotlinExtLibrary()) {
         commonMainImplementation(project(Modules.MultiPlatform.MerseyLibs.kotlinExt))
@@ -37,6 +43,8 @@ dependencies {
     }
 
     mppLibs.forEach { commonMainImplementation(it) }
+
+    coreLibraryDesugaring(androidLibs.desugarJdk)
 }
 
 framework {

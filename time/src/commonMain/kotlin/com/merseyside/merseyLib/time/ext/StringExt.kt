@@ -1,13 +1,17 @@
 package com.merseyside.merseyLib.time.ext
 
-import com.merseyside.merseyLib.time.Country
-import com.merseyside.merseyLib.time.Language
-import com.merseyside.merseyLib.time.TimeConfiguration
-import com.merseyside.merseyLib.time.TimeUnit
+import com.merseyside.merseyLib.time.*
+import com.merseyside.merseyLib.time.exception.TimeParseException
+import com.merseyside.merseyLib.time.units.TimeUnit
+import com.merseyside.merseyLib.time.units.ZonedTimeUnit
+import com.merseyside.merseyLib.time.utils.Pattern
 
-expect fun String.toTimeUnit(
-    dateFormat: String,
+@Throws(TimeParseException::class)
+internal expect fun String.toTimeUnit(
+    pattern: Pattern,
     country: Country = TimeConfiguration.country,
-    language: Language = TimeConfiguration.language,
-    timeZone: String = TimeConfiguration.timeZone
-): TimeUnit?
+    language: Language = TimeConfiguration.language
+): TimeUnit
+
+@Throws(TimeParseException::class)
+internal expect fun String.toZonedTimeUnit(pattern: Pattern.Offset): ZonedTimeUnit

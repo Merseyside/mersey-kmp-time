@@ -1,4 +1,4 @@
-package com.merseyside.merseyLib.time
+package com.merseyside.merseyLib.time.units
 
 enum class Month(val index: Int, val days: Days) {
 
@@ -11,7 +11,7 @@ enum class Month(val index: Int, val days: Days) {
 
     companion object {
         fun getByIndex(index: Int): Month {
-            return Month.values().find { it.index == index }
+            return values().find { it.index == index }
                 ?: throw IllegalArgumentException("Index must be in 0..6 range")
         }
     }

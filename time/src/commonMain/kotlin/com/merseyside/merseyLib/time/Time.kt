@@ -1,61 +1,79 @@
 package com.merseyside.merseyLib.time
 
-import com.merseyside.merseyLib.time.ext.includeLastValue
-import com.merseyside.merseyLib.time.ext.toHoursMinutesOfDay
-import com.merseyside.merseyLib.time.ext.toMonthRange
-import com.merseyside.merseyLib.time.ext.toWeekRange
+import com.merseyside.merseyLib.time.exception.TimeParseException
+import com.merseyside.merseyLib.time.ext.*
 import com.merseyside.merseyLib.time.ranges.MonthRange
 import com.merseyside.merseyLib.time.ranges.TimeRange
 import com.merseyside.merseyLib.time.ranges.TimeUnitRange
 import com.merseyside.merseyLib.time.ranges.WeekRange
+import com.merseyside.merseyLib.time.units.*
+import com.merseyside.merseyLib.time.utils.Pattern
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 
 object Time {
-    enum class TimeZone { SYSTEM, GMT }
+    val now: ZonedTimeUnit
+        get() = nowZoned(TimeConfiguration.timeZone)
 
-    val now: TimeUnit
-        get() = getCurrentTime()
+    val nowGMT: TimeUnit
+        get() = getCurrentTimeGMT()
+
+    val systemTime: TimeUnit
+        get() = now.localTimeUnit
 
     val today: Days
-        get() {
-            return now.toDays().round()
-        }
+        get() = systemTime.toDays().round()
 
     val todayRange: TimeRange
-        get() {
-            return TimeUnitRange(today, today + Days(1))
-        }
+        get() = today.toDayTimeRange()
 
-    fun getCurrentDayTime(timeZone: String = TimeConfiguration.timeZone): TimeUnit {
-        return now.toHoursMinutesOfDay(timeZone)
+    fun nowZoned(timeZone: TimeZone): ZonedTimeUnit {
+        return getCurrentZonedTime(timeZone)
     }
 
-    fun getDay(includeLastMilli: Boolean = true): TimeUnit =
-        Days(1).includeLastValue(includeLastMilli)
-
-    fun getWeek(includeLastMilli: Boolean = true): TimeUnit =
-        Weeks(1).includeLastValue(includeLastMilli)
-
-    fun getCurrentWeekRange(): WeekRange {
-        return now.toWeekRange()
+    fun getCurrentDayTime(timeZone: TimeZone = TimeConfiguration.timeZone): TimeUnit {
+        return getCurrentZonedTime(timeZone).localTimeUnit.toHoursMinutesOfDay()
     }
 
-    fun getCurrentMonthRange(): MonthRange {
-        return now.toMonthRange()
+    @Throws(TimeParseException::class)
+    fun of(
+        value: String,
+        pattern: Pattern,
+        country: Country = TimeConfiguration.country,
+        language: Language = TimeConfiguration.language
+    ): TimeUnit {
+        return value.toTimeUnit(pattern, country, language)
     }
 
-    fun getCurrentDayOfMonth(): Days {
-        return getDayOfMonth(now)
+    @Throws(TimeParseException::class)
+    fun of(
+        value: String,
+        pattern: String,
+        country: Country = TimeConfiguration.country,
+        language: Language = TimeConfiguration.language
+    ): TimeUnit {
+        return of(value, Pattern.CUSTOM(pattern), country, language)
     }
 
-    fun getCurrentMonth(): Month {
-        return getMonth(now)
+    fun getCurrentWeekRange(timeZone: TimeZone = TimeConfiguration.timeZone): WeekRange {
+        return getCurrentZonedTime(timeZone).localTimeUnit.toWeekRange()
     }
 
-    fun getCurrentYear(): Years {
-        return getYear(now)
+    fun getCurrentMonthRange(timeZone: TimeZone = TimeConfiguration.timeZone): MonthRange {
+        return  getCurrentZonedTime(timeZone).localTimeUnit.toMonthRange()
+    }
+
+    fun getCurrentDayOfMonth(timeZone: TimeZone = TimeConfiguration.timeZone): Days {
+        return getDayOfMonth(getCurrentZonedTime(timeZone).localTimeUnit)
+    }
+
+    fun getCurrentMonth(timeZone: TimeZone = TimeConfiguration.timeZone): Month {
+        return getMonth(getCurrentZonedTime(timeZone).localTimeUnit)
+    }
+
+    fun getCurrentYear(timeZone: TimeZone = TimeConfiguration.timeZone): Years {
+        return getYear(getCurrentZonedTime(timeZone).localTimeUnit)
     }
 
     val serializersModule = SerializersModule {
@@ -74,56 +92,32 @@ object Time {
             subclass(MonthRange::class)
         }
     }
+
+    private fun getCurrentZonedTime(timeZone: TimeZone): ZonedTimeUnit {
+        return ZonedTimeUnit.ofGMT(nowGMT, timeZone)
+    }
 }
 
-internal expect fun getCurrentTime(): TimeUnit
+internal expect fun getCurrentTimeGMT(): TimeUnit
 
+internal expect fun getDayOfMonth(timeUnit: TimeUnit): Days
+
+internal expect fun getDayOfWeek(timeUnit: TimeUnit): DayOfWeek
+
+@Throws(TimeParseException::class)
 internal expect fun getFormattedDate(
     timeUnit: TimeUnit,
-    pattern: String,
-    timeZone: String = TimeConfiguration.timeZone,
+    pattern: Pattern,
     language: String = TimeConfiguration.language,
     country: String = TimeConfiguration.country
-): FormattedDate
+): PatternedFormattedDate
 
-internal expect fun getSecondsOfMinute(
-    timeUnit: TimeUnit,
-    timeZone: String = TimeConfiguration.timeZone
-): Seconds
+internal expect fun getSecondsOfMinute(timeUnit: TimeUnit): Seconds
 
-internal expect fun getMinutesOfHour(
-    timeUnit: TimeUnit,
-    timeZone: String = TimeConfiguration.timeZone
-): Minutes
+internal expect fun getMinutesOfHour(timeUnit: TimeUnit): Minutes
 
-internal expect fun getHoursOfDay(
-    timeUnit: TimeUnit,
-    timeZone: String = TimeConfiguration.timeZone
-): Hours
+internal expect fun getHoursOfDay(timeUnit: TimeUnit): Hours
 
-internal expect fun getDayOfWeek(
-    timeUnit: TimeUnit,
-    timeZone: String = TimeConfiguration.timeZone
-): DayOfWeek
+internal expect fun getMonth(timeUnit: TimeUnit): Month
 
-internal expect fun getDayOfMonth(
-    timeUnit: TimeUnit,
-    timeZone: String = TimeConfiguration.timeZone
-): Days
-
-internal expect fun getDayOfYear(
-    timeUnit: TimeUnit,
-    timeZone: String = TimeConfiguration.timeZone
-): Days
-
-internal expect fun getMonth(
-    timeUnit: TimeUnit,
-    timeZone: String = TimeConfiguration.timeZone
-): Month
-
-internal expect fun getYear(
-    timeUnit: TimeUnit,
-    timeZone: String = TimeConfiguration.timeZone
-): Years
-
-internal expect fun getTimeZoneOffset(timeZone: String): TimeUnit
+internal expect fun getYear(timeUnit: TimeUnit): Years

@@ -1,8 +1,8 @@
 package com.merseyside.merseyLib.time.ext
 
-import com.merseyside.merseyLib.time.DayOfWeek
-import com.merseyside.merseyLib.time.TimeUnit
-import com.merseyside.merseyLib.time.plus
+import com.merseyside.merseyLib.time.units.DayOfWeek
+import com.merseyside.merseyLib.time.units.TimeUnit
+import com.merseyside.merseyLib.time.units.plus
 import com.merseyside.merseyLib.time.ranges.TimeRange
 import com.merseyside.merseyLib.time.ranges.TimeUnitRange
 import com.merseyside.merseyLib.time.ranges.WeekRange

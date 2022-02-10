@@ -1,6 +1,5 @@
 package com.merseyside.merseyLib.time
 
-import com.merseyside.merseyLib.time.ext.toFormattedDate
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.PrimitiveKind
@@ -10,25 +9,18 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 @Serializable(with = StringAsFormattedDateSerializer::class)
-class FormattedDate(val value: String) {
+open class FormattedDate (val date: String) {
 
     override fun toString(): String {
-        return value
+        return date
     }
 
     companion object {
         fun empty(): FormattedDate = FormattedDate("")
-
-        fun from(
-            timeUnit: TimeUnit,
-            pattern: String = TimeConfiguration.defaultPattern
-        ): FormattedDate {
-            return timeUnit.toFormattedDate(pattern)
-        }
     }
 }
 
-fun FormattedDate.isEmpty() = value.isEmpty()
+fun FormattedDate.isEmpty() = date.isEmpty()
 
 class StringAsFormattedDateSerializer : KSerializer<FormattedDate> {
 
@@ -43,6 +35,6 @@ class StringAsFormattedDateSerializer : KSerializer<FormattedDate> {
     }
 
     override fun serialize(encoder: Encoder, value: FormattedDate) {
-        encoder.encodeString(value.value)
+        encoder.encodeString(value.date)
     }
 }
