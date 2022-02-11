@@ -63,7 +63,7 @@ object TimeConfiguration {
             return divider
         }
 
-    var patterns = listOf(
+    internal var patterns = listOf(
         ISO_DATE_TIME,
         ISO_INSTANT,
         ISO_LOCAL_DATE,
@@ -71,7 +71,7 @@ object TimeConfiguration {
         ISO_LOCAL_FULL_TIME
     )
 
-    var offsetPatterns = listOf(
+    internal var offsetPatterns = listOf(
         Offset.ISO_OFFSET_DATE_TIME,
         Offset.ISO_OFFSET_DATE,
         Offset.ISO_OFFSET_TIME,
