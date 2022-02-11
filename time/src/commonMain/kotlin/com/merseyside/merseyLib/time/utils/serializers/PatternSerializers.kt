@@ -12,7 +12,7 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object IsoInstantTimeUnitSerializer : KSerializer<TimeUnit> {
+object IsoInstantTimeUnitSerializer : KSerializer<TimeUnit> {
     override val descriptor: SerialDescriptor =
         PrimitiveSerialDescriptor(
             "com.merseyside.merseyLib.time.utils.serializers.IsoInstantTimeUnitSerializer",
