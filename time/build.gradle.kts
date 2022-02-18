@@ -46,7 +46,3 @@ dependencies {
 
     coreLibraryDesugaring(androidLibs.desugarJdk)
 }
-
-framework {
-    mppLibs.forEach { export(it) }
-}
