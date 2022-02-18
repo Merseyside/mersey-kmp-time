@@ -1,7 +1,7 @@
 enableFeaturePreview("VERSION_CATALOGS")
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-private val isLocalKotlinExtLibrary = false
+private val isLocalKotlinExtLibrary = true
 
 dependencyResolutionManagement {
     repositories {
@@ -9,11 +9,12 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 
-    val catalogVersions = "1.2.8"
+    val catalogVersions = "1.2.9"
     val group = "io.github.merseyside"
     versionCatalogs {
         val multiplatformLibs by creating {
             from("$group:catalog-version-multiplatform:$catalogVersions")
+            library("kswift", "dev.icerock.moko", "kswift-runtime").version("0.3.0")
         }
 
         val common by creating {
