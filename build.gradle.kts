@@ -7,6 +7,8 @@ allprojects {
         mavenLocal()
         mavenCentral()
         google()
+
+        maven("https://jitpack.io")
     }
 }
 

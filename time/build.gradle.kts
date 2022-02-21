@@ -4,10 +4,10 @@ plugins {
     id(Plugins.kotlinKapt)
     id(Plugins.mobileMultiplatform)
     id(Plugins.kotlinSerialization)
-    id(Plugins.iosFramework)
+    id(Plugins.cocoaPods)
     id(Plugins.swiftPackage) version "2.0.3"
-    id(Plugins.kSwift)
-    `maven-publish-config`
+    //id(Plugins.kSwift)
+    id(Plugins.mavenPublishConfig)
 }
 
 kotlin {
@@ -19,13 +19,13 @@ kotlin {
 
     ios()
     // Add the ARM64 simulator target
-//    iosSimulatorArm64()
-//
-//    val iosMain by sourceSets.getting
-//    val iosSimulatorArm64Main by sourceSets.getting
-//
-//    // Set up dependencies between the source sets
-//    iosSimulatorArm64Main.dependsOn(iosMain)
+    iosSimulatorArm64()
+
+    val iosMain by sourceSets.getting
+    val iosSimulatorArm64Main by sourceSets.getting
+
+    // Set up dependencies between the source sets
+    iosSimulatorArm64Main.dependsOn(iosMain)
 
 
     multiplatformSwiftPackage {
@@ -35,6 +35,31 @@ kotlin {
             iOS { v("13") }
         }
         outputDirectory(File(rootDir, "/TimePackage"))
+    }
+
+    cocoapods {
+
+        framework {
+            // Mandatory properties
+            // Configure fields required by CocoaPods.
+            summary = "KMM Time library"
+            homepage = "https://github.com/Merseyside/mersey-kmp-time"
+            // Framework name configuration. Use this property instead of deprecated 'frameworkName'
+            baseName = "KotlinTime"
+
+            // Optional properties
+            // (Optional) Dynamic framework support
+            isStatic = false
+            // (Optional) Dependency export
+            transitiveExport = true
+            // (Optional) Bitcode embedding
+            embedBitcode(org.jetbrains.kotlin.gradle.plugin.mpp.BitcodeEmbeddingMode.BITCODE)
+            podfile = project.file("../ios-app-swiftui/Podfile")
+        }
+
+        // Maps custom Xcode configuration to NativeBuildType
+        xcodeConfigurationToNativeBuildType["CUSTOM_DEBUG"] = org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.DEBUG
+        xcodeConfigurationToNativeBuildType["CUSTOM_RELEASE"] = org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.RELEASE
     }
 }
 
@@ -48,10 +73,10 @@ android {
     }
 }
 
-kswift {
-    install(dev.icerock.moko.kswift.plugin.feature.SealedToSwiftEnumFeature)
-    install(dev.icerock.moko.kswift.plugin.feature.PlatformExtensionFunctionsFeature)
-}
+//kswift {
+//    install(dev.icerock.moko.kswift.plugin.feature.SealedToSwiftEnumFeature)
+//    install(dev.icerock.moko.kswift.plugin.feature.PlatformExtensionFunctionsFeature)
+//}
 
 dependencies {
     if (isLocalKotlinExtLibrary()) {
@@ -60,7 +85,7 @@ dependencies {
         commonMainImplementation(common.merseyLib.kotlin.ext)
     }
 
-    commonMainApi(multiplatformLibs.kswift)
+    //commonMainApi("dev.icerock.moko:kswift-runtime:0.3.0")
     mppLibs.forEach { commonMainImplementation(it) }
 
     coreLibraryDesugaring(androidLibs.desugarJdk)

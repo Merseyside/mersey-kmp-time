@@ -7,7 +7,7 @@
 
 import SwiftUI
 import CoreData
-import MultiPlatformLibrary
+import KotlinTime
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext

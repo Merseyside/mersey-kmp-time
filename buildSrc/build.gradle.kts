@@ -7,9 +7,8 @@ repositories {
     mavenCentral()
     google()
 
-    maven("https://jitpack.io")
-
     gradlePluginPortal()
+    maven("https://jitpack.io")
 }
 
 val multiplatform = "0.12.0"

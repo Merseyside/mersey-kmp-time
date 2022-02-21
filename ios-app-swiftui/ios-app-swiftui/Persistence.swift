@@ -7,10 +7,10 @@
 
 import Foundation
 import CoreData
-import MultiPlatformLibrary
+import KotlinTime
 
 struct PersistenceController {
-    static let shared = PersistenceController()
+    //static let shared = PersistenceController()
 
     static var preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
@@ -33,19 +33,6 @@ struct PersistenceController {
     let container: NSPersistentContainer
 
     init(inMemory: Bool = false) {
-        let time = Time()
-        let now = time.nowGMT
-        let timeConfiguration = TimeConfiguration()
-        
-        NSLog("current time = %lld", now.value)
-        NSLog("day of month = %d", TimeUnitExtKt.toDayOfMonth(now).value)
-        NSLog("day of week = %d", TimeUnitExtKt.toDayOfWeek(now).index)
-        TimeUnitExtKt.toDayOfWeekHuman(now, pattern: timeConfiguration.dayOfWeekPattern, language: timeConfiguration.language, country: timeConfiguration.country)
-        NSLog("seconds of minute = %d", TimeUnitExtKt.toSecondsOfMinute(now).value)
-        NSLog("minutes of hour = %d", TimeUnitExtKt.toMinutesOfHour(now).value)
-        NSLog("hours of day = %d", TimeUnitExtKt.toHoursOfDay(now).value)
-        NSLog("month = %d", TimeUnitExtKt.toMonth(now).index)
-        
         
         container = NSPersistentContainer(name: "ios_app_swiftui")
         if inMemory {

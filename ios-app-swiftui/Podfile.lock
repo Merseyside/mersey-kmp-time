@@ -1,16 +1,16 @@
 PODS:
-  - MultiPlatformLibrary (1.1.1)
+  - time (1.1.1)
 
 DEPENDENCIES:
-  - MultiPlatformLibrary (from `../time`)
+  - time (from `../time`)
 
 EXTERNAL SOURCES:
-  MultiPlatformLibrary:
+  time:
     :path: "../time"
 
 SPEC CHECKSUMS:
-  MultiPlatformLibrary: 00460f1c2a2c3b3b0d14293083eeba32987810ed
+  time: 39bc988557029d8ff3a32f26b8b5edd238ff05e4
 
-PODFILE CHECKSUM: b843e5615046fcce0eea13ea495ccc0b2f0b20a1
+PODFILE CHECKSUM: 0c262b1f882da56eddf322195cccdd457b11cf00
 
 COCOAPODS: 1.11.2

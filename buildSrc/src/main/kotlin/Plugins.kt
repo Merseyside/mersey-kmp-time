@@ -10,4 +10,6 @@ object Plugins {
     const val swiftPackage = "com.chromaticnoise.multiplatform-swiftpackage"
     const val kSwift = "dev.icerock.moko.kswift"
     const val kotlinSerialization = "kotlinx-serialization"
+    const val mavenPublishConfig = "maven-publish-config"
+    const val cocoaPods = "org.jetbrains.kotlin.native.cocoapods"
 }
