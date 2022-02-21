@@ -6,7 +6,7 @@ plugins {
     id(Plugins.kotlinSerialization)
     id(Plugins.cocoaPods)
     id(Plugins.swiftPackage) version "2.0.3"
-    //id(Plugins.kSwift)
+//    id(Plugins.kSwift)
     id(Plugins.mavenPublishConfig)
 }
 

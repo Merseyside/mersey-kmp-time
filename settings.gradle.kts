@@ -1,7 +1,7 @@
 enableFeaturePreview("VERSION_CATALOGS")
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-private val isLocalKotlinExtLibrary = true
+private val isLocalKotlinExtLibrary = false
 
 dependencyResolutionManagement {
     repositories {
@@ -19,6 +19,7 @@ dependencyResolutionManagement {
 
         val common by creating {
             from("$group:catalog-version-common:$catalogVersions")
+            version("kotlin-ext", "1.1.0")
         }
 
         val androidLibs by creating {
