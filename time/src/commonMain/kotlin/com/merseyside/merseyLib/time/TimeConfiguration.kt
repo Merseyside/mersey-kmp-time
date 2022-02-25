@@ -56,8 +56,6 @@ object TimeConfiguration {
             CUSTOM("dd MMMM")
         } else field
 
-    var year = Time.getCurrentYear()
-
     private val d: String
         get() {
             return divider

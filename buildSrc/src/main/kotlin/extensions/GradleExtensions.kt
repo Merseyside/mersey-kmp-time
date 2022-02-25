@@ -1,5 +1,7 @@
 import org.gradle.api.Project
+import org.gradle.api.provider.Provider
 import org.gradle.internal.impldep.com.amazonaws.services.kms.model.NotFoundException
+import org.gradle.plugin.use.PluginDependency
 
 inline fun <reified T> Project.findTypedProperty(propertyName: String): T {
 
@@ -23,3 +25,7 @@ fun Project.isLocalAndroidDependencies(): Boolean =
 
 fun Project.isLocalKotlinExtLibrary(): Boolean =
     findTypedProperty("build.localKotlinExtLibrary")
+
+fun Provider<PluginDependency>.id(): String {
+    return get().pluginId
+}

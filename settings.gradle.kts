@@ -9,21 +9,23 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 
-    val catalogVersions = "1.2.9"
+    val catalogVersions = "1.3.0"
     val group = "io.github.merseyside"
     versionCatalogs {
         val multiplatformLibs by creating {
             from("$group:catalog-version-multiplatform:$catalogVersions")
-            library("kswift", "dev.icerock.moko", "kswift-runtime").version("0.3.0")
         }
 
         val common by creating {
             from("$group:catalog-version-common:$catalogVersions")
-            version("kotlin-ext", "1.1.0")
         }
 
         val androidLibs by creating {
             from("$group:catalog-version-android:$catalogVersions")
+        }
+
+        val catalogPlugins by creating {
+            from("$group:catalog-version-plugins:$catalogVersions")
         }
     }
 }

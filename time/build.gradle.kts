@@ -1,3 +1,4 @@
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     id(Plugins.androidConvention)
     id(Plugins.kotlinMultiplatformConvention)
@@ -8,6 +9,14 @@ plugins {
     id(Plugins.swiftPackage) version "2.0.3"
 //    id(Plugins.kSwift)
     id(Plugins.mavenPublishConfig)
+
+//    with(catalogPlugins.plugins) {
+//        id(kotlinKapt.id())
+//        id(nativeCocoaPods.id())
+//        id(mobileMultiplatform.id())
+//        id(kotlinSerialization.id())
+//        alias(swiftPackage)
+//    }
 }
 
 kotlin {
@@ -46,6 +55,7 @@ kotlin {
             homepage = "https://github.com/Merseyside/mersey-kmp-time"
             // Framework name configuration. Use this property instead of deprecated 'frameworkName'
             baseName = "KotlinTime"
+            version = Metadata.version
 
             // Optional properties
             // (Optional) Dynamic framework support
