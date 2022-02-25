@@ -1,6 +1,7 @@
 package com.merseyside.merseyLib.time.units
 
 import com.merseyside.merseyLib.kotlin.Logger
+import com.merseyside.merseyLib.kotlin.extensions.forEachNotNull
 import com.merseyside.merseyLib.time.TimeConfiguration
 import com.merseyside.merseyLib.time.TimeZone
 import com.merseyside.merseyLib.time.exception.TimeParseException
@@ -39,19 +40,20 @@ data class ZonedTimeUnit internal constructor(
         }
 
         @Throws(TimeParseException::class)
-        fun of(date: String, vararg patterns: Pattern.Offset): ZonedTimeUnit {
-            val patternList = if (patterns.isEmpty()) TimeConfiguration.offsetPatterns
-            else patterns.toList()
+        fun of(date: String, pattern: Pattern.Offset? = null): ZonedTimeUnit {
+            val patternList = if (pattern == null) TimeConfiguration.offsetPatterns
+            else listOf(pattern)
 
-            patternList.forEach { pattern ->
+            patternList.forEachNotNull {
                 try {
-                    return date.toZonedTimeUnit(pattern)
+                    return date.toZonedTimeUnit(it)
                 } catch (e: TimeParseException) {
-                    Logger.logErr(msg = "Can not parse with $pattern")
+                    Logger.logErr(msg = "Can not parse with $it")
                     e.printStackTrace()
                 }
             }
 
+            Logger.logErr("Can not parse!")
             throw TimeParseException("Can not format $date with suggested patterns!")
         }
     }

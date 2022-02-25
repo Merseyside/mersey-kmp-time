@@ -19,6 +19,7 @@ internal fun patternToFormattedOptions(pattern: Pattern): ULong {
         }
         is Offset.ISO_OFFSET_DATE_TIME -> {
             NSISO8601DateFormatWithInternetDateTime
+                .or(NSISO8601DateFormatWithTimeZone)
         }
         is Offset.ISO_OFFSET_DATE -> {
             NSISO8601DateFormatWithFullDate

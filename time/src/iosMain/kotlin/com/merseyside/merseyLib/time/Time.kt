@@ -30,9 +30,11 @@ actual fun getFormattedDate(
     country: String
 ): PatternedFormattedDate {
     val date = getDate(timeUnit)
+    val dateFormatter = NSDateFormatter().apply {
+        timeZone = NSTimeZone.timeZoneWithName("GMT")!!
+    }
 
     return if (pattern is Pattern.CUSTOM) {
-        val dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = pattern.value
 
         PatternedFormattedDate(dateFormatter.stringFromDate(date), pattern)
@@ -64,7 +66,7 @@ actual fun getYear(timeUnit: TimeUnit): Years {
     return Years(getComponents(timeUnit, NSYearCalendarUnit).year.toInt())
 }
 
-private fun getDate(timeUnit: TimeUnit): NSDate {
+internal fun getDate(timeUnit: TimeUnit): NSDate {
     return NSDate.dateWithTimeIntervalSince1970(timeUnit.toSeconds().value.toDouble())
 }
 
@@ -78,11 +80,7 @@ private fun getComponents(timeUnit: TimeUnit, unit: NSCalendarUnit): NSDateCompo
 private fun getCalendar(): NSCalendar {
     val calendar = NSCalendar.currentCalendar
     return calendar.apply {
-        //this.timeZone = if (timeZone != Time.TimeZone.SYSTEM.name) {
         NSTimeZone.timeZoneWithAbbreviation("GMT")
             ?: throw TimeParseException("Can not get time zone!")
-//        } else {
-//            NSTimeZone.systemTimeZone
-//        }
     }
 }
