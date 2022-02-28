@@ -1,7 +1,8 @@
 package com.merseyside.merseyLib.time.ext
 
-import com.merseyside.merseyLib.kotlin.extensions.log
-import com.merseyside.merseyLib.time.*
+import com.merseyside.merseyLib.time.Country
+import com.merseyside.merseyLib.time.Language
+import com.merseyside.merseyLib.time.TimeZone
 import com.merseyside.merseyLib.time.exception.TimeParseException
 import com.merseyside.merseyLib.time.units.Seconds
 import com.merseyside.merseyLib.time.units.TimeUnit
@@ -10,7 +11,6 @@ import com.merseyside.merseyLib.time.utils.Pattern
 import com.merseyside.merseyLib.time.utils.getOffsetFromString
 import com.merseyside.merseyLib.time.utils.patternToFormattedOptions
 import platform.Foundation.*
-import platform.SensorKit.srAbsoluteTime
 
 @Throws(TimeParseException::class)
 actual fun String.toTimeUnit(
@@ -40,14 +40,13 @@ actual fun String.toZonedTimeUnit(pattern: Pattern.Offset): ZonedTimeUnit {
 
     val options = patternToFormattedOptions(pattern)
 
-    val offset = getOffsetFromString(this).log()
+    val offset = getOffsetFromString(this)
     val gmtDate = NSISO8601DateFormatter().run {
-        //timeZone = NSTimeZone.timeZoneWithAbbreviation("GMT")!!
         formatOptions = options
         dateFromString(this@toZonedTimeUnit)
     } ?: throw TimeParseException("Can not parse time")
 
-    val timeZone = NSTimeZone.timeZoneForSecondsFromGMT(offset.toSeconds().value.log("kek"))
+    val timeZone = NSTimeZone.timeZoneForSecondsFromGMT(offset.toSeconds().value)
 
     return ZonedTimeUnit.ofLocalTime(
         Seconds(gmtDate.timeIntervalSince1970).logHuman(),
