@@ -10,7 +10,7 @@ import platform.Foundation.NSISO8601DateFormatter
 import platform.Foundation.NSTimeZone
 import platform.Foundation.timeZoneWithAbbreviation
 
-actual fun ZonedTimeUnit.toFormattedDate(pattern: Pattern): PatternedFormattedDate {
+actual fun ZonedTimeUnit.toFormattedDate(pattern: Pattern.Offset): PatternedFormattedDate {
     val options = patternToFormattedOptions(pattern)
     val dateFormatter = NSISO8601DateFormatter().apply {
         timeZone = NSTimeZone.timeZoneWithAbbreviation(this@toFormattedDate.timeZone.zoneId)

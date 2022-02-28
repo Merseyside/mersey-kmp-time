@@ -7,6 +7,7 @@ import com.merseyside.merseyLib.time.units.Seconds
 import com.merseyside.merseyLib.time.units.TimeUnit
 import com.merseyside.merseyLib.time.units.ZonedTimeUnit
 import com.merseyside.merseyLib.time.utils.Pattern
+import com.merseyside.merseyLib.time.utils.getOffsetFromString
 import com.merseyside.merseyLib.time.utils.patternToFormattedOptions
 import platform.Foundation.*
 import platform.SensorKit.srAbsoluteTime
@@ -17,7 +18,7 @@ actual fun String.toTimeUnit(
     country: Country,
     language: Language
 ): TimeUnit {
-    if (pattern.isOffsetPattern())  throw TimeParseException(
+    if (pattern.isOffsetPattern()) throw TimeParseException(
         "$this can not be parsed with " +
                 "offset pattern. Use toZonedTimeUnit."
     )
@@ -39,29 +40,23 @@ actual fun String.toZonedTimeUnit(pattern: Pattern.Offset): ZonedTimeUnit {
 
     val options = patternToFormattedOptions(pattern)
 
-    val sourceDate = NSISO8601DateFormatter().run {
-        //timeZone = NSTimeZone.localTimeZone ?: throw TimeParseException("Something wrong")
-        setFormatOptions(patternToFormattedOptions(Pattern.ISO_DATE_TIME))
-        dateFromString(this@toZonedTimeUnit) ?: throw TimeParseException("Can not parse time")
-    }
-
+    val offset = getOffsetFromString(this).log()
     val gmtDate = NSISO8601DateFormatter().run {
-        timeZone = NSTimeZone.timeZoneWithAbbreviation("BRT") ?: throw TimeParseException("Something wrong")
-        setFormatOptions(options)
-        dateFromString(this@toZonedTimeUnit) ?: throw TimeParseException("Can not parse time")
-    }
+        //timeZone = NSTimeZone.timeZoneWithAbbreviation("GMT")!!
+        formatOptions = options
+        dateFromString(this@toZonedTimeUnit)
+    } ?: throw TimeParseException("Can not parse time")
 
-    val offset = gmtDate.timeIntervalSince1970
-        .log("since1970", "kek") { toSeconds() } -
-            sourceDate.timeIntervalSince1970.log("since1970", "kek1") { toSeconds().getHumanDate() }
-    val timeZone = NSTimeZone.timeZoneForSecondsFromGMT(offset.toLong().log("kek", "offset"))
+    val timeZone = NSTimeZone.timeZoneForSecondsFromGMT(offset.toSeconds().value.log("kek"))
 
     return ZonedTimeUnit.ofLocalTime(
-        Seconds(gmtDate.timeIntervalSince1970),
+        Seconds(gmtDate.timeIntervalSince1970).logHuman(),
         TimeZone(
             timeZone.abbreviation ?: throw TimeParseException("Can not parse time"),
-            Seconds(offset))
+            Seconds(offset)
+        )
     )
+
 }
 
 private fun getCalendar(): NSCalendar {
