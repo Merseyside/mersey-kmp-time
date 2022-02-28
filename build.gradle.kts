@@ -8,7 +8,7 @@ allprojects {
         mavenCentral()
         google()
 
-        maven { url = uri("https://jitpack.io") }
+        maven("https://jitpack.io")
     }
 }
 

@@ -10,7 +10,7 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
-actual fun ZonedTimeUnit.toFormattedDate(pattern: Pattern): PatternedFormattedDate {
+actual fun ZonedTimeUnit.toFormattedDate(pattern: Pattern.Offset): PatternedFormattedDate {
     val zonedDateTime = ZonedDateTime.ofInstant(
         Instant.ofEpochMilli(gmtTimeUnit.millis),
         ZoneId.of(timeZone.zoneId)

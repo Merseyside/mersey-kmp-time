@@ -20,7 +20,6 @@ object TimeConfiguration {
     var language: Language = "en"
     var country: Country = "US"
 
-    var divider = "."
     var hoursMinutesPattern = CUSTOM("HH:mm")
     var dayOfWeekPattern = CUSTOM("EE")
     var dayPattern = CUSTOM("dd")
@@ -31,7 +30,7 @@ object TimeConfiguration {
     var datePattern: Pattern = EMPTY
         get() {
             return if (field == EMPTY) {
-                CUSTOM("$dayPattern$d$monthPattern$d$yearPattern")
+                CUSTOM("$dayPattern.$monthPattern.$yearPattern")
             } else field
         }
 
@@ -56,14 +55,7 @@ object TimeConfiguration {
             CUSTOM("dd MMMM")
         } else field
 
-    var year = Time.getCurrentYear()
-
-    private val d: String
-        get() {
-            return divider
-        }
-
-    var patterns = listOf(
+    internal var patterns = listOf(
         ISO_DATE_TIME,
         ISO_INSTANT,
         ISO_LOCAL_DATE,
@@ -71,7 +63,7 @@ object TimeConfiguration {
         ISO_LOCAL_FULL_TIME
     )
 
-    var offsetPatterns = listOf(
+    internal var offsetPatterns = listOf(
         Offset.ISO_OFFSET_DATE_TIME,
         Offset.ISO_OFFSET_DATE,
         Offset.ISO_OFFSET_TIME,

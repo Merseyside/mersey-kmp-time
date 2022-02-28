@@ -7,7 +7,7 @@ import com.merseyside.merseyLib.time.units.Years
 import com.merseyside.merseyLib.time.units.plus
 import com.merseyside.merseyLib.time.utils.Pattern
 
-fun Month.getDayCount(year: Years = TimeConfiguration.year): Days {
+fun Month.getDayCount(year: Years = Time.getCurrentYear()): Days {
     return if (this == Month.FEBRUARY && year.isLeap()) {
         days + 1
     } else days

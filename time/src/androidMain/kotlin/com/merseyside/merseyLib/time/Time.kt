@@ -11,6 +11,7 @@ import com.merseyside.merseyLib.time.utils.patternToDateTimeFormatter
 import java.text.SimpleDateFormat
 import java.time.*
 import java.time.temporal.ChronoUnit
+import java.time.temporal.UnsupportedTemporalTypeException
 import java.util.*
 import java.util.TimeZone as SystemTimeZone
 
@@ -44,20 +45,24 @@ actual fun getFormattedDate(
     if (pattern.isOffsetPattern()) throw TimeParseException("Time unit can not be parsed with " +
             "offset pattern. Only ZonedTimeUnit can be parsed with this $pattern")
 
-    val formatter = patternToDateTimeFormatter(pattern)
-    var instant = Instant.ofEpochMilli(timeUnit.millis)
+    return try {
+        val formatter = patternToDateTimeFormatter(pattern)
+        var instant = Instant.ofEpochMilli(timeUnit.millis)
 
-    if (pattern.isTruncatesToMinutes()) {
-        instant = instant.truncatedTo(ChronoUnit.MINUTES)
+        if (pattern.isTruncatesToMinutes()) {
+            instant = instant.truncatedTo(ChronoUnit.MINUTES)
+        }
+
+        val formattedDate = when (pattern) {
+            is Pattern.EMPTY -> throw TimeParseException("Can not parse with empty pattern!")
+            is Pattern.CUSTOM -> parseCustomDate(timeUnit, pattern.value)
+            else -> formatter.format(instant)
+        }
+
+        PatternedFormattedDate(formattedDate, pattern)
+    } catch (e: UnsupportedTemporalTypeException) {
+        throw TimeParseException("Can not parse timeUnit with $pattern pattern", e)
     }
-
-    val formattedDate = when(pattern) {
-        is Pattern.EMPTY -> throw TimeParseException("Can not parse with empty pattern!")
-        is Pattern.CUSTOM -> parseCustomDate(timeUnit, pattern.value)
-        else -> formatter.format(instant)
-    }
-
-    return PatternedFormattedDate(formattedDate, pattern)
 }
 
 actual fun getDayOfWeek(timeUnit: TimeUnit): DayOfWeek {
