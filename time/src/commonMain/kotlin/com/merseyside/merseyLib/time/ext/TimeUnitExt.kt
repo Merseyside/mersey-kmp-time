@@ -1,3 +1,4 @@
+@file:Suppress("UNCHECKED_CAST")
 package com.merseyside.merseyLib.time.ext
 
 import com.merseyside.merseyLib.kotlin.Logger
@@ -41,8 +42,12 @@ fun TimeUnit.toZonedTimeUnit(timeZone: TimeZone = TimeZone.SYSTEM): ZonedTimeUni
     return ZonedTimeUnit.ofLocalTime(this, timeZone)
 }
 
-fun TimeUnit.abs(): TimeUnit {
-    return newInstance(kotlin.math.abs(value))
+fun <T : TimeUnit> T.abs(): T {
+    return newInstance(kotlin.math.abs(value)) as T
+}
+
+fun <T : TimeUnit> T.makeNegative(): T {
+    return newInstance(value * -1) as T
 }
 
 fun TimeUnit.toSecondsOfMinute(): Seconds {

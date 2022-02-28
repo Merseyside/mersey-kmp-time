@@ -13,8 +13,6 @@ class TimeTest {
     static let timeTest = TimeTest()
     
     init() {
-        NSLog("here!")
-        
         let time = Time()
         let nowZoned = time.now
         let now = time.nowGMT
@@ -26,10 +24,15 @@ class TimeTest {
         NSLog("zoned %lld", nowZoned.gmtTimeUnit.value)
         NSLog(nowZoned.timeZone.zoneId)
         NSLog("offset = %lld", nowZoned.timeZone.offset.value)
+        nowZoned.applyToTimeUnit(block: { (timeUnit: TimeUnit) -> TimeUnit in
+            return timeUnit
+        })
         
-        let source = "2011-12-03T11:15:30+01:00"
+        let source = "2011-12-03T15:15:30+03:00"
         guard let sourceTZ = try? ZonedTimeUnit.companion.of(date: source, pattern: nil) else { fatalError() }
-        NSLog(sourceTZ.timeZone.zoneId)
+        NSLog(sourceTZ.gmtTimeUnit.getDebugString())
+        let formatted = nowZoned.toFormattedDate(pattern: Pattern.OffsetISO_OFFSET_FULL_TIME.shared)
+        NSLog(formatted.date)
         
         NSLog("current time = %lld", now.value)
         NSLog("day of month = %d", TimeUnitExtKt.toDayOfMonth(now).value)
