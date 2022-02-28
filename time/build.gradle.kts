@@ -21,21 +21,6 @@ plugins {
 
 kotlin {
 
-    android {
-        publishLibraryVariants("release", "debug")
-        publishLibraryVariantsGroupedByFlavor = true
-    }
-
-    ios()
-    // Add the ARM64 simulator target
-    iosSimulatorArm64()
-
-    val iosMain by sourceSets.getting
-    val iosSimulatorArm64Main by sourceSets.getting
-
-    // Set up dependencies between the source sets
-    iosSimulatorArm64Main.dependsOn(iosMain)
-
 
     multiplatformSwiftPackage {
         packageName("Time")

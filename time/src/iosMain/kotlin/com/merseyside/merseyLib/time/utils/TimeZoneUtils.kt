@@ -1,6 +1,5 @@
 package com.merseyside.merseyLib.time.utils
 
-import com.merseyside.merseyLib.kotlin.extensions.log
 import com.merseyside.merseyLib.time.TimeZone
 import com.merseyside.merseyLib.time.exception.TimeParseException
 import com.merseyside.merseyLib.time.ext.makeNegative
