@@ -1,5 +1,4 @@
 @file:JvmName("AndroidTimeZoneUtils")
-
 package com.merseyside.merseyLib.time.utils
 
 import com.merseyside.merseyLib.time.units.Seconds
