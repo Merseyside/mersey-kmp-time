@@ -1,27 +1,30 @@
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    id(Plugins.androidConvention)
-    id(Plugins.kotlinMultiplatformConvention)
-    id(Plugins.kotlinKapt)
-    id(Plugins.mobileMultiplatform)
-    id(Plugins.kotlinSerialization)
-    id(Plugins.cocoaPods)
-    id(Plugins.swiftPackage) version "2.0.3"
-//    id(Plugins.kSwift)
-    id(Plugins.mavenPublishConfig)
+    with(catalogPlugins.plugins) {
+        plugin(android.library)
+        plugin(kotlin.multiplatform)
+        id(mersey.android.convention.id())
+        id(mersey.kotlin.convention.id())
+        plugin(kotlin.kapt)
+        id(cocoapods.id())
+        plugin(moko.multiplatform)
+        plugin(kotlin.serialization)
+        plugin(mavenPublish)
+        plugin(swiftPackage)
+        plugin(moko.kswift)
+    }
+}
 
-//    with(catalogPlugins.plugins) {
-//        id(kotlinKapt.id())
-//        id(nativeCocoaPods.id())
-//        id(mobileMultiplatform.id())
-//        id(kotlinSerialization.id())
-//        alias(swiftPackage)
-//    }
+android {
+    compileSdk = Application.compileSdk
+
+    defaultConfig {
+        minSdk = Application.minSdk
+        targetSdk = Application.targetSdk
+    }
 }
 
 kotlin {
-
-
     multiplatformSwiftPackage {
         packageName("Time")
         swiftToolsVersion("5.3")
@@ -40,7 +43,7 @@ kotlin {
             homepage = "https://github.com/Merseyside/mersey-kmp-time"
             // Framework name configuration. Use this property instead of deprecated 'frameworkName'
             baseName = "KotlinTime"
-            version = Metadata.version
+            version = common.versions.time.get()
 
             // Optional properties
             // (Optional) Dynamic framework support
@@ -68,10 +71,23 @@ android {
     }
 }
 
-//kswift {
-//    install(dev.icerock.moko.kswift.plugin.feature.SealedToSwiftEnumFeature)
-//    install(dev.icerock.moko.kswift.plugin.feature.PlatformExtensionFunctionsFeature)
-//}
+androidConvention {
+    sourceSets {
+        setSourceSets = false
+    }
+
+}
+
+kotlinConvention {
+    setCompilerArgs("-Xskip-prerelease-check")
+}
+
+
+kswift {
+    install(dev.icerock.moko.kswift.plugin.feature.SealedToSwiftEnumFeature)
+    install(dev.icerock.moko.kswift.plugin.feature.PlatformExtensionFunctionsFeature)
+}
+
 
 dependencies {
     if (isLocalKotlinExtLibrary()) {
@@ -80,7 +96,7 @@ dependencies {
         commonMainImplementation(common.merseyLib.kotlin.ext)
     }
 
-    //commonMainApi("dev.icerock.moko:kswift-runtime:0.3.0")
+    commonMainApi(multiplatformLibs.moko.kswift)
     mppLibs.forEach { commonMainImplementation(it) }
 
     coreLibraryDesugaring(androidLibs.desugarJdk)

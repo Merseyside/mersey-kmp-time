@@ -1,7 +1,14 @@
+import com.merseyside.gradle.plugin.android.Theme.*
+
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    id(Plugins.androidApplication)
-    id(Plugins.kotlinAndroid)
-    id(Plugins.kotlinKapt)
+    with(catalogPlugins.plugins) {
+        plugin(android.application)
+        plugin(kotlin.android)
+        id(mersey.android.convention.id())
+        id(mersey.kotlin.convention.id())
+        plugin(kotlin.kapt)
+    }
 }
 
 android {
@@ -36,12 +43,16 @@ android {
     buildFeatures.dataBinding = true
 
     packagingOptions {
-        exclude("META-INF/*.kotlin_module")
-        exclude("META-INF/DEPENDENCIES")
-        exclude("META-INF/NOTICE")
-        exclude("META-INF/LICENSE")
-        exclude("META-INF/LICENSE.txt")
-        exclude("META-INF/NOTICE.txt")
+        packagingOptions.resources.excludes.addAll(
+            setOf(
+                "META-INF/*.kotlin_module",
+                "META-INF/DEPENDENCIES",
+                "META-INF/NOTICE",
+                "META-INF/LICENSE",
+                "META-INF/LICENSE.txt",
+                "META-INF/NOTICE.txt"
+            )
+        )
     }
 
     sourceSets.getByName("main") {
@@ -53,6 +64,23 @@ android {
         res.srcDir("src/main/res/value/values-light")
         res.srcDir("src/main/res/value/values-night")
     }
+}
+
+//androidConvention {
+//    debug = true
+//    sourceSets {
+//        setSourceSets = true
+//        mainSourceSets.addAll(
+//            listOf(
+//                "src/main/res/value/values-light",
+//                "src/main/res/value/values-night"
+//            )
+//        )
+//    }
+//}
+
+kotlinConvention {
+    setCompilerArgs("-Xskip-prerelease-check")
 }
 
 val android = listOf(
@@ -68,6 +96,4 @@ val merseyLibs = listOf(
 dependencies {
     android.forEach { lib -> implementation(lib) }
     merseyLibs.forEach { lib -> implementation(lib) }
-
-    compileOnly("javax.annotation:javax.annotation-api:1.3.2")
 }
