@@ -9,9 +9,9 @@ plugins {
         id(cocoapods.id())
         plugin(moko.multiplatform)
         plugin(kotlin.serialization)
-        plugin(mavenPublish)
         plugin(swiftPackage)
         plugin(moko.kswift)
+        `maven-publish-config`
     }
 }
 
