@@ -7,6 +7,7 @@ allprojects {
         mavenLocal()
         mavenCentral()
         google()
+        gradlePluginPortal()
 
         maven("https://jitpack.io")
     }

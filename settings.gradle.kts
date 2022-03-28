@@ -3,13 +3,22 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 private val isLocalKotlinExtLibrary = false
 
+pluginManagement {
+    repositories {
+        mavenCentral()
+        google()
+
+        gradlePluginPortal()
+    }
+}
+
 dependencyResolutionManagement {
     repositories {
         mavenLocal()
         mavenCentral()
     }
 
-    val catalogVersions = "1.3.0"
+    val catalogVersions = "1.3.9"
     val group = "io.github.merseyside"
     versionCatalogs {
         val multiplatformLibs by creating {
@@ -27,12 +36,16 @@ dependencyResolutionManagement {
         val catalogPlugins by creating {
             from("$group:catalog-version-plugins:$catalogVersions")
         }
+
+        val catalogGradle by creating {
+            from("$group:catalog-version-gradle:$catalogVersions")
+        }
     }
 }
 
 include(
     ":time",
-    ":android-app",
+    ":android-app"
 )
 
 if (isLocalKotlinExtLibrary) {
