@@ -25,6 +25,20 @@ android {
 }
 
 kotlin {
+    android {
+        publishLibraryVariants("release", "debug")
+        publishLibraryVariantsGroupedByFlavor = true
+    }
+
+    ios()
+    iosSimulatorArm64()
+
+    sourceSets {
+        val iosMain by getting
+        val iosSimulatorArm64Main by getting
+        iosSimulatorArm64Main.dependsOn(iosMain)
+    }
+
     multiplatformSwiftPackage {
         packageName("Time")
         swiftToolsVersion("5.3")
