@@ -9,6 +9,8 @@ import com.merseyside.merseyLib.time.ranges.TimeUnitRange
 import com.merseyside.merseyLib.time.ranges.WeekRange
 import com.merseyside.merseyLib.time.units.*
 import com.merseyside.merseyLib.time.utils.Pattern
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 
 fun TimeUnit.toFormattedDate(
     pattern: Pattern = TimeConfiguration.defaultPattern,
@@ -235,5 +237,22 @@ fun TimeUnit.roundByDivider(divider: TimeUnit): TimeUnit {
         this - mod
     } else {
         this - mod + divider
+    }
+}
+
+@OptIn(ExperimentalContracts::class)
+fun <T : TimeUnit> T?.isNotNullAndEmpty(): Boolean {
+    contract {
+        returns(true) implies (this@isNotNullAndEmpty != null)
+    }
+
+    return this != null && this.isNotEmpty()
+}
+
+fun <T : TimeUnit> T?.isNotNullAndEmpty(block: T.() -> T): T? {
+    return if (isNotNullAndEmpty()) {
+        this.block()
+    } else {
+        null
     }
 }
