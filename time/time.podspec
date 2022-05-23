@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
     spec.name                     = 'time'
-    spec.version                  = '1.1.2'
+    spec.version                  = '1.1.3'
     spec.homepage                 = 'https://github.com/Merseyside/mersey-kmp-time'
     spec.source                   = { :http=> ''}
     spec.authors                  = ''

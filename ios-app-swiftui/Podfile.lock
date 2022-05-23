@@ -1,5 +1,5 @@
 PODS:
-  - time (1.1.2)
+  - time (1.1.3)
 
 DEPENDENCIES:
   - time (from `../time`)
@@ -9,8 +9,8 @@ EXTERNAL SOURCES:
     :path: "../time"
 
 SPEC CHECKSUMS:
-  time: 65a4989c8ec52c7ac721edefb280de4a24e49e96
+  time: a70c2ddba8308ef52e89a0247c653dbc0b35f4fc
 
 PODFILE CHECKSUM: 0c262b1f882da56eddf322195cccdd457b11cf00
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3
