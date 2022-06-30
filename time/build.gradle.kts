@@ -16,6 +16,7 @@ plugins {
 }
 
 android {
+    namespace = "com.merseyside.merseyLib.time"
     compileSdk = Application.compileSdk
 
     defaultConfig {
