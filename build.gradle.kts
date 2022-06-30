@@ -3,14 +3,8 @@ plugins {
 }
 
 allprojects {
-    repositories {
-        mavenLocal()
-        mavenCentral()
-        google()
-        gradlePluginPortal()
-
-        maven("https://jitpack.io")
-    }
+    version = "1.1.4"
+    group = "io.github.merseyside"
 }
 
 tasks.register("clean", Delete::class).configure {

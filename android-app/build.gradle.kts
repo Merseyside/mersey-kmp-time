@@ -20,8 +20,8 @@ android {
 
         applicationId = Application.applicationId
 
-        versionCode = Application.versionCode
-        versionName = Application.version
+        versionCode = 1
+        versionName = "0.1.0"
     }
 
     buildTypes {
@@ -66,19 +66,6 @@ android {
     }
 }
 
-//androidConvention {
-//    debug = true
-//    sourceSets {
-//        setSourceSets = true
-//        mainSourceSets.addAll(
-//            listOf(
-//                "src/main/res/value/values-light",
-//                "src/main/res/value/values-night"
-//            )
-//        )
-//    }
-//}
-
 kotlinConvention {
     setCompilerArgs("-Xskip-prerelease-check")
 }
@@ -89,8 +76,8 @@ val android = listOf(
 )
 
 val merseyLibs = listOf(
-    androidLibs.merseyLib.archy,
-    androidLibs.merseyLib.utils
+    androidLibs.mersey.archy,
+    androidLibs.mersey.utils
 )
 
 dependencies {

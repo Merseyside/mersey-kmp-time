@@ -11,8 +11,8 @@ plugins {
         plugin(kotlin.serialization)
         plugin(swiftPackage)
         plugin(moko.kswift)
-        `maven-publish-config`
     }
+    `maven-publish-config`
 }
 
 android {
@@ -57,7 +57,7 @@ kotlin {
             homepage = "https://github.com/Merseyside/mersey-kmp-time"
             // Framework name configuration. Use this property instead of deprecated 'frameworkName'
             baseName = "KotlinTime"
-            version = common.versions.time.get()
+            version = common.versions.mersey.time.get()
 
             // Optional properties
             // (Optional) Dynamic framework support
@@ -107,7 +107,7 @@ dependencies {
     if (isLocalKotlinExtLibrary()) {
         commonMainImplementation(project(Modules.MultiPlatform.MerseyLibs.kotlinExt))
     } else {
-        commonMainImplementation(common.merseyLib.kotlin.ext)
+        commonMainImplementation(common.mersey.kotlin.ext)
     }
 
     commonMainApi(multiplatformLibs.moko.kswift)
