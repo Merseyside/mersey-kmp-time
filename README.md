@@ -77,7 +77,7 @@ android {
 }
 
 dependencies {
-    mppLibrary(Deps.Libs.MultiPlatform.kotlinStdLib)
+    mppLibrary(Deps.multiplatformLibs.kotlinStdLib)
 }
 ```
 Add module to `buildSrc/src/main/kotlin/Modules.kt`:
