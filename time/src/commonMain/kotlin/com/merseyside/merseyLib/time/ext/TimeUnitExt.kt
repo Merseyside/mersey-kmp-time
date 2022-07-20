@@ -1,7 +1,7 @@
 @file:Suppress("UNCHECKED_CAST")
 package com.merseyside.merseyLib.time.ext
 
-import com.merseyside.merseyLib.kotlin.Logger
+import com.merseyside.merseyLib.kotlin.logger.Logger
 import com.merseyside.merseyLib.time.*
 import com.merseyside.merseyLib.time.ranges.MonthRange
 import com.merseyside.merseyLib.time.ranges.TimeRange
@@ -68,13 +68,12 @@ fun TimeUnit.getDate(): PatternedFormattedDate {
     return getFormattedDate(this, TimeConfiguration.datePattern)
 }
 
-fun TimeUnit.getStartOfDate(): TimeUnit {
+fun TimeUnit.getStartOfDate(): Days {
     return toDays().round()
 }
 
 fun TimeUnit.getEndOfDateTimeUnit(): TimeUnit {
-    val currentDays = getStartOfDate()
-    return currentDays + Days(1).excludeMilli()
+    return getNextDay().excludeMilli()
 }
 
 fun TimeUnit.getDateWithTime(): PatternedFormattedDate {
@@ -120,7 +119,6 @@ fun TimeUnit.getHumanDate(pattern: String): PatternedFormattedDate {
     return getHumanDate(Pattern.CUSTOM(pattern))
 }
 
-
 fun TimeUnit.isExpired(): Boolean {
     return Time.nowGMT - this > TimeUnit.getEmpty()
 }
@@ -151,12 +149,12 @@ fun TimeUnit.toTimeRange(
 }
 
 fun TimeUnit.getNextDay(): Days {
-    var currentDay = toDays().round()
+    var currentDay = getStartOfDate()
     return ++currentDay
 }
 
 fun TimeUnit.getPrevDay(): Days {
-    var currentDay = toDays().round()
+    var currentDay = getStartOfDate()
     return --currentDay
 }
 

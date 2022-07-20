@@ -1,6 +1,6 @@
 package com.merseyside.merseyLib.time.units
 
-import com.merseyside.merseyLib.kotlin.Logger
+import com.merseyside.merseyLib.kotlin.logger.Logger
 import com.merseyside.merseyLib.kotlin.extensions.forEachNotNull
 import com.merseyside.merseyLib.time.TimeConfiguration
 import com.merseyside.merseyLib.time.TimeZone

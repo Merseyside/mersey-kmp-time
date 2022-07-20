@@ -19,7 +19,7 @@ dependencyResolutionManagement {
         google()
     }
 
-    val catalogVersions = "1.5.1"
+    val catalogVersions = "1.5.4"
     val group = "io.github.merseyside"
     versionCatalogs {
         val multiplatformLibs by creating {
@@ -46,6 +46,7 @@ dependencyResolutionManagement {
 
 include(
     ":time",
+    ":time-coroutine-ext",
     ":android-app"
 )
 
