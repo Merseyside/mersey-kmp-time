@@ -100,6 +100,8 @@ object Time {
 
 internal expect fun getCurrentTimeGMT(): TimeUnit
 
+internal expect fun getDayOfYear(timeUnit: TimeUnit): Days
+
 internal expect fun getDayOfMonth(timeUnit: TimeUnit): Days
 
 internal expect fun getDayOfWeek(timeUnit: TimeUnit): DayOfWeek
@@ -121,3 +123,13 @@ internal expect fun getHoursOfDay(timeUnit: TimeUnit): Hours
 internal expect fun getMonth(timeUnit: TimeUnit): Month
 
 internal expect fun getYear(timeUnit: TimeUnit): Years
+
+internal expect fun parseByCalendarUnits(
+    millis: Int = 0,
+    seconds: Int = 0,
+    minutes: Int = 0,
+    hours: Int = 0,
+    days: Int = 0,
+    month: Int = 0,
+    year: Int = 0
+): TimeUnit
