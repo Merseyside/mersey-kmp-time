@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../time"
 
 SPEC CHECKSUMS:
-  time: 23db7e64b960cf5abd228687d61def6cda6b3e48
+  time: e55f095e9299077e26357dc5a2fbc0c9f12402fe
 
 PODFILE CHECKSUM: 0c262b1f882da56eddf322195cccdd457b11cf00
 
