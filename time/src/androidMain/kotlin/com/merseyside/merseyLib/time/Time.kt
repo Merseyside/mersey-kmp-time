@@ -4,12 +4,10 @@ package com.merseyside.merseyLib.time
 
 import com.merseyside.merseyLib.time.exception.TimeParseException
 import com.merseyside.merseyLib.time.units.*
-import com.merseyside.merseyLib.time.units.DayOfWeek
-import com.merseyside.merseyLib.time.units.Month
 import com.merseyside.merseyLib.time.utils.Pattern
 import com.merseyside.merseyLib.time.utils.patternToDateTimeFormatter
 import java.text.SimpleDateFormat
-import java.time.*
+import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.time.temporal.UnsupportedTemporalTypeException
 import java.util.*
@@ -29,6 +27,10 @@ actual fun getMinutesOfHour(timeUnit: TimeUnit): Minutes {
 
 actual fun getHoursOfDay(timeUnit: TimeUnit): Hours {
     return Hours(getUnit(timeUnit, Calendar.HOUR_OF_DAY))
+}
+
+actual fun getDayOfYear(timeUnit: TimeUnit): Days {
+    return Days(getUnit(timeUnit, Calendar.DAY_OF_YEAR))
 }
 
 actual fun getDayOfMonth(timeUnit: TimeUnit): Days {
@@ -102,4 +104,27 @@ private fun parseCustomDate(timeUnit: TimeUnit, pattern: String): String {
         e.printStackTrace()
         throw TimeParseException()
     }
+}
+
+actual fun parseByCalendarUnits(
+    millis: Int,
+    seconds: Int,
+    minutes: Int,
+    hours: Int,
+    days: Int,
+    month: Int,
+    year: Int
+): TimeUnit {
+    val calendar = Calendar.getInstance().apply {
+        set(Calendar.MILLISECOND, millis)
+        set(Calendar.SECOND, seconds)
+        set(Calendar.MINUTE, minutes)
+        set(Calendar.HOUR, hours)
+        set(Calendar.DAY_OF_MONTH, days)
+        set(Calendar.MONTH, month)
+        set(Calendar.YEAR, year)
+    }
+
+    return Millis(calendar.timeInMillis)
+
 }

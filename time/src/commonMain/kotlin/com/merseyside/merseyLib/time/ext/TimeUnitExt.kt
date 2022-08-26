@@ -84,6 +84,10 @@ fun TimeUnit.toHoursMinutesOfDay(): TimeUnit {
     return (getHoursOfDay(this) + getMinutesOfHour(this))
 }
 
+fun TimeUnit.toDayOfYear(): Days {
+    return getDayOfYear(this)
+}
+
 fun TimeUnit.toYears(): Years {
     return getYear(this)
 }
