@@ -3,8 +3,8 @@ plugins {
     with(catalogPlugins.plugins) {
         plugin(android.library)
         plugin(kotlin.multiplatform)
-        id(mersey.android.convention.id())
-        id(mersey.kotlin.convention.id())
+        id(mersey.android.extension.id())
+        id(mersey.kotlin.extension.id())
         plugin(kotlin.kapt)
         plugin(moko.multiplatform)
         plugin(moko.kswift)
@@ -38,14 +38,14 @@ kotlin {
     }
 }
 
-androidConvention {
+androidExtension {
     sourceSets {
         setSourceSets = false
     }
 
 }
 
-kotlinConvention {
+kotlinExtension {
     setCompilerArgs("-Xskip-prerelease-check")
 }
 
