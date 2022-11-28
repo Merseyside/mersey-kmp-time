@@ -13,8 +13,12 @@ class MonthRange internal constructor(
     override val end: TimeUnit
 ): TimeRange {
 
-    fun getMonth(): Month {
+    fun getStartMonth(): Month {
         return start.toMonth()
+    }
+
+    fun getEndMonth(): Month {
+        return end.toMonth()
     }
 }
 

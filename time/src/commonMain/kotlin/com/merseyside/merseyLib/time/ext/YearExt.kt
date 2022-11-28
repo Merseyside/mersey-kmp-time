@@ -11,3 +11,7 @@ fun Years.isLeap(): Boolean {
 fun Years.toTimeUnit(): TimeUnit {
     return parseByCalendarUnits(year = value)
 }
+
+fun Years.getDaysCount(): Int {
+    return if (isLeap()) 366 else 365
+}

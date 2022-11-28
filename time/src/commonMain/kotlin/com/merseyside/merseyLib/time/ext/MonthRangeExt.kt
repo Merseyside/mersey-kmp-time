@@ -26,7 +26,7 @@ fun MonthRange.getLastDay(): TimeRange {
 fun MonthRange.getDay(number: Int): TimeRange {
     val timeUnit = start + Days(number - 1)
     return if (contains(timeUnit)) timeUnit.toDayTimeRange()
-    else throw IllegalArgumentException("Month has only ${getMonth().days} days.")
+    else throw IllegalArgumentException("Month has only ${getStartMonth().days} days.")
 }
 
 fun MonthRange.isIntersect(other: TimeRange, includeLastMilli: Boolean = false): Boolean {
