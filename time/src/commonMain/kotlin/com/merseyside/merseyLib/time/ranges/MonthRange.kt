@@ -1,24 +1,25 @@
 package com.merseyside.merseyLib.time.ranges
 
-import com.merseyside.merseyLib.time.units.Month
 import com.merseyside.merseyLib.time.units.TimeUnit
 import com.merseyside.merseyLib.time.ext.getNextMonth
 import com.merseyside.merseyLib.time.ext.getPrevMonth
-import com.merseyside.merseyLib.time.ext.toMonth
+import com.merseyside.merseyLib.time.ext.toHumanString
+import com.merseyside.merseyLib.time.utils.Pattern
+
 import kotlinx.serialization.Serializable
 
+
+/**
+ * Presents only One month with start and end in TimeUnits
+ */
 @Serializable
 class MonthRange internal constructor(
     override val start: TimeUnit,
     override val end: TimeUnit
 ): TimeRange {
 
-    fun getStartMonth(): Month {
-        return start.toMonth()
-    }
-
-    fun getEndMonth(): Month {
-        return end.toMonth()
+    override fun toString(): String {
+        return toHumanString(pattern = Pattern.ISO_INSTANT)
     }
 }
 

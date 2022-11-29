@@ -1,50 +1,49 @@
 package com.merseyside.merseyLib.time.ranges
 
-import com.merseyside.merseyLib.time.ext.toTimeUnit
+import com.merseyside.merseyLib.time.ext.*
 import com.merseyside.merseyLib.time.units.*
 
-class YearsRange internal constructor (
-    val startYear: Years,
-    val endYear: Years
-): TimeRange, Iterable<Years> {
-
-    override val start: TimeUnit by lazy { startYear.toTimeUnit() }
-    override val end: TimeUnit by lazy { endYear.toTimeUnit() }
+/**
+ * Presents only ONE year with start and end TimeUnits
+ */
+class YearsRange internal constructor(
+    override val start: TimeUnit,
+    override val end: TimeUnit
+): TimeRange {
 
     init {
         requireValid()
     }
 
-    override fun iterator(): Iterator<Years> {
-        return YearRangeIterator()
-    }
-
-    inner class YearRangeIterator : Iterator<Years> {
-        private var current: Years = startYear
-
-        override fun hasNext(): Boolean {
-            return current + Years(1) < endYear
+    companion object {
+        fun from(years: Years): YearsRange {
+            return years.toYearsRange()
         }
 
-        override fun next(): Years {
-            return ++current
+        fun from(yearsInt: Int): YearsRange {
+            return from(Years(yearsInt))
         }
 
+        fun getYearsRanges(from: Int, to: Int): List<YearsRange> {
+            return (from..to).map { year -> from(year) }
+        }
     }
 }
 
-operator fun YearsRange.plus(years: Years): YearsRange {
-    return YearsRange(startYear, endYear + years)
+operator fun YearsRange.plus(years: Years): TimeRange {
+    return TimeUnitRange(start, end + years.toTimeUnit())
 }
 
-operator fun YearsRange.minus(years: Years): YearsRange {
-    return YearsRange(startYear, endYear + years)
+operator fun YearsRange.minus(years: Years): TimeRange {
+    return TimeUnitRange(start, end - years.toTimeUnit())
 }
 
 operator fun YearsRange.inc(): YearsRange {
-    return YearsRange(startYear, Years(endYear.value + 1))
+    val year = toYears().value + 1
+    return YearsRange.from(year)
 }
 
 operator fun YearsRange.dec(): YearsRange {
-    return YearsRange(startYear, Years(endYear.value - 1))
+    val year = toYears().value - 1
+    return YearsRange.from(year)
 }

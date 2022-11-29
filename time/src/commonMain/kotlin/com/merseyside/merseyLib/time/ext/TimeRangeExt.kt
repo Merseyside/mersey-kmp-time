@@ -2,8 +2,10 @@ package com.merseyside.merseyLib.time.ext
 
 import com.merseyside.merseyLib.kotlin.logger.Logger
 import com.merseyside.merseyLib.time.*
+import com.merseyside.merseyLib.time.ranges.MonthRange
 import com.merseyside.merseyLib.time.ranges.TimeRange
 import com.merseyside.merseyLib.time.ranges.TimeUnitRange
+import com.merseyside.merseyLib.time.ranges.inc
 import com.merseyside.merseyLib.time.units.*
 import com.merseyside.merseyLib.time.utils.Pattern
 
@@ -102,6 +104,18 @@ fun TimeRange.toTimeUnitList(gap: TimeUnit): List<TimeUnit> {
     }
 
     return list
+}
+
+fun TimeRange.toMonthRanges(): List<MonthRange> {
+    val monthRanges = ArrayList<MonthRange>()
+
+    var tempRange = start.toMonthRange()
+    while(tempRange.end <= this.end) {
+        monthRanges.add(tempRange)
+        ++tempRange
+    }
+
+    return monthRanges
 }
 
 fun TimeRange.toDayRanges(): List<TimeRange> {

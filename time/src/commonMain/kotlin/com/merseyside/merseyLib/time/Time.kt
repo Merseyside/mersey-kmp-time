@@ -61,7 +61,7 @@ object Time {
     }
 
     fun getCurrentMonthRange(timeZone: TimeZone = TimeConfiguration.timeZone): MonthRange {
-        return  getCurrentZonedTime(timeZone).localTimeUnit.toMonthRange()
+        return getCurrentZonedTime(timeZone).localTimeUnit.toMonthRange()
     }
 
     fun getCurrentDayOfMonth(timeZone: TimeZone = TimeConfiguration.timeZone): Days {
@@ -129,7 +129,7 @@ internal expect fun parseByCalendarUnits(
     seconds: Int = 0,
     minutes: Int = 0,
     hours: Int = 0,
-    days: Int = 0,
+    days: Int = 1,
     month: Int = 0,
     year: Int = 0
 ): TimeUnit

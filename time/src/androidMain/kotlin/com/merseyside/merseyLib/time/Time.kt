@@ -8,6 +8,7 @@ import com.merseyside.merseyLib.time.utils.Pattern
 import com.merseyside.merseyLib.time.utils.patternToDateTimeFormatter
 import java.text.SimpleDateFormat
 import java.time.Instant
+import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 import java.time.temporal.UnsupportedTemporalTypeException
 import java.util.*
@@ -115,7 +116,7 @@ actual fun parseByCalendarUnits(
     month: Int,
     year: Int
 ): TimeUnit {
-    val calendar = Calendar.getInstance().apply {
+    val calendar = Calendar.getInstance(SystemTimeZone.getTimeZone(TimeZone.GMT.zoneId)).apply {
         set(Calendar.MILLISECOND, millis)
         set(Calendar.SECOND, seconds)
         set(Calendar.MINUTE, minutes)

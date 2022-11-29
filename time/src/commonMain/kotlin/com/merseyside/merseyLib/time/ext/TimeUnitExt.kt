@@ -176,6 +176,9 @@ fun TimeUnit.toMonth(): Month {
     return getMonth(this)
 }
 
+/**
+ * Finds which month includes TimeUnit and returns range with start and end of the month
+ */
 fun TimeUnit.toMonthRange(): MonthRange {
     val days: Days = toDays().round()
 
@@ -185,7 +188,7 @@ fun TimeUnit.toMonthRange(): MonthRange {
 
     val monthStart = days + 1 - dayOfMonth
     val monthEnd = monthStart + month.getDayCount(getYear(this))
-    return MonthRange(monthStart, monthEnd)
+    return MonthRange(monthStart, monthEnd.excludeMilli())
 }
 
 fun <T : TimeUnit> List<T>.findEdge(): TimeRange {
@@ -231,6 +234,10 @@ internal fun TimeUnit.includeMilli(includeLastMilli: Boolean): TimeUnit {
 
 fun TimeUnit.excludeMilli(): TimeUnit {
     return includeMilli(false)
+}
+
+fun TimeUnit.addMilli(): TimeUnit {
+    return this + Millis(1)
 }
 
 fun TimeUnit.roundByDivider(divider: TimeUnit): TimeUnit {
