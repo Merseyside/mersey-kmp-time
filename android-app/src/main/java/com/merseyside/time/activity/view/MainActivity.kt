@@ -23,7 +23,7 @@ class MainActivity: BaseActivity() {
         val monthRanges = year.toMonthRanges()
 
         val yearsRanges = YearsRange.getYearsRanges(2022, 2024)
-        yearsRanges.flatMap { range -> range.toMonthRanges() }.log("kek")
+        yearsRanges.flatMap { range -> range.toMonthRanges() }
 
     }
 }
