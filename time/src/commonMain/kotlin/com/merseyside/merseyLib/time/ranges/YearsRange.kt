@@ -27,6 +27,10 @@ class YearsRange internal constructor(
         fun getYearsRanges(from: Int, to: Int): List<YearsRange> {
             return (from..to).map { year -> from(year) }
         }
+
+        fun getYearsRanges(from: Years, to: Years): List<YearsRange> {
+            return ((from.value)..(to.value)).map { year -> from(year) }
+        }
     }
 }
 
