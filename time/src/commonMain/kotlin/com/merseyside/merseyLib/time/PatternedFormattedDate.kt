@@ -5,9 +5,7 @@ import com.merseyside.merseyLib.time.exception.TimeParseException
 import com.merseyside.merseyLib.time.ext.toTimeUnit
 import com.merseyside.merseyLib.time.ext.toZonedTimeUnit
 import com.merseyside.merseyLib.time.utils.Pattern
-import kotlinx.serialization.Serializable
 
-@Serializable(with = StringAsFormattedDateSerializer::class)
 class PatternedFormattedDate internal constructor(
     date: String,
     val pattern: Pattern

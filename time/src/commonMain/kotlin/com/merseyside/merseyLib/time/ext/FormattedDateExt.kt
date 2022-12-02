@@ -32,9 +32,26 @@ fun FormattedDate.toHoursMinutesOfDay(): FormattedDate {
 }
 
 @Throws(TimeParseException::class)
-fun FormattedDate.toTimeUnit(vararg pattern: Pattern): TimeUnit {
+fun FormattedDate.toFormattedDate(toPattern: String): FormattedDate {
+    return toFormattedDate(Pattern.CUSTOM(toPattern))
+}
+
+@Throws(TimeParseException::class)
+fun FormattedDate.toFormattedDate(toPattern: Pattern): FormattedDate {
+    val timeUnit = toTimeUnit()
+    return timeUnit.toFormattedDate(toPattern)
+}
+
+@Throws(TimeParseException::class)
+fun FormattedDate.toFormattedDate(fromPattern: Pattern, toPattern: Pattern): FormattedDate {
+    val timeUnit = toTimeUnit(fromPattern)
+    return timeUnit.toFormattedDate(toPattern)
+}
+
+@Throws(TimeParseException::class)
+fun FormattedDate.toTimeUnit(pattern: Pattern? = null): TimeUnit {
     val patternsList: List<Pattern> =
-        if (pattern.isNotEmpty()) pattern.toList()
+        if (pattern != null) listOf(pattern)
         else TimeConfiguration.patterns
 
     patternsList.forEach {
