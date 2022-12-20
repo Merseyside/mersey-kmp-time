@@ -88,7 +88,7 @@ fun TimeUnit.toDayOfYear(): Days {
     return getDayOfYear(this)
 }
 
-fun TimeUnit.toYears(): Years {
+fun TimeUnit.toYears(): CalendarYears {
     return getYear(this)
 }
 
@@ -162,6 +162,9 @@ fun TimeUnit.getPrevDay(): Days {
     return --currentDay
 }
 
+/**
+ * @return WeekRange starts from monday ends with sunday
+ */
 fun TimeUnit.toWeekRange(): WeekRange {
     val dayOfWeek = toDayOfWeek()
     val days = toDays().round()
@@ -247,6 +250,10 @@ fun TimeUnit.roundByDivider(divider: TimeUnit): TimeUnit {
     } else {
         this - mod + divider
     }
+}
+
+fun TimeUnit.moreThanYear(): Boolean {
+    return Years(1).toTimeUnit() > this
 }
 
 @OptIn(ExperimentalContracts::class)

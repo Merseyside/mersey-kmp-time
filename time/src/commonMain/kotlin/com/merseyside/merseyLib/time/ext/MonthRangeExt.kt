@@ -42,3 +42,26 @@ fun MonthRange.contains(other: TimeRange, includeLastMilli: Boolean = false): Bo
 fun MonthRange.contains(timeUnit: TimeUnit, includeLastMilli: Boolean = false): Boolean {
     return (this as TimeRange).contains(timeUnit, includeLastMilli)
 }
+
+/**
+ * Adds lacking days in the start of range.
+ * For example, month starts with thursday then we add monday..thursday time range to the start.
+ */
+fun MonthRange.supplementToCalendarMonth(): TimeRange {
+    var newRange: TimeRange = this
+    val startOfMonth = start
+    val startWeekRange = startOfMonth.toWeekRange()
+
+
+    if (startOfMonth != startWeekRange.start) {
+        newRange = newRange.uniteWith(startWeekRange)
+    }
+
+    val endOfMonth = end
+    val endWeekRange = endOfMonth.toWeekRange()
+    if (endOfMonth != endWeekRange.end) {
+        newRange = newRange.uniteWith(endWeekRange)
+    }
+
+    return newRange
+}

@@ -8,7 +8,6 @@ import com.merseyside.merseyLib.time.utils.Pattern
 import com.merseyside.merseyLib.time.utils.patternToDateTimeFormatter
 import java.text.SimpleDateFormat
 import java.time.Instant
-import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 import java.time.temporal.UnsupportedTemporalTypeException
 import java.util.*
@@ -77,8 +76,8 @@ actual fun getMonth(timeUnit: TimeUnit): Month {
     return Month.getByIndex(getUnit(timeUnit, Calendar.MONTH))
 }
 
-actual fun getYear(timeUnit: TimeUnit): Years {
-    return Years(getUnit(timeUnit, Calendar.YEAR))
+actual fun getYear(timeUnit: TimeUnit): CalendarYears {
+    return CalendarYears(getUnit(timeUnit, Calendar.YEAR))
 }
 
 private fun getUnit(
