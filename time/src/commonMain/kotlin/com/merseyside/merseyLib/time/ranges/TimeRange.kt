@@ -2,7 +2,6 @@ package com.merseyside.merseyLib.time.ranges
 
 import com.merseyside.merseyLib.time.units.TimeUnit
 import com.merseyside.merseyLib.time.exception.TimeInitializeException
-import com.merseyside.merseyLib.time.ext.contains
 import com.merseyside.merseyLib.time.ext.getGap
 import com.merseyside.merseyLib.time.ext.getHumanDate
 
@@ -23,7 +22,7 @@ interface TimeRange : Comparable<TimeRange> {
 
     companion object {
         fun empty(): TimeRange {
-            return TimeUnitRange(TimeUnit.getEmpty(), TimeUnit.getEmpty())
+            return TimeUnitRange(TimeUnit.empty(), TimeUnit.empty())
         }
     }
 }

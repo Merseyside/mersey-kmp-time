@@ -3,6 +3,7 @@ package com.merseyside.merseyLib.time.ext
 import com.merseyside.merseyLib.time.units.*
 import kotlin.reflect.KClass
 
+@Suppress("UNCHECKED_CAST")
 fun <T : TimeUnit> TimeUnit.castTo(clazz: KClass<out T>): T {
     return when(clazz) {
         Millis::class -> toMillis()
@@ -12,7 +13,7 @@ fun <T : TimeUnit> TimeUnit.castTo(clazz: KClass<out T>): T {
         Days::class -> toDays()
         Weeks::class -> toWeeks()
 
-        else -> throw IllegalArgumentException()
+        else -> toMillis()
     } as T
 }
 

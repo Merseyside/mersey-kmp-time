@@ -124,7 +124,7 @@ fun TimeUnit.getHumanDate(pattern: String): PatternedFormattedDate {
 }
 
 fun TimeUnit.isExpired(): Boolean {
-    return Time.nowGMT - this > TimeUnit.getEmpty()
+    return Time.nowGMT - this > TimeUnit.empty()
 }
 
 fun TimeUnit.isMoreThanDay(): Boolean {
@@ -143,8 +143,8 @@ fun TimeUnit.toTimeRange(
 }
 
 fun TimeUnit.toTimeRange(
-    startShift: TimeUnit = TimeUnit.getEmpty(),
-    backShift: TimeUnit = TimeUnit.getEmpty()
+    startShift: TimeUnit = TimeUnit.empty(),
+    backShift: TimeUnit = TimeUnit.empty()
 ): TimeRange {
     if (startShift.isEmpty() && backShift.isEmpty())
         throw IllegalArgumentException("Pass at least one shift value!")
