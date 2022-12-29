@@ -1,6 +1,8 @@
 package com.merseyside.merseyLib.time.ranges
 
+import com.merseyside.merseyLib.time.ext.toHumanString
 import com.merseyside.merseyLib.time.units.TimeUnit
+import com.merseyside.merseyLib.time.utils.Pattern
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -12,4 +14,8 @@ data class TimeUnitRange(
     constructor(timeRange: TimeRange): this(timeRange.start, timeRange.end)
 
     init { requireValid() }
+
+    override fun toString(): String {
+        return toHumanString(pattern = Pattern.ISO_INSTANT)
+    }
 }

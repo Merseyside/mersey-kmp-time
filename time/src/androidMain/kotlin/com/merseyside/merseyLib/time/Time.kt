@@ -76,8 +76,8 @@ actual fun getMonth(timeUnit: TimeUnit): Month {
     return Month.getByIndex(getUnit(timeUnit, Calendar.MONTH))
 }
 
-actual fun getYear(timeUnit: TimeUnit): Years {
-    return Years(getUnit(timeUnit, Calendar.YEAR))
+actual fun getYear(timeUnit: TimeUnit): CalendarYears {
+    return CalendarYears(getUnit(timeUnit, Calendar.YEAR))
 }
 
 private fun getUnit(
@@ -115,7 +115,7 @@ actual fun parseByCalendarUnits(
     month: Int,
     year: Int
 ): TimeUnit {
-    val calendar = Calendar.getInstance().apply {
+    val calendar = Calendar.getInstance(SystemTimeZone.getTimeZone(TimeZone.GMT.zoneId)).apply {
         set(Calendar.MILLISECOND, millis)
         set(Calendar.SECOND, seconds)
         set(Calendar.MINUTE, minutes)

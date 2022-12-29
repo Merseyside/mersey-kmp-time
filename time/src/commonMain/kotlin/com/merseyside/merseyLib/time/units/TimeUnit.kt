@@ -2,6 +2,7 @@
 
 package com.merseyside.merseyLib.time.units
 
+import com.merseyside.merseyLib.time.ext.castTo
 import kotlinx.serialization.Serializable
 
 object Conversions {
@@ -138,8 +139,8 @@ interface TimeUnit : Comparable<TimeUnit> {
     override fun equals(other: Any?): Boolean
 
     companion object {
-        fun getEmpty(): TimeUnit {
-            return Millis(0)
+        inline fun <reified T : TimeUnit> empty(): T {
+            return Millis(0).castTo(T::class)
         }
     }
 }

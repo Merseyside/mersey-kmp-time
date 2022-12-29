@@ -88,7 +88,7 @@ fun TimeUnit.toDayOfYear(): Days {
     return getDayOfYear(this)
 }
 
-fun TimeUnit.toYears(): Years {
+fun TimeUnit.toYears(): CalendarYears {
     return getYear(this)
 }
 
@@ -124,7 +124,7 @@ fun TimeUnit.getHumanDate(pattern: String): PatternedFormattedDate {
 }
 
 fun TimeUnit.isExpired(): Boolean {
-    return Time.nowGMT - this > TimeUnit.getEmpty()
+    return Time.nowGMT - this > TimeUnit.empty()
 }
 
 fun TimeUnit.isMoreThanDay(): Boolean {
@@ -143,8 +143,8 @@ fun TimeUnit.toTimeRange(
 }
 
 fun TimeUnit.toTimeRange(
-    startShift: TimeUnit = TimeUnit.getEmpty(),
-    backShift: TimeUnit = TimeUnit.getEmpty()
+    startShift: TimeUnit = TimeUnit.empty(),
+    backShift: TimeUnit = TimeUnit.empty()
 ): TimeRange {
     if (startShift.isEmpty() && backShift.isEmpty())
         throw IllegalArgumentException("Pass at least one shift value!")
@@ -162,6 +162,9 @@ fun TimeUnit.getPrevDay(): Days {
     return --currentDay
 }
 
+/**
+ * @return WeekRange starts from monday ends with sunday
+ */
 fun TimeUnit.toWeekRange(): WeekRange {
     val dayOfWeek = toDayOfWeek()
     val days = toDays().round()
@@ -176,6 +179,9 @@ fun TimeUnit.toMonth(): Month {
     return getMonth(this)
 }
 
+/**
+ * Finds which month includes TimeUnit and returns range with start and end of the month
+ */
 fun TimeUnit.toMonthRange(): MonthRange {
     val days: Days = toDays().round()
 
@@ -185,7 +191,7 @@ fun TimeUnit.toMonthRange(): MonthRange {
 
     val monthStart = days + 1 - dayOfMonth
     val monthEnd = monthStart + month.getDayCount(getYear(this))
-    return MonthRange(monthStart, monthEnd)
+    return MonthRange(monthStart, monthEnd.excludeMilli())
 }
 
 fun <T : TimeUnit> List<T>.findEdge(): TimeRange {
@@ -233,6 +239,10 @@ fun TimeUnit.excludeMilli(): TimeUnit {
     return includeMilli(false)
 }
 
+fun TimeUnit.addMilli(): TimeUnit {
+    return this + Millis(1)
+}
+
 fun TimeUnit.roundByDivider(divider: TimeUnit): TimeUnit {
     val mod = this % divider
     return if (divider / 2 > mod) {
@@ -240,6 +250,10 @@ fun TimeUnit.roundByDivider(divider: TimeUnit): TimeUnit {
     } else {
         this - mod + divider
     }
+}
+
+fun TimeUnit.moreThanYear(): Boolean {
+    return Years(1).toTimeUnit() > this
 }
 
 @OptIn(ExperimentalContracts::class)

@@ -6,8 +6,8 @@ import com.merseyside.merseyLib.time.ext.toFormattedDate
 import com.merseyside.merseyLib.time.units.Hours
 import com.merseyside.merseyLib.time.units.TimeUnit
 import com.merseyside.merseyLib.time.utils.Pattern
-import com.merseyside.merseyLib.time.utils.getTimeZoneOffset
 import com.merseyside.merseyLib.time.utils.getSystemZone
+import com.merseyside.merseyLib.time.utils.getTimeZoneOffset
 import com.merseyside.merseyLib.time.utils.getZoneByOffset
 import kotlinx.serialization.Serializable
 
@@ -38,8 +38,8 @@ class TimeZone internal constructor(
          * Checks offset in -18..18 hour range.
          */
         private fun validateOffset(offset: TimeUnit): Boolean {
-            val absOffset = offset.abs()
-            return absOffset in TimeUnit.getEmpty()..Hours(18)
+            val absOffset = offset.abs().toHours()
+            return absOffset in Hours(0)..Hours(18)
         }
 
         private fun getSystemTimeZone(): TimeZone {
@@ -52,6 +52,6 @@ class TimeZone internal constructor(
         val GMT: TimeZone
             get() { return of("GMT") }
 
-        internal val NOT_SET_ZONE = TimeZone("GMT", TimeUnit.getEmpty())
+        internal val NOT_SET_ZONE = TimeZone("GMT", TimeUnit.empty())
     }
 }

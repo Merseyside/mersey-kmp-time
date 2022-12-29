@@ -132,19 +132,19 @@ class DayOfWeekSerializer : KSerializer<DayOfWeek> {
     }
 }
 
-internal object YearsAsIntSerializer : KSerializer<Years> {
+internal object YearsAsIntSerializer : KSerializer<CalendarYears> {
     override val descriptor: SerialDescriptor =
         PrimitiveSerialDescriptor(
             "com.merseyside.merseyLib.time.utils.serializers.Years",
             PrimitiveKind.INT
         )
 
-    override fun serialize(encoder: Encoder, value: Years) {
+    override fun serialize(encoder: Encoder, value: CalendarYears) {
         encoder.encodeInt(value.value)
     }
 
-    override fun deserialize(decoder: Decoder): Years {
+    override fun deserialize(decoder: Decoder): CalendarYears {
         val value = decoder.decodeInt()
-        return Years(value)
+        return CalendarYears(value)
     }
 }

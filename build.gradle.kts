@@ -3,8 +3,22 @@ plugins {
 }
 
 allprojects {
-    version = "1.1.6"
+    version = "1.1.7"
     group = "io.github.merseyside"
+}
+
+buildscript { // disable pod install tasks until find a solution
+    repositories {
+        gradlePluginPortal()
+    }
+
+    if (!isBuildIos()) {
+        with(project.gradle.startParameter.excludedTaskNames) {
+            add("podImport")
+            add("podInstall")
+            add("podGenIOS")
+        }
+    }
 }
 
 tasks.register("clean", Delete::class).configure {

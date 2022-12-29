@@ -70,8 +70,8 @@ actual fun getMonth(timeUnit: TimeUnit): Month {
     return Month.getByIndex(getComponents(timeUnit, NSMonthCalendarUnit).month.toInt())
 }
 
-actual fun getYear(timeUnit: TimeUnit): Years {
-    return Years(getComponents(timeUnit, NSYearCalendarUnit).year.toInt())
+actual fun getYear(timeUnit: TimeUnit): CalendarYears {
+    return CalendarYears(getComponents(timeUnit, NSYearCalendarUnit).year.toInt())
 }
 
 actual fun parseByCalendarUnits(
