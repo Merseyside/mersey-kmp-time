@@ -163,14 +163,14 @@ fun TimeUnit.getPrevDay(): Days {
 }
 
 /**
- * @return WeekRange starts from monday ends with sunday
+ * @return WeekRange starts from monday (00:00) ends with sunday (23:59)
  */
 fun TimeUnit.toWeekRange(): WeekRange {
     val dayOfWeek = toDayOfWeek()
     val days = toDays().round()
 
     val monday = days - dayOfWeek.toTimeUnit()
-    val endOfSunday = monday + Days(7)
+    val endOfSunday = monday + Days(7).excludeMilli()
 
     return WeekRange(monday, endOfSunday)
 }
