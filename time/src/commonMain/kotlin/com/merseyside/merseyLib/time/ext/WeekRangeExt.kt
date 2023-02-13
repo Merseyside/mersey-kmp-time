@@ -6,6 +6,7 @@ import com.merseyside.merseyLib.time.units.plus
 import com.merseyside.merseyLib.time.ranges.TimeRange
 import com.merseyside.merseyLib.time.ranges.TimeUnitRange
 import com.merseyside.merseyLib.time.ranges.WeekRange
+import com.merseyside.merseyLib.time.units.Weeks
 
 fun WeekRange.toTimeUnitByDayOfWeek(dayOfWeek: DayOfWeek): TimeUnit {
     return start + dayOfWeek.toTimeUnit()
@@ -21,9 +22,9 @@ fun WeekRange.intersectWithMonth(): TimeRange {
 }
 
 fun WeekRange.getNextWeek(): WeekRange {
-    return WeekRange(shiftOnGap())
+    return WeekRange(shift(Weeks(1)))
 }
 
 fun WeekRange.getPrevWeek(): WeekRange {
-    return WeekRange(shiftBackOnGap())
+    return WeekRange(shiftBack(Weeks(1)))
 }

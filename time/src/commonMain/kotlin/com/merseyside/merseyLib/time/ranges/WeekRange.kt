@@ -5,12 +5,27 @@ import com.merseyside.merseyLib.time.ext.getNextWeek
 import com.merseyside.merseyLib.time.ext.getPrevWeek
 import kotlinx.serialization.Serializable
 
+/**
+ * WeekRange starts from monday (00:00) ends with sunday (23:59)
+ */
 @Serializable
 class WeekRange internal constructor(
     override val start: TimeUnit,
     override val end: TimeUnit
 ): TimeRange {
     internal constructor(timeRange: TimeRange) : this(timeRange.start, timeRange.end)
+
+    override fun equals(other: Any?): Boolean {
+        return if (other is TimeRange) {
+            start == other.start && end == other.end
+        } else false
+    }
+
+    override fun hashCode(): Int {
+        var result = start.hashCode()
+        result = 31 * result + end.hashCode()
+        return result
+    }
 }
 
 operator fun WeekRange.inc(): WeekRange {
