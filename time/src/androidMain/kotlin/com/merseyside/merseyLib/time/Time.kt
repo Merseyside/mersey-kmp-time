@@ -29,12 +29,12 @@ actual fun getHoursOfDay(timeUnit: TimeUnit): Hours {
     return Hours(getUnit(timeUnit, Calendar.HOUR_OF_DAY))
 }
 
-actual fun getDayOfYear(timeUnit: TimeUnit): Days {
-    return Days(getUnit(timeUnit, Calendar.DAY_OF_YEAR))
+actual fun getDayOfYear(timeUnit: TimeUnit): Int {
+    return getUnit(timeUnit, Calendar.DAY_OF_YEAR)
 }
 
-actual fun getDayOfMonth(timeUnit: TimeUnit): Days {
-    return Days(getUnit(timeUnit, Calendar.DAY_OF_MONTH))
+actual fun getDayOfMonth(timeUnit: TimeUnit): Int {
+    return getUnit(timeUnit, Calendar.DAY_OF_MONTH)
 }
 
 @Throws(TimeParseException::class)

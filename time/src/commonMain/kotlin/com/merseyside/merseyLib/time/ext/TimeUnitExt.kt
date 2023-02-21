@@ -3,6 +3,8 @@ package com.merseyside.merseyLib.time.ext
 
 import com.merseyside.merseyLib.kotlin.logger.Logger
 import com.merseyside.merseyLib.time.*
+import com.merseyside.merseyLib.time.calendar.Calendar
+import com.merseyside.merseyLib.time.calendar.CalendarDate
 import com.merseyside.merseyLib.time.ranges.MonthRange
 import com.merseyside.merseyLib.time.ranges.TimeRange
 import com.merseyside.merseyLib.time.ranges.TimeUnitRange
@@ -11,6 +13,17 @@ import com.merseyside.merseyLib.time.units.*
 import com.merseyside.merseyLib.time.utils.Pattern
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
+
+fun TimeUnit.toCalendarDate(): CalendarDate {
+    return toCalendarBuilder().build()
+}
+
+fun TimeUnit.toCalendarBuilder(): Calendar.Builder {
+    return Calendar.Builder()
+        .setYear(toYears())
+        .setMonth(toMonth())
+        .setDay(toDayOfMonth())
+}
 
 fun TimeUnit.toFormattedDate(
     pattern: Pattern = TimeConfiguration.defaultPattern,
@@ -84,7 +97,7 @@ fun TimeUnit.toHoursMinutesOfDay(): TimeUnit {
     return (getHoursOfDay(this) + getMinutesOfHour(this))
 }
 
-fun TimeUnit.toDayOfYear(): Days {
+fun TimeUnit.toDayOfYear(): Int {
     return getDayOfYear(this)
 }
 
@@ -110,7 +123,7 @@ fun TimeUnit.toDayOfWeekHuman(
     return toFormattedDate(pattern, includeLastMilli = true, language, country).date
 }
 
-fun TimeUnit.toDayOfMonth(): Days {
+fun TimeUnit.toDayOfMonth(): Int {
     return getDayOfMonth(this)
 }
 
