@@ -18,4 +18,20 @@ data class TimeUnitRange(
     override fun toString(): String {
         return toHumanString(pattern = Pattern.ISO_INSTANT)
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is TimeUnitRange) return false
+
+        if (start != other.start) return false
+        if (end != other.end) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = start.hashCode()
+        result = 31 * result + end.hashCode()
+        return result
+    }
 }

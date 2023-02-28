@@ -122,15 +122,13 @@ fun TimeRange.toDayRanges(): List<TimeRange> {
     var nextDay = start.getNextDay()
     val dayRanges = mutableListOf<TimeRange>()
 
-    dayRanges.add(TimeUnitRange(start, nextDay))
+    dayRanges.add(TimeUnitRange(start, nextDay.excludeMilli()))
 
     while (nextDay < end) {
         val tempNextDay = nextDay.getNextDay()
-        if (tempNextDay < end) {
-            dayRanges.add(TimeUnitRange(nextDay, tempNextDay))
-        } else {
-            dayRanges.add(TimeUnitRange(nextDay, end))
-        }
+        val endTime = if (tempNextDay < end) tempNextDay.excludeMilli() else end
+
+        dayRanges.add(TimeUnitRange(nextDay, endTime))
 
         nextDay = tempNextDay
     }

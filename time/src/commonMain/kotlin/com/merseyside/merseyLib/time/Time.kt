@@ -64,7 +64,7 @@ object Time {
         return getCurrentZonedTime(timeZone).localTimeUnit.toMonthRange()
     }
 
-    fun getCurrentDayOfMonth(timeZone: TimeZone = TimeConfiguration.timeZone): Days {
+    fun getCurrentDayOfMonth(timeZone: TimeZone = TimeConfiguration.timeZone): Int {
         return getDayOfMonth(getCurrentZonedTime(timeZone).localTimeUnit)
     }
 
@@ -100,9 +100,9 @@ object Time {
 
 internal expect fun getCurrentTimeGMT(): TimeUnit
 
-internal expect fun getDayOfYear(timeUnit: TimeUnit): Days
+internal expect fun getDayOfYear(timeUnit: TimeUnit): Int
 
-internal expect fun getDayOfMonth(timeUnit: TimeUnit): Days
+internal expect fun getDayOfMonth(timeUnit: TimeUnit): Int
 
 internal expect fun getDayOfWeek(timeUnit: TimeUnit): DayOfWeek
 

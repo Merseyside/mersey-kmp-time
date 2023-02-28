@@ -21,6 +21,18 @@ class MonthRange internal constructor(
     override fun toString(): String {
         return toHumanString(pattern = Pattern.ISO_INSTANT)
     }
+
+    override fun equals(other: Any?): Boolean {
+        return if (other is TimeRange) {
+            start == other.start && end == other.end
+        } else false
+    }
+
+    override fun hashCode(): Int {
+        var result = start.hashCode()
+        result = 31 * result + end.hashCode()
+        return result
+    }
 }
 
 operator fun MonthRange.plus(count: Int): MonthRange {

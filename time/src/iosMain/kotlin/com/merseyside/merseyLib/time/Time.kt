@@ -10,16 +10,19 @@ actual fun getCurrentTimeGMT(): TimeUnit {
     return Seconds(NSDate().timeIntervalSince1970)
 }
 
-actual fun getDayOfYear(timeUnit: TimeUnit): Days {
+actual fun getDayOfYear(timeUnit: TimeUnit): Int {
     val calendar = getCalendar()
 
-    return Days(
-        calendar.ordinalityOfUnit(NSDayCalendarUnit, NSYearCalendarUnit, getDate(timeUnit)).toInt()
-    )
+    return calendar.ordinalityOfUnit(
+        NSDayCalendarUnit,
+        NSYearCalendarUnit,
+        getDate(timeUnit)
+    ).toInt()
+
 }
 
-actual fun getDayOfMonth(timeUnit: TimeUnit): Days {
-    return Days(getComponents(timeUnit, NSDayCalendarUnit).day)
+actual fun getDayOfMonth(timeUnit: TimeUnit): Int {
+    return getComponents(timeUnit, NSDayCalendarUnit).day.toInt()
 }
 
 actual fun getDayOfWeek(timeUnit: TimeUnit): DayOfWeek {
@@ -75,7 +78,7 @@ actual fun getYear(timeUnit: TimeUnit): CalendarYears {
 }
 
 actual fun parseByCalendarUnits(
-    millis: Int ,
+    millis: Int,
     seconds: Int,
     minutes: Int,
     hours: Int,

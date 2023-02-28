@@ -5,12 +5,12 @@ import com.merseyside.archy.presentation.activity.BaseActivity
 import com.merseyside.merseyLib.kotlin.logger.log
 import com.merseyside.merseyLib.time.Time
 import com.merseyside.merseyLib.time.ext.toMonthRanges
-import com.merseyside.merseyLib.time.ext.toTimeUnit
 import com.merseyside.merseyLib.time.ranges.CalendarYearsRange
-import com.merseyside.merseyLib.time.units.Days
-import com.merseyside.merseyLib.time.units.Years
-import com.merseyside.merseyLib.time.units.compareTo
 import com.merseyside.time.R
+import com.merseyside.merseyLib.time.calendar.Calendar
+import com.merseyside.merseyLib.time.calendar.ext.toTimeUnit
+import com.merseyside.merseyLib.time.ext.logHuman
+import com.merseyside.merseyLib.time.units.*
 
 class MainActivity: BaseActivity() {
 
@@ -29,6 +29,14 @@ class MainActivity: BaseActivity() {
         yearsRanges.flatMap { range -> range.toMonthRanges() }
 
         (Years(1) > Days(364)).log()
+
+        val calendarDate = Calendar.build {
+            setYear(CalendarYears(2024))
+            setMonth(Month.JUNE)
+            setDay(15)
+        }
+
+        calendarDate.toTimeUnit().logHuman()
 
     }
 }
