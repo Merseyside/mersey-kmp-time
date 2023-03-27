@@ -1,8 +1,9 @@
 package com.merseyside.merseyLib.time.utils.serializers
 
-import com.merseyside.merseyLib.time.utils.Pattern
-import com.merseyside.merseyLib.time.units.ZonedTimeUnit
+import com.merseyside.merseyLib.time.TimeZone
 import com.merseyside.merseyLib.time.ext.toFormattedDate
+import com.merseyside.merseyLib.time.units.ZonedTimeUnit
+import com.merseyside.merseyLib.time.utils.Pattern
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
@@ -24,5 +25,23 @@ class IsoOffsetDateTimeSerializer : KSerializer<ZonedTimeUnit> {
 
     override fun serialize(encoder: Encoder, value: ZonedTimeUnit) {
         encoder.encodeString(value.toFormattedDate(Pattern.Offset.ISO_OFFSET_DATE_TIME).date)
+    }
+}
+
+class StringAsTimeZoneSerializer : KSerializer<TimeZone> {
+
+    override val descriptor: SerialDescriptor =
+        PrimitiveSerialDescriptor(
+            "com.merseyside.merseyLib.time.utils.serializers.StringAsTimeZoneSerializer",
+            PrimitiveKind.LONG
+        )
+
+    override fun deserialize(decoder: Decoder): TimeZone {
+        val value = decoder.decodeString()
+        return TimeZone.of(value)
+    }
+
+    override fun serialize(encoder: Encoder, value: TimeZone) {
+        encoder.encodeString(value.zoneId)
     }
 }
