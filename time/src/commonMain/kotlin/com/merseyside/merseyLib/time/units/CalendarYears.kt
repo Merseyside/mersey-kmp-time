@@ -1,6 +1,5 @@
 package com.merseyside.merseyLib.time.units
 
-import com.merseyside.merseyLib.kotlin.logger.log
 import com.merseyside.merseyLib.time.utils.serializers.YearsAsIntSerializer
 import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
@@ -65,7 +64,7 @@ class CalendarYearsRangeIterator(
     private var currentYear: CalendarYears = start
 
     override fun hasNext(): Boolean {
-        return (currentYear + stepYears).log("kek", "start") <= endInclusive.log("kek", "end")
+        return (currentYear + stepYears) <= endInclusive
     }
 
     override fun next(): CalendarYears {
