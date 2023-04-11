@@ -1,4 +1,3 @@
-enableFeaturePreview("VERSION_CATALOGS")
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 private val isLocalKotlinExtLibrary = false
@@ -19,7 +18,7 @@ dependencyResolutionManagement {
         google()
     }
 
-    val catalogVersions = "1.6.7"
+    val catalogVersions = "1.7.1"
     val group = "io.github.merseyside"
     versionCatalogs {
         val multiplatformLibs by creating {
