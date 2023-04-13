@@ -2,11 +2,6 @@ plugins {
     `nexus-config`
 }
 
-allprojects {
-    version = "1.1.8"
-    group = "io.github.merseyside"
-}
-
 buildscript { // disable pod install tasks until find a solution
     repositories {
         gradlePluginPortal()
@@ -18,6 +13,13 @@ buildscript { // disable pod install tasks until find a solution
             add("podInstall")
             add("podGenIOS")
         }
+    }
+}
+
+allprojects {
+    plugins.withId("org.gradle.maven-publish") {
+        version = common.versions.mersey.time.get()
+        group = "io.github.merseyside"
     }
 }
 
