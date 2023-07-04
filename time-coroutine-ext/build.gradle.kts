@@ -9,7 +9,7 @@ plugins {
         plugin(moko.multiplatform)
         plugin(moko.kswift)
     }
-    `maven-publish-config`
+    `maven-publish-plugin`
 }
 
 android {
@@ -18,7 +18,6 @@ android {
 
     defaultConfig {
         minSdk = Application.minSdk
-        targetSdk = Application.targetSdk
     }
 }
 
@@ -61,7 +60,7 @@ dependencies {
     commonMainImplementation(common.coroutines)
 
     if (isLocalKotlinExtLibrary()) {
-        commonMainImplementation(project(Modules.MultiPlatform.MerseyLibs.kotlinExt))
+        commonMainImplementation(project(":kotlin-ext"))
     } else {
         commonMainImplementation(common.mersey.kotlin.ext)
     }

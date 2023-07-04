@@ -1,5 +1,3 @@
-import com.merseyside.gradle.plugin.android.Theme.*
-
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     with(catalogPlugins.plugins) {
@@ -12,6 +10,7 @@ plugins {
 }
 
 android {
+    namespace = "com.merseyside.time"
     compileSdk = Application.compileSdk
 
     defaultConfig {
@@ -35,14 +34,11 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+    buildFeatures {
+        dataBinding = true
     }
 
-    buildFeatures.dataBinding = true
-
-    packagingOptions {
+    packaging {
         packagingOptions.resources.excludes.addAll(
             setOf(
                 "META-INF/*.kotlin_module",
