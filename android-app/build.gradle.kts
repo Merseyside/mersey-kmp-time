@@ -1,5 +1,3 @@
-import com.merseyside.gradle.plugin.android.Theme.*
-
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     with(catalogPlugins.plugins) {

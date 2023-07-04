@@ -2,10 +2,6 @@ plugins {
     `kotlin-dsl`
 }
 
-kotlin {
-    jvmToolchain(17)
-}
-
 repositories {
     mavenLocal()
     mavenCentral()
@@ -20,7 +16,7 @@ dependencies {
         implementation(moko.mobileMultiplatform)
         implementation(kotlin.gradle)
         implementation(kotlin.serialization)
-        implementation(nexusPublish)
         implementation(mersey.gradlePlugins)
+        implementation(maven.publish.plugin)
     }
 }
