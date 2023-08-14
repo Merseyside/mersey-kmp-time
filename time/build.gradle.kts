@@ -79,11 +79,11 @@ val mppLibs = listOf(
     multiplatformLibs.serialization
 )
 
-android {
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-    }
-}
+//android {
+//    compileOptions {
+//        isCoreLibraryDesugaringEnabled = true
+//    }
+//}
 
 androidExtension {
     sourceSets {
@@ -113,5 +113,5 @@ dependencies {
     commonMainApi(multiplatformLibs.moko.kswift)
     mppLibs.forEach { commonMainImplementation(it) }
 
-    coreLibraryDesugaring(androidLibs.desugarJdk)
+    //coreLibraryDesugaring(androidLibs.desugarJdk)
 }
