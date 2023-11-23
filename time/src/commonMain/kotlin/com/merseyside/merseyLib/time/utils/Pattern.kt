@@ -7,8 +7,7 @@ sealed class Pattern {
     sealed class Offset : Pattern() {
         object ISO_OFFSET_DATE_TIME : Offset() // '2011-12-03T10:15:30+01:00'
         object ISO_OFFSET_DATE : Offset() //'2011-12-03+01:00'
-        object ISO_OFFSET_TIME : Offset() // '10:15+01:00'
-        object ISO_OFFSET_FULL_TIME : Offset() // '10:15:30+01:00'
+        object ISO_OFFSET_TIME : Offset() // '10:15:30+01:00'
     }
 
     object ISO_DATE_TIME : Pattern() // '2011-12-03T10:15:30'
@@ -17,7 +16,6 @@ sealed class Pattern {
     object ISO_LOCAL_DATE : Pattern() //'2011-12-03'
 
     object ISO_LOCAL_TIME : Pattern() // '10:15'
-    object ISO_LOCAL_FULL_TIME : Pattern() // '10:15:30'
 
     open class CUSTOM(val value: String) : Pattern()
     object EMPTY : CUSTOM("")
@@ -35,9 +33,5 @@ sealed class Pattern {
         }
 
         return this is Offset
-    }
-
-    fun isTruncatesToMinutes(): Boolean {
-        return this is ISO_LOCAL_TIME || this is Offset.ISO_OFFSET_TIME
     }
 }

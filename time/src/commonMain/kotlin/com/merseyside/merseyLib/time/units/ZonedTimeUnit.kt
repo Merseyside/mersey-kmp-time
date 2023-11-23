@@ -2,7 +2,7 @@ package com.merseyside.merseyLib.time.units
 
 import com.merseyside.merseyLib.kotlin.logger.Logger
 import com.merseyside.merseyLib.kotlin.extensions.forEachNotNull
-import com.merseyside.merseyLib.time.TimeConfiguration
+import com.merseyside.merseyLib.time.Time
 import com.merseyside.merseyLib.time.TimeZone
 import com.merseyside.merseyLib.time.exception.TimeParseException
 import com.merseyside.merseyLib.time.ext.getHumanDate
@@ -40,8 +40,17 @@ data class ZonedTimeUnit internal constructor(
         }
 
         @Throws(TimeParseException::class)
+        fun withServerTimeZone(localTimeUnit: TimeUnit): ZonedTimeUnit {
+            val serverTimeZone = Time.configuration.serverTimeZone
+            check(serverTimeZone != TimeZone.NOT_SET_ZONE) {
+                "Can not init ZonedTimeUnit because serverTimeZone wasn't set!"
+            }
+            return ZonedTimeUnit(localTimeUnit - serverTimeZone.offset, serverTimeZone)
+        }
+
+        @Throws(TimeParseException::class)
         fun of(date: String, pattern: Pattern.Offset? = null): ZonedTimeUnit {
-            val patternList = if (pattern == null) TimeConfiguration.offsetPatterns
+            val patternList = if (pattern == null) Time.configuration.offsetPatterns
             else listOf(pattern)
 
             patternList.forEachNotNull {

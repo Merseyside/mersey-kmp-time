@@ -41,7 +41,7 @@ class PatternedFormattedDate internal constructor(
         }
 
         private fun requireValid(date: String, pattern: Pattern) {
-            if (TimeConfiguration.checkPatternedDates) {
+            if (Time.configuration.checkPatternedDates) {
                 if (pattern is Pattern.EMPTY || pattern is Pattern.CUSTOM && pattern.value.isEmpty())
                     throw TimeInitializeException("Pattern is empty!")
 
@@ -52,6 +52,22 @@ class PatternedFormattedDate internal constructor(
                 }
             }
         }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is PatternedFormattedDate) return false
+        if (!super.equals(other)) return false
+
+        if (pattern != other.pattern) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = super.hashCode()
+        result = 31 * result + pattern.hashCode()
+        return result
     }
 
 }

@@ -12,8 +12,7 @@ repositories {
 
 dependencies {
     with(catalogGradle) {
-        implementation(android.gradle)
-        implementation(moko.mobileMultiplatform)
+        implementation(android.gradle.stable)
         implementation(kotlin.gradle)
         implementation(kotlin.serialization)
         implementation(mersey.gradlePlugins)

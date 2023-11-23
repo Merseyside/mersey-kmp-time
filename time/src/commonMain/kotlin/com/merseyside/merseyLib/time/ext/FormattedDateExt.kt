@@ -52,7 +52,7 @@ fun FormattedDate.toFormattedDate(fromPattern: Pattern, toPattern: Pattern): For
 fun FormattedDate.toTimeUnit(pattern: Pattern? = null): TimeUnit {
     val patternsList: List<Pattern> =
         if (pattern != null) listOf(pattern)
-        else TimeConfiguration.patterns
+        else Time.configuration.patterns
 
     patternsList.forEach {
         try {

@@ -21,5 +21,5 @@ fun ZonedTimeUnit.applyToTimeUnit(block: (TimeUnit) -> TimeUnit): ZonedTimeUnit 
 }
 
 expect fun ZonedTimeUnit.toFormattedDate(
-    pattern: Pattern.Offset = TimeConfiguration.zonedDefaultPattern
+    pattern: Pattern.Offset = Time.configuration.zonedDefaultPattern
 ): PatternedFormattedDate

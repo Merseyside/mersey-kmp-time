@@ -15,6 +15,19 @@ open class FormattedDate (val date: String) {
         return date
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is FormattedDate) return false
+
+        if (date != other.date) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return date.hashCode()
+    }
+
     companion object {
         fun empty(): FormattedDate = FormattedDate("")
     }

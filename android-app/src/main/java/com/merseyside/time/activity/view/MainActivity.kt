@@ -1,26 +1,32 @@
 package com.merseyside.time.activity.view
 
 import android.os.Bundle
+import androidx.appcompat.widget.Toolbar
 import com.merseyside.archy.presentation.activity.BaseActivity
 import com.merseyside.merseyLib.kotlin.logger.log
 import com.merseyside.merseyLib.time.Time
-import com.merseyside.merseyLib.time.ext.toMonthRanges
-import com.merseyside.merseyLib.time.ranges.CalendarYearsRange
-import com.merseyside.time.R
 import com.merseyside.merseyLib.time.calendar.Calendar
 import com.merseyside.merseyLib.time.calendar.ext.toTimeUnit
 import com.merseyside.merseyLib.time.ext.logHuman
+import com.merseyside.merseyLib.time.ext.toMonthRanges
+import com.merseyside.merseyLib.time.ranges.CalendarYearsRange
 import com.merseyside.merseyLib.time.units.*
+import com.merseyside.time.R
 
 class MainActivity: BaseActivity() {
 
     override fun getLayoutId() = R.layout.activity_main
-    override fun getToolbar() = null
+    override fun getMainToolbar(): Toolbar? {
+        return null
+    }
+
     override fun performInjection(bundle: Bundle?, vararg params: Any) {}
     override fun getFragmentContainer() = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Time.now.log("test", "now =")
 
         val year = Time.getCurrentYear().log(prefix = "year =")
         val monthRanges = year.toMonthRanges()

@@ -216,7 +216,7 @@ fun TimeRange.roundByDivider(divider: TimeUnit): TimeRange {
  */
 fun TimeRange.toHumanString(
     format: String = "$1 - $2",
-    pattern: Pattern = TimeConfiguration.defaultPattern,
+    pattern: Pattern = Time.configuration.defaultPattern,
     includeLastMilli: Boolean = true
 ): String {
     return format.replace("$1", start.toFormattedDate(pattern).date)

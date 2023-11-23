@@ -7,7 +7,6 @@ plugins {
         id(mersey.kotlin.extension.id())
         plugin(kotlin.kapt)
         id(cocoapods.id())
-        plugin(moko.multiplatform)
         plugin(kotlin.serialization)
         plugin(swiftPackage)
         plugin(moko.kswift)
@@ -25,19 +24,21 @@ android {
 }
 
 kotlin {
-    android {
+    androidTarget {
         publishLibraryVariants("release", "debug")
         publishLibraryVariantsGroupedByFlavor = true
     }
 
-    ios()
+    iosArm64()
+    iosX64()
     iosSimulatorArm64()
 
-    sourceSets {
-        val iosMain by getting
-        val iosSimulatorArm64Main by getting
-        iosSimulatorArm64Main.dependsOn(iosMain)
-    }
+    applyDefaultHierarchyTemplate()
+//    sourceSets {
+//        val iosMain by getting
+//        val iosSimulatorArm64Main by getting
+//        iosSimulatorArm64Main.dependsOn(iosMain)
+//    }
 
     multiplatformSwiftPackage {
         packageName("Time")
@@ -75,15 +76,11 @@ kotlin {
     }
 }
 
-val mppLibs = listOf(
-    multiplatformLibs.serialization
-)
-
-//android {
-//    compileOptions {
-//        isCoreLibraryDesugaringEnabled = true
-//    }
-//}
+android {
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+    }
+}
 
 androidExtension {
     sourceSets {
@@ -102,8 +99,13 @@ kswift {
     install(dev.icerock.moko.kswift.plugin.feature.PlatformExtensionFunctionsFeature)
 }
 
+val commonLibs = listOf(
+    common.serialization
+)
 
 dependencies {
+    commonMainImplementation(multiplatformLibs.settings)
+
     if (isLocalKotlinExtLibrary()) {
         commonMainImplementation(project(":kotlin-ext"))
     } else {
@@ -111,7 +113,7 @@ dependencies {
     }
 
     commonMainApi(multiplatformLibs.moko.kswift)
-    mppLibs.forEach { commonMainImplementation(it) }
+    commonLibs.forEach { commonMainImplementation(it) }
 
-    //coreLibraryDesugaring(androidLibs.desugarJdk)
+    coreLibraryDesugaring(androidLibs.desugarJdk)
 }

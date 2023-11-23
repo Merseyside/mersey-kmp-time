@@ -2,16 +2,27 @@
 
 package com.merseyside.merseyLib.time
 
+import android.content.Context
+import com.merseyside.merseyLib.kotlin.logger.log
 import com.merseyside.merseyLib.time.exception.TimeParseException
 import com.merseyside.merseyLib.time.units.*
 import com.merseyside.merseyLib.time.utils.Pattern
 import com.merseyside.merseyLib.time.utils.patternToDateTimeFormatter
+import com.russhwolf.settings.SharedPreferencesSettings
 import java.text.SimpleDateFormat
 import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 import java.time.temporal.UnsupportedTemporalTypeException
 import java.util.*
 import java.util.TimeZone as SystemTimeZone
+
+fun Time.init(context: Context) {
+    val prefs = context.getSharedPreferences("mersey_time_prefs", Context.MODE_PRIVATE)
+    val settings = SharedPreferencesSettings(delegate = prefs)
+    onInitialized(settings)
+}
 
 actual fun getCurrentTimeGMT(): TimeUnit {
     return Millis(System.currentTimeMillis())
@@ -44,26 +55,29 @@ actual fun getFormattedDate(
     language: String,
     country: String
 ): PatternedFormattedDate {
-    if (pattern.isOffsetPattern()) throw TimeParseException("Time unit can not be parsed with " +
-            "offset pattern. Only ZonedTimeUnit can be parsed with this $pattern")
+
+    if (pattern.isOffsetPattern()) throw TimeParseException(
+        "Time unit can not be parsed with " +
+                "offset pattern. Only ZonedTimeUnit can be parsed with this $pattern"
+    )
 
     return try {
-        val formatter = patternToDateTimeFormatter(pattern)
-        var instant = Instant.ofEpochMilli(timeUnit.millis)
-
-        if (pattern.isTruncatesToMinutes()) {
-            instant = instant.truncatedTo(ChronoUnit.MINUTES)
-        }
-
         val formattedDate = when (pattern) {
             is Pattern.EMPTY -> throw TimeParseException("Can not parse with empty pattern!")
             is Pattern.CUSTOM -> parseCustomDate(timeUnit, pattern.value)
-            else -> formatter.format(instant)
+            else -> {
+                val formatter = patternToDateTimeFormatter(pattern)
+                var instant = Instant.ofEpochMilli(timeUnit.millis)
+
+                var ldt = LocalDateTime.ofInstant(instant, ZoneId.of("UTC"))
+
+                formatter.format(ldt)
+            }
         }
 
         PatternedFormattedDate(formattedDate, pattern)
     } catch (e: UnsupportedTemporalTypeException) {
-        throw TimeParseException("Can not parse timeUnit with $pattern pattern", e)
+        throw TimeParseException("Can not parse timeUnit $timeUnit with $pattern pattern", e)
     }
 }
 

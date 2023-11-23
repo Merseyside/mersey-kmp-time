@@ -31,21 +31,17 @@ internal actual fun String.toTimeUnit(
         val formatter = patternToDateTimeFormatter(pattern)
         val instant = when (pattern) {
 
-            is Pattern.ISO_INSTANT -> {
-                Instant.from(formatter.parse(this))
-            }
-
             is Pattern.ISO_LOCAL_DATE -> {
                 val localDate = LocalDate.parse(this)
                 localDate.atStartOfDay(ZoneOffset.UTC).toInstant()
             }
 
-            is Pattern.ISO_DATE_TIME -> {
+            is Pattern.ISO_INSTANT, Pattern.ISO_DATE_TIME -> {
                 val localDateTime = LocalDateTime.parse(this, formatter)
                 localDateTime.atZone(ZoneId.of("GMT")).toInstant()
             }
 
-            is Pattern.ISO_LOCAL_TIME, is Pattern.ISO_LOCAL_FULL_TIME -> {
+            is Pattern.ISO_LOCAL_TIME -> {
                 val seconds = LocalTime.parse(this, formatter).toSecondOfDay()
                 return Seconds(seconds)
             }
