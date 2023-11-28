@@ -15,11 +15,6 @@ internal actual fun getTimeZone(zoneId: String): TimeZone {
     )
 }
 
-internal actual fun getTimeZoneOffset(zoneId: String): Seconds {
-    val timeZone = getNSTimeZone(zoneId)
-    return Seconds(timeZone.secondsFromGMT)
-}
-
 @Throws(TimeParseException::class)
 internal actual fun getZoneByOffset(offset: TimeUnit): TimeZone {
     val timeZone = NSTimeZone.timeZoneForSecondsFromGMT(offset.toSeconds().value)

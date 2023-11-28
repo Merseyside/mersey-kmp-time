@@ -26,10 +26,10 @@ fun TimeUnit.toCalendarBuilder(): Calendar.Builder {
 }
 
 fun TimeUnit.toFormattedDate(
-    pattern: Pattern = TimeConfiguration.defaultPattern,
+    pattern: Pattern = Time.configuration.defaultPattern,
     includeLastMilli: Boolean = true,
-    language: String = TimeConfiguration.language,
-    country: String = TimeConfiguration.country
+    language: String = Time.configuration.language,
+    country: String = Time.configuration.country
 ): PatternedFormattedDate {
     return getFormattedDate(
         includeMilli(includeLastMilli),
@@ -42,8 +42,8 @@ fun TimeUnit.toFormattedDate(
 fun TimeUnit.toFormattedDate(
     pattern: String,
     includeLastMilli: Boolean = true,
-    language: String = TimeConfiguration.language,
-    country: String = TimeConfiguration.country
+    language: String = Time.configuration.language,
+    country: String = Time.configuration.country
 ): PatternedFormattedDate {
     return toFormattedDate(
         Pattern.CUSTOM(pattern),
@@ -78,7 +78,7 @@ fun TimeUnit.toHoursOfDay(): Hours {
 }
 
 fun TimeUnit.getDate(): PatternedFormattedDate {
-    return getFormattedDate(this, TimeConfiguration.datePattern)
+    return getFormattedDate(this, Time.configuration.datePattern)
 }
 
 fun TimeUnit.getStartOfDate(): Days {
@@ -90,7 +90,7 @@ fun TimeUnit.getEndOfDateTimeUnit(): TimeUnit {
 }
 
 fun TimeUnit.getDateWithTime(): PatternedFormattedDate {
-    return getFormattedDate(this, TimeConfiguration.dateWithTimePattern)
+    return getFormattedDate(this, Time.configuration.dateWithTimePattern)
 }
 
 fun TimeUnit.toHoursMinutesOfDay(): TimeUnit {
@@ -106,7 +106,7 @@ fun TimeUnit.toYears(): CalendarYears {
 }
 
 fun TimeUnit.toFormattedHoursMinutesOfDay(
-    pattern: Pattern = TimeConfiguration.hoursMinutesPattern
+    pattern: Pattern = Time.configuration.hoursMinutesPattern
 ): PatternedFormattedDate {
     return toHoursMinutesOfDay().toFormattedDate(pattern)
 }
@@ -116,9 +116,9 @@ fun TimeUnit.toDayOfWeek(): DayOfWeek {
 }
 
 fun TimeUnit.toDayOfWeekHuman(
-    pattern: Pattern = TimeConfiguration.dayOfWeekPattern,
-    language: Language = TimeConfiguration.language,
-    country: String = TimeConfiguration.country
+    pattern: Pattern = Time.configuration.dayOfWeekPattern,
+    language: Language = Time.configuration.language,
+    country: String = Time.configuration.country
 ): String {
     return toFormattedDate(pattern, includeLastMilli = true, language, country).date
 }
@@ -127,7 +127,7 @@ fun TimeUnit.toDayOfMonth(): Int {
     return getDayOfMonth(this)
 }
 
-fun TimeUnit.getHumanDate(pattern: Pattern = TimeConfiguration.dateWithTimePattern): PatternedFormattedDate {
+fun TimeUnit.getHumanDate(pattern: Pattern = Time.configuration.dateWithTimePattern): PatternedFormattedDate {
     return if (!isMoreThanDay()) toFormattedHoursMinutesOfDay()
     else toFormattedDate(pattern)
 }

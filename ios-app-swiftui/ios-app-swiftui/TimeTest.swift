@@ -16,7 +16,7 @@ class TimeTest {
         let time = Time()
         let nowZoned = time.now
         let now = time.nowGMT
-        let timeConfiguration = TimeConfiguration()
+        let timeConfiguration = Time.configuration()
         
         //guard let timeZone = try? KotlinTimeZone.companion.of(zoneId: "GMT") else { fatalError() }
         //time.getCurrentYear(timeZone: timeZone)

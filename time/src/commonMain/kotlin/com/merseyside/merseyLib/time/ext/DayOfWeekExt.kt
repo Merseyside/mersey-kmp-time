@@ -18,9 +18,9 @@ fun DayOfWeek.isWeekendDay(): Boolean {
 fun DayOfWeek.isWeekDay(): Boolean = !isWeekendDay()
 
 fun DayOfWeek.getHuman(
-    pattern: Pattern = TimeConfiguration.dayOfWeekPattern,
-    language: Language = TimeConfiguration.language,
-    country: Country = TimeConfiguration.country
+    pattern: Pattern = Time.configuration.dayOfWeekPattern,
+    language: Language = Time.configuration.language,
+    country: Country = Time.configuration.country
 ): String {
     val timeUnit = Days(4) + toTimeUnit() // Add 4 days because 1970-01-01 is Thursday
     return timeUnit.toDayOfWeekHuman(pattern, language, country)

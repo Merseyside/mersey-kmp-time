@@ -6,7 +6,6 @@ plugins {
         id(mersey.android.extension.id())
         id(mersey.kotlin.extension.id())
         plugin(kotlin.kapt)
-        plugin(moko.multiplatform)
         plugin(moko.kswift)
     }
     `maven-publish-plugin`
@@ -22,19 +21,16 @@ android {
 }
 
 kotlin {
-    android {
+    androidTarget {
         publishLibraryVariants("release", "debug")
         publishLibraryVariantsGroupedByFlavor = true
     }
 
-    ios()
+    iosArm64()
     iosSimulatorArm64()
+    iosX64()
 
-    sourceSets {
-        val iosMain by getting
-        val iosSimulatorArm64Main by getting
-        iosSimulatorArm64Main.dependsOn(iosMain)
-    }
+    applyDefaultHierarchyTemplate()
 }
 
 androidExtension {

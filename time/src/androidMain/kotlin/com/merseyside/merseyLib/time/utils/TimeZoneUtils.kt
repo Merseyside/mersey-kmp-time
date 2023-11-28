@@ -16,16 +16,6 @@ internal actual fun getTimeZone(zoneId: String): TimeZone {
 }
 
 @Throws(TimeParseException::class)
-internal actual fun getTimeZoneOffset(zoneId: String): Seconds {
-    return try {
-        val zoneOffset = zoneIdToZoneOffset(zoneId)
-        Seconds(zoneOffset.totalSeconds)
-    } catch (e: DateTimeException) {
-        throw TimeParseException(cause = e)
-    }
-}
-
-@Throws(TimeParseException::class)
 internal actual fun getZoneByOffset(offset: TimeUnit): TimeZone {
     return try {
         val zoneOffset = ZoneOffset.ofTotalSeconds(offset.toSeconds().intValue)

@@ -9,8 +9,8 @@ import com.merseyside.merseyLib.time.utils.Pattern
 @Throws(TimeParseException::class)
 internal expect fun String.toTimeUnit(
     pattern: Pattern,
-    country: Country = TimeConfiguration.country,
-    language: Language = TimeConfiguration.language
+    country: Country = Time.configuration.country,
+    language: Language = Time.configuration.language
 ): TimeUnit
 
 @Throws(TimeParseException::class)

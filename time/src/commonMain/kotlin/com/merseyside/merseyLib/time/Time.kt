@@ -8,13 +8,24 @@ import com.merseyside.merseyLib.time.ranges.TimeUnitRange
 import com.merseyside.merseyLib.time.ranges.WeekRange
 import com.merseyside.merseyLib.time.units.*
 import com.merseyside.merseyLib.time.utils.Pattern
+import com.russhwolf.settings.Settings
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
+import kotlin.native.concurrent.ThreadLocal
 
+@ThreadLocal
 object Time {
+
+
+    lateinit var configuration: Configuration
+    
+    fun onInitialized(settings: Settings) {
+        configuration = Configuration(settings)
+    }
+    
     val now: ZonedTimeUnit
-        get() = nowZoned(TimeConfiguration.timeZone)
+        get() = ZonedTimeUnit.ofGMT(nowGMT, configuration.systemTimeZone)
 
     val nowGMT: TimeUnit
         get() = getCurrentTimeGMT()
@@ -28,20 +39,16 @@ object Time {
     val todayRange: TimeRange
         get() = today.toDayTimeRange()
 
-    fun nowZoned(timeZone: TimeZone): ZonedTimeUnit {
-        return getCurrentZonedTime(timeZone)
-    }
-
-    fun getCurrentDayTime(timeZone: TimeZone = TimeConfiguration.timeZone): TimeUnit {
-        return getCurrentZonedTime(timeZone).localTimeUnit.toHoursMinutesOfDay()
+    fun getCurrentDayTime(): TimeUnit {
+        return now.localTimeUnit.toHoursMinutesOfDay()
     }
 
     @Throws(TimeParseException::class)
     fun of(
         value: String,
         pattern: Pattern,
-        country: Country = TimeConfiguration.country,
-        language: Language = TimeConfiguration.language
+        country: Country = configuration.country,
+        language: Language = configuration.language
     ): TimeUnit {
         return value.toTimeUnit(pattern, country, language)
     }
@@ -50,30 +57,30 @@ object Time {
     fun of(
         value: String,
         pattern: String,
-        country: Country = TimeConfiguration.country,
-        language: Language = TimeConfiguration.language
+        country: Country = configuration.country,
+        language: Language = configuration.language
     ): TimeUnit {
         return of(value, Pattern.CUSTOM(pattern), country, language)
     }
 
-    fun getCurrentWeekRange(timeZone: TimeZone = TimeConfiguration.timeZone): WeekRange {
-        return getCurrentZonedTime(timeZone).localTimeUnit.toWeekRange()
+    fun getCurrentWeekRange(): WeekRange {
+        return now.localTimeUnit.toWeekRange()
     }
 
-    fun getCurrentMonthRange(timeZone: TimeZone = TimeConfiguration.timeZone): MonthRange {
-        return getCurrentZonedTime(timeZone).localTimeUnit.toMonthRange()
+    fun getCurrentMonthRange(): MonthRange {
+        return now.localTimeUnit.toMonthRange()
     }
 
-    fun getCurrentDayOfMonth(timeZone: TimeZone = TimeConfiguration.timeZone): Int {
-        return getDayOfMonth(getCurrentZonedTime(timeZone).localTimeUnit)
+    fun getCurrentDayOfMonth(): Int {
+        return getDayOfMonth(now.localTimeUnit)
     }
 
-    fun getCurrentMonth(timeZone: TimeZone = TimeConfiguration.timeZone): Month {
-        return getMonth(getCurrentZonedTime(timeZone).localTimeUnit)
+    fun getCurrentMonth(): Month {
+        return getMonth(now.localTimeUnit)
     }
 
-    fun getCurrentYear(timeZone: TimeZone = TimeConfiguration.timeZone): CalendarYears {
-        return getYear(getCurrentZonedTime(timeZone).localTimeUnit)
+    fun getCurrentYear(): CalendarYears {
+        return getYear(now.localTimeUnit)
     }
 
     val serializersModule = SerializersModule {
@@ -93,9 +100,6 @@ object Time {
         }
     }
 
-    private fun getCurrentZonedTime(timeZone: TimeZone): ZonedTimeUnit {
-        return ZonedTimeUnit.ofGMT(nowGMT, timeZone)
-    }
 }
 
 internal expect fun getCurrentTimeGMT(): TimeUnit
@@ -110,8 +114,8 @@ internal expect fun getDayOfWeek(timeUnit: TimeUnit): DayOfWeek
 internal expect fun getFormattedDate(
     timeUnit: TimeUnit,
     pattern: Pattern,
-    language: String = TimeConfiguration.language,
-    country: String = TimeConfiguration.country
+    language: String = Time.configuration.language,
+    country: String = Time.configuration.country
 ): PatternedFormattedDate
 
 internal expect fun getSecondsOfMinute(timeUnit: TimeUnit): Seconds

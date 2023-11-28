@@ -3,7 +3,6 @@ package com.merseyside.merseyLib.time.ext
 import com.merseyside.merseyLib.time.Country
 import com.merseyside.merseyLib.time.Language
 import com.merseyside.merseyLib.time.Time
-import com.merseyside.merseyLib.time.TimeConfiguration
 import com.merseyside.merseyLib.time.units.CalendarYears
 import com.merseyside.merseyLib.time.units.Days
 import com.merseyside.merseyLib.time.units.Month
@@ -16,9 +15,9 @@ fun Month.getDayCount(year: CalendarYears = Time.getCurrentYear()): Int {
 }
 
 fun Month.getHuman(
-    pattern: Pattern = TimeConfiguration.monthPattern,
-    language: Language = TimeConfiguration.language,
-    country: Country = TimeConfiguration.country,
+    pattern: Pattern = Time.configuration.monthPattern,
+    language: Language = Time.configuration.language,
+    country: Country = Time.configuration.country,
 ): String {
     val timeUnit = Days(31 * index)
     return timeUnit.toFormattedDate(pattern, language = language, country = country).date
@@ -26,8 +25,8 @@ fun Month.getHuman(
 
 fun Month.getHuman(
     pattern: String,
-    language: Language = TimeConfiguration.language,
-    country: Country = TimeConfiguration.country,
+    language: Language = Time.configuration.language,
+    country: Country = Time.configuration.country,
 ): String {
     return getHuman(Pattern.CUSTOM(pattern), language, country)
 }

@@ -5,26 +5,18 @@ import com.merseyside.merseyLib.time.ext.abs
 import com.merseyside.merseyLib.time.ext.toFormattedDate
 import com.merseyside.merseyLib.time.units.Hours
 import com.merseyside.merseyLib.time.units.TimeUnit
-import com.merseyside.merseyLib.time.utils.Pattern
 import com.merseyside.merseyLib.time.utils.getSystemZone
-import com.merseyside.merseyLib.time.utils.getTimeZoneOffset
+import com.merseyside.merseyLib.time.utils.getTimeZone
 import com.merseyside.merseyLib.time.utils.getZoneByOffset
 import kotlinx.serialization.Serializable
 
 @Serializable
-class TimeZone internal constructor(
-    val zoneId: String,
-    val offset: TimeUnit
-) {
-
-    override fun toString(): String {
-        return "zoneId = $zoneId offset = ${offset.toFormattedDate(Pattern.ISO_LOCAL_TIME)}"
-    }
+class TimeZone internal constructor(val zoneId: String, val offset: TimeUnit) {
 
     companion object {
         @Throws(TimeParseException::class)
         fun of(zoneId: String): TimeZone {
-            return TimeZone(zoneId, getTimeZoneOffset(zoneId))
+            return getTimeZone(zoneId)
         }
 
         @Throws(TimeParseException::class)
@@ -42,16 +34,16 @@ class TimeZone internal constructor(
             return absOffset in Hours(0)..Hours(18)
         }
 
-        private fun getSystemTimeZone(): TimeZone {
-            return getSystemZone()
-        }
-
         val SYSTEM: TimeZone
-            get() { return getSystemTimeZone() }
+            get() { return getSystemZone() }
 
         val GMT: TimeZone
             get() { return of("GMT") }
 
         internal val NOT_SET_ZONE = TimeZone("GMT", TimeUnit.empty())
+    }
+
+    override fun toString(): String {
+        return "zoneId = $zoneId offset = ${offset.toFormattedDate(Time.configuration.hoursMinutesPattern)}"
     }
 }

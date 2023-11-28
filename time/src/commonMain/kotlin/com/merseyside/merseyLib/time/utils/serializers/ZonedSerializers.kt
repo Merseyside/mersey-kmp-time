@@ -1,9 +1,13 @@
 package com.merseyside.merseyLib.time.utils.serializers
 
+import com.merseyside.merseyLib.kotlin.serialization.deserialize
+import com.merseyside.merseyLib.time.Time
 import com.merseyside.merseyLib.time.TimeZone
 import com.merseyside.merseyLib.time.ext.toFormattedDate
+import com.merseyside.merseyLib.time.units.TimeUnit
 import com.merseyside.merseyLib.time.units.ZonedTimeUnit
 import com.merseyside.merseyLib.time.utils.Pattern
+import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
@@ -33,7 +37,7 @@ class StringAsTimeZoneSerializer : KSerializer<TimeZone> {
     override val descriptor: SerialDescriptor =
         PrimitiveSerialDescriptor(
             "com.merseyside.merseyLib.time.utils.serializers.StringAsTimeZoneSerializer",
-            PrimitiveKind.LONG
+            PrimitiveKind.STRING
         )
 
     override fun deserialize(decoder: Decoder): TimeZone {
@@ -44,4 +48,18 @@ class StringAsTimeZoneSerializer : KSerializer<TimeZone> {
     override fun serialize(encoder: Encoder, value: TimeZone) {
         encoder.encodeString(value.zoneId)
     }
+}
+
+class StringAsServerTimeZoneDeserializer : DeserializationStrategy<ZonedTimeUnit> {
+    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(
+        "com.merseyside.merseyLib.time.utils.StringAsServerTimeZoneSerializer",
+        PrimitiveKind.STRING
+    )
+
+    override fun deserialize(decoder: Decoder): ZonedTimeUnit {
+        val stringTimeUnit = decoder.decodeString()
+        val timeUnit = stringTimeUnit.deserialize(deserializationStrategy = IsoInstantTimeUnitSerializer)
+        return ZonedTimeUnit.withServerTimeZone(timeUnit)
+    }
+
 }
