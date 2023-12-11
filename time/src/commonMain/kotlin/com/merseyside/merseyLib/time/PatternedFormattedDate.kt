@@ -1,5 +1,6 @@
 package com.merseyside.merseyLib.time
 
+import com.merseyside.merseyLib.kotlin.logger.log
 import com.merseyside.merseyLib.time.exception.TimeInitializeException
 import com.merseyside.merseyLib.time.exception.TimeParseException
 import com.merseyside.merseyLib.time.ext.toTimeUnit
@@ -46,7 +47,7 @@ class PatternedFormattedDate internal constructor(
                     throw TimeInitializeException("Pattern is empty!")
 
                 if (pattern.isOffsetPattern()) {
-                    date.toZonedTimeUnit(pattern)
+                    date.toZonedTimeUnit(pattern as Pattern.Offset)
                 } else {
                     date.toTimeUnit(pattern)
                 }
