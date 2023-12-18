@@ -16,8 +16,6 @@ import kotlin.native.concurrent.ThreadLocal
 
 @ThreadLocal
 object Time {
-
-
     lateinit var configuration: Configuration
     
     fun onInitialized(settings: Settings) {

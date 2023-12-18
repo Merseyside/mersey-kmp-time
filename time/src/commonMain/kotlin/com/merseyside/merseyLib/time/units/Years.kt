@@ -6,7 +6,18 @@ import com.merseyside.merseyLib.time.ext.toTimeUnit
  * Contains number of "years". It converts to TimeUnit by next formula
  * value * Days(365)
  */
-class Years(val value: Int)
+class Years(val value: Int) {
+
+    companion object {
+
+        fun asDays(): Days {
+            return Days(DAYS_CONST)
+        }
+
+        internal const val DAYS_CONST = 365
+        internal const val LEAP_YEAR_DAYS_CONST = 366
+    }
+}
 
 operator fun Years.compareTo(other: TimeUnit): Int {
     return toTimeUnit().compareTo(other)

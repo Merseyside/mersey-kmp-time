@@ -1,14 +1,10 @@
 package com.merseyside.merseyLib.time.utils.serializers
 
 import com.merseyside.merseyLib.kotlin.logger.log
-import com.merseyside.merseyLib.kotlin.serialization.deserialize
-import com.merseyside.merseyLib.time.Time
 import com.merseyside.merseyLib.time.TimeZone
 import com.merseyside.merseyLib.time.ext.toFormattedDate
-import com.merseyside.merseyLib.time.units.TimeUnit
 import com.merseyside.merseyLib.time.units.ZonedTimeUnit
 import com.merseyside.merseyLib.time.utils.Pattern
-import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
@@ -58,17 +54,12 @@ class StringAsServerTimeZoneSerializer : KSerializer<ZonedTimeUnit> {
     )
 
     override fun deserialize(decoder: Decoder): ZonedTimeUnit {
-        //val stringTimeUnit = decoder.decodeString()
-        //stringTimeUnit.log("kek", "str time unit")
         val timeUnit = IsoInstantTimeUnitSerializer.deserialize(decoder)
-//        val timeUnit =
-//            stringTimeUnit.deserialize(deserializationStrategy = IsoInstantTimeUnitSerializer)
-        return ZonedTimeUnit.withServerTimeZone(timeUnit)
+        return ZonedTimeUnit.withServerTimeZone(timeUnit).log("kek", "zoned time =")
     }
 
     override fun serialize(encoder: Encoder, value: ZonedTimeUnit) {
-        val string = value.localTimeUnit.toFormattedDate(Pattern.Offset.ISO_OFFSET_DATE_TIME).date
+        val string = value.localTimeUnit.toFormattedDate(Pattern.ISO_INSTANT).date
         encoder.encodeString(string)
     }
-
 }

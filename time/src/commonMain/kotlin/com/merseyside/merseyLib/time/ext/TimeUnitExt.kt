@@ -20,7 +20,7 @@ fun TimeUnit.toCalendarDate(): CalendarDate {
 
 fun TimeUnit.toCalendarBuilder(): Calendar.Builder {
     return Calendar.Builder()
-        .setYear(toYears())
+        .setYear(toYearsSince1970())
         .setMonth(toMonth())
         .setDay(toDayOfMonth())
 }
@@ -101,7 +101,12 @@ fun TimeUnit.toDayOfYear(): Int {
     return getDayOfYear(this)
 }
 
-fun TimeUnit.toYears(): CalendarYears {
+fun TimeUnit.toYears(): Years {
+    val years = this.toDays().value / Days(Years.DAYS_CONST).value
+    return Years(years.toInt())
+}
+
+fun TimeUnit.toYearsSince1970(): CalendarYears {
     return getYear(this)
 }
 
@@ -265,10 +270,6 @@ fun TimeUnit.roundByDivider(divider: TimeUnit): TimeUnit {
     }
 }
 
-fun TimeUnit.moreThanYear(): Boolean {
-    return Years(1).toTimeUnit() > this
-}
-
 @OptIn(ExperimentalContracts::class)
 fun <T : TimeUnit> T?.isNotNullAndEmpty(): Boolean {
     contract {
@@ -284,4 +285,28 @@ fun <T : TimeUnit> T?.isNotNullAndEmpty(block: T.() -> T): T? {
     } else {
         null
     }
+}
+
+fun TimeUnit.moreOrEqualsYear(): Boolean {
+    return Years.asDays() <= this
+}
+
+fun TimeUnit.moreOrEqualsMonth(daysInMonth: Days = Time.configuration.daysInMonth): Boolean {
+    return daysInMonth <= this
+}
+
+fun TimeUnit.moreOrEqualsDay(): Boolean {
+    return Days(1) <= this
+}
+
+fun TimeUnit.moreOrEqualsHour(): Boolean {
+    return Hours(1) <= this
+}
+
+fun TimeUnit.moreOrEqualsMinute(): Boolean {
+    return Minutes(1) <= this
+}
+
+fun TimeUnit.moreOrEqualsSecond(): Boolean {
+    return Seconds(1) <= this
 }

@@ -2,6 +2,7 @@ package com.merseyside.merseyLib.time
 
 import com.merseyside.merseyLib.kotlin.serialization.deserialize
 import com.merseyside.merseyLib.kotlin.serialization.serialize
+import com.merseyside.merseyLib.time.units.Days
 import com.merseyside.merseyLib.time.utils.Pattern
 import com.merseyside.merseyLib.time.utils.Pattern.*
 import com.russhwolf.settings.Settings
@@ -24,6 +25,8 @@ class Configuration internal constructor(private val settings: Settings) {
 
     var language: Language = "en"
     var country: Country = "US"
+
+    var daysInMonth: Days = Days(30)
 
     var hoursMinutesPattern = CUSTOM("HH:mm")
     var dayOfWeekPattern = CUSTOM("EE")

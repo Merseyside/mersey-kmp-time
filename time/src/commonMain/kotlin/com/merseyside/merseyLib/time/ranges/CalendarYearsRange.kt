@@ -43,11 +43,11 @@ operator fun CalendarYearsRange.minus(calendarYears: CalendarYears): TimeRange {
 }
 
 operator fun CalendarYearsRange.inc(): CalendarYearsRange {
-    val year = toYears().value + 1
+    val year = toYearsSince1970().value + 1
     return CalendarYearsRange.from(year)
 }
 
 operator fun CalendarYearsRange.dec(): CalendarYearsRange {
-    val year = toYears().value - 1
+    val year = toYearsSince1970().value - 1
     return CalendarYearsRange.from(year)
 }
