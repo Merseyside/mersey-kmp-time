@@ -55,7 +55,7 @@ class StringAsServerTimeZoneSerializer : KSerializer<ZonedTimeUnit> {
 
     override fun deserialize(decoder: Decoder): ZonedTimeUnit {
         val timeUnit = IsoInstantTimeUnitSerializer.deserialize(decoder)
-        return ZonedTimeUnit.withServerTimeZone(timeUnit).log("kek", "zoned time =")
+        return ZonedTimeUnit.withServerTimeZone(timeUnit)
     }
 
     override fun serialize(encoder: Encoder, value: ZonedTimeUnit) {
