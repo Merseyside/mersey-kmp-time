@@ -3,17 +3,15 @@
 package com.merseyside.merseyLib.time
 
 import android.content.Context
-import com.merseyside.merseyLib.kotlin.logger.log
 import com.merseyside.merseyLib.time.exception.TimeParseException
 import com.merseyside.merseyLib.time.units.*
+import com.merseyside.merseyLib.time.utils.DateTimeFormatterPool
 import com.merseyside.merseyLib.time.utils.Pattern
 import com.merseyside.merseyLib.time.utils.patternToDateTimeFormatter
 import com.russhwolf.settings.SharedPreferencesSettings
-import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.temporal.ChronoUnit
+import java.time.ZoneOffset
 import java.time.temporal.UnsupportedTemporalTypeException
 import java.util.*
 import java.util.TimeZone as SystemTimeZone
@@ -67,9 +65,9 @@ actual fun getFormattedDate(
             is Pattern.CUSTOM -> parseCustomDate(timeUnit, pattern.value)
             else -> {
                 val formatter = patternToDateTimeFormatter(pattern)
-                var instant = Instant.ofEpochMilli(timeUnit.millis)
 
-                var ldt = LocalDateTime.ofInstant(instant, ZoneId.of("UTC"))
+                val ldt =
+                    LocalDateTime.ofInstant(Instant.ofEpochMilli(timeUnit.millis), ZoneOffset.UTC)
 
                 formatter.format(ldt)
             }
@@ -94,13 +92,10 @@ actual fun getYear(timeUnit: TimeUnit): CalendarYears {
     return CalendarYears(getUnit(timeUnit, Calendar.YEAR))
 }
 
-private fun getUnit(
-    timeUnit: TimeUnit,
-    unit: Int
-): Int {
+private fun getUnit(timeUnit: TimeUnit, unit: Int): Int {
     val calendar = Calendar.getInstance()
     calendar.time = Date(timeUnit.millis)
-    calendar.timeZone = SystemTimeZone.getTimeZone(TimeZone.GMT.zoneId)
+    calendar.timeZone = SystemTimeZone.getTimeZone(ZoneOffset.UTC)
 
     return calendar.get(unit)
 }
@@ -108,12 +103,10 @@ private fun getUnit(
 @Throws(TimeParseException::class)
 private fun parseCustomDate(timeUnit: TimeUnit, pattern: String): String {
     return try {
-        val sdf = SimpleDateFormat(pattern, getLocale())
+        val localDateTime =
+            LocalDateTime.ofInstant(Instant.ofEpochMilli(timeUnit.millis), ZoneOffset.UTC)
 
-        val netDate = Date(timeUnit.millis)
-
-        sdf.timeZone = SystemTimeZone.getTimeZone(TimeZone.GMT.zoneId)
-        sdf.format(netDate)
+        DateTimeFormatterPool.format(pattern, localDateTime)
     } catch (e: Exception) {
         e.printStackTrace()
         throw TimeParseException()
@@ -129,7 +122,7 @@ actual fun parseByCalendarUnits(
     month: Int,
     year: Int
 ): TimeUnit {
-    val calendar = Calendar.getInstance(SystemTimeZone.getTimeZone(TimeZone.GMT.zoneId)).apply {
+    val calendar = Calendar.getInstance(SystemTimeZone.getTimeZone(ZoneOffset.UTC)).apply {
         set(Calendar.MILLISECOND, millis)
         set(Calendar.SECOND, seconds)
         set(Calendar.MINUTE, minutes)

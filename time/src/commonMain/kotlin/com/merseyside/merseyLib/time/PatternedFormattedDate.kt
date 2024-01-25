@@ -1,6 +1,5 @@
 package com.merseyside.merseyLib.time
 
-import com.merseyside.merseyLib.kotlin.logger.log
 import com.merseyside.merseyLib.time.exception.TimeInitializeException
 import com.merseyside.merseyLib.time.exception.TimeParseException
 import com.merseyside.merseyLib.time.ext.toTimeUnit
@@ -60,9 +59,7 @@ class PatternedFormattedDate internal constructor(
         if (other !is PatternedFormattedDate) return false
         if (!super.equals(other)) return false
 
-        if (pattern != other.pattern) return false
-
-        return true
+        return pattern == other.pattern
     }
 
     override fun hashCode(): Int {

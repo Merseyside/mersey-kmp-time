@@ -14,7 +14,6 @@ import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import kotlin.native.concurrent.ThreadLocal
 
-@ThreadLocal
 object Time {
     lateinit var configuration: Configuration
     
@@ -97,7 +96,6 @@ object Time {
             subclass(MonthRange::class)
         }
     }
-
 }
 
 internal expect fun getCurrentTimeGMT(): TimeUnit
