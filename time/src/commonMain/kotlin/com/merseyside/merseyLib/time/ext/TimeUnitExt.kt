@@ -310,3 +310,9 @@ fun TimeUnit.moreOrEqualsMinute(): Boolean {
 fun TimeUnit.moreOrEqualsSecond(): Boolean {
     return Seconds(1) <= this
 }
+
+val TimeUnit.tomorrow: Days
+    get() = this.toDays() + 1
+
+val TimeUnit.yesterday: Days
+    get() = this.toDays() - 1

@@ -75,7 +75,7 @@ actual fun getFormattedDate(
 
         PatternedFormattedDate(formattedDate, pattern)
     } catch (e: UnsupportedTemporalTypeException) {
-        throw TimeParseException("Can not parse timeUnit $timeUnit with $pattern pattern", e)
+        throw TimeParseException(timeUnit, pattern, e)
     }
 }
 
@@ -109,7 +109,7 @@ private fun parseCustomDate(timeUnit: TimeUnit, pattern: String): String {
         DateTimeFormatterPool.format(pattern, localDateTime)
     } catch (e: Exception) {
         e.printStackTrace()
-        throw TimeParseException()
+        throw TimeParseException(timeUnit, pattern)
     }
 }
 

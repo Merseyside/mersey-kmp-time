@@ -91,6 +91,6 @@ private fun parseCustomDate(date: String, pattern: String): TimeUnit {
             throw TimeParseException("Can not parse time. Date is null!")
         }
     } catch (e: ParseException) {
-        throw TimeParseException(cause = e)
+        throw TimeParseException(e.message, cause = e)
     }
 }
