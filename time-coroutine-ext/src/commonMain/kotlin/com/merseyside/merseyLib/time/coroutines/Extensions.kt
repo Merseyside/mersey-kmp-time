@@ -1,6 +1,6 @@
 package com.merseyside.merseyLib.time.coroutines
 
-import com.merseyside.merseyLib.kotlin.coroutines.utils.repeatUntilCancel
+import com.merseyside.merseyLib.kotlin.coroutines.ext.repeatUntilCancel
 import com.merseyside.merseyLib.time.units.TimeUnit
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.debounce
