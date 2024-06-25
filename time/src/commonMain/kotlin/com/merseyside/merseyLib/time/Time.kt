@@ -34,7 +34,7 @@ object Time {
         get() = systemTime.toDays().round()
 
     val todayRange: TimeRange
-        get() = today.toDayTimeRange()
+        get() = today.toDayTimeRange(false)
 
     fun getCurrentDayTime(): TimeUnit {
         return now.localTimeUnit.toHoursMinutesOfDay()
