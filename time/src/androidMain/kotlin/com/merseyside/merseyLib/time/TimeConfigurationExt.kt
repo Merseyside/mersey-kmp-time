@@ -1,4 +1,4 @@
-@file:JvmName("AndroidTime.configurationExt")
+@file:JvmName("AndroidTimeConfigurationExt")
 
 package com.merseyside.merseyLib.time
 

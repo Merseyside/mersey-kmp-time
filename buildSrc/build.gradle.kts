@@ -12,7 +12,7 @@ repositories {
 
 dependencies {
     with(catalogGradle) {
-        implementation(android.gradle.stable)
+        implementation(android.gradle)
         implementation(kotlin.gradle)
         implementation(kotlin.serialization)
         implementation(mersey.gradlePlugins)
