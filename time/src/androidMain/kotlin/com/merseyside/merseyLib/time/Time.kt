@@ -3,6 +3,7 @@
 package com.merseyside.merseyLib.time
 
 import android.content.Context
+import com.merseyside.merseyLib.kotlin.logger.log
 import com.merseyside.merseyLib.time.exception.TimeParseException
 import com.merseyside.merseyLib.time.units.*
 import com.merseyside.merseyLib.time.utils.DateTimeFormatterPool
@@ -58,12 +59,13 @@ actual fun getFormattedDate(
         "Time unit can not be parsed with " +
                 "offset pattern. Only ZonedTimeUnit can be parsed with this $pattern"
     )
-
+    timeUnit.log("kek1")
     return try {
         val formattedDate = when (pattern) {
             is Pattern.EMPTY -> throw TimeParseException("Can not parse with empty pattern!")
-            is Pattern.CUSTOM -> parseCustomDate(timeUnit, pattern.value)
+            is Pattern.CUSTOM -> parseCustomDate(timeUnit, pattern.value).log("keke2")
             else -> {
+
                 val formatter = patternToDateTimeFormatter(pattern)
 
                 val ldt =
@@ -73,7 +75,7 @@ actual fun getFormattedDate(
             }
         }
 
-        PatternedFormattedDate(formattedDate, pattern)
+        PatternedFormattedDate(formattedDate, pattern).log("kek3")
     } catch (e: UnsupportedTemporalTypeException) {
         throw TimeParseException(timeUnit, pattern, e)
     }
