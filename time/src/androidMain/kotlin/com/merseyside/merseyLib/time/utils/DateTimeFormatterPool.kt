@@ -8,7 +8,7 @@ object DateTimeFormatterPool {
 
     private val formattersPool = mutableMapOf<String, DateTimeFormatter>()
 
-    fun clearFormatter(){
+    fun clearFormatters() {
         formattersPool.clear()
     }
 
