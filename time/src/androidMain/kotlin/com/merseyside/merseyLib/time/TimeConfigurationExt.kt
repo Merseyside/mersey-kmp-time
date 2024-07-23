@@ -9,7 +9,7 @@ import java.util.Locale
 fun Configuration.setupWithLocale(locale: Locale) {
     language = locale.language
     country = locale.country
-    DateTimeFormatterPool.clearFormatter()
+    DateTimeFormatterPool.clearFormatters()
 }
 
 internal fun getLocale(
