@@ -58,12 +58,12 @@ actual fun getFormattedDate(
         "Time unit can not be parsed with " +
                 "offset pattern. Only ZonedTimeUnit can be parsed with this $pattern"
     )
-
     return try {
         val formattedDate = when (pattern) {
             is Pattern.EMPTY -> throw TimeParseException("Can not parse with empty pattern!")
             is Pattern.CUSTOM -> parseCustomDate(timeUnit, pattern.value)
             else -> {
+
                 val formatter = patternToDateTimeFormatter(pattern)
 
                 val ldt =
