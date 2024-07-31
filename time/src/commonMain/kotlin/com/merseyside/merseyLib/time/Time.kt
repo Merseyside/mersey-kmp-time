@@ -12,12 +12,11 @@ import com.russhwolf.settings.Settings
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
-import kotlin.native.concurrent.ThreadLocal
 
 object Time {
     lateinit var configuration: Configuration
     
-    fun onInitialized(settings: Settings) {
+    fun setConfiguration(settings: Settings) {
         configuration = Configuration(settings)
     }
     

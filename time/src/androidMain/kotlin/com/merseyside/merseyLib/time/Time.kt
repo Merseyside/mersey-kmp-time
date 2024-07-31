@@ -19,7 +19,7 @@ import java.util.TimeZone as SystemTimeZone
 fun Time.init(context: Context) {
     val prefs = context.getSharedPreferences("mersey_time_prefs", Context.MODE_PRIVATE)
     val settings = SharedPreferencesSettings(delegate = prefs)
-    onInitialized(settings)
+    setConfiguration(settings)
 }
 
 actual fun getCurrentTimeGMT(): TimeUnit {
