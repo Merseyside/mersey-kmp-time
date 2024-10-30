@@ -1,20 +1,13 @@
-pluginManagement {
-    repositories {
-        mavenCentral()
-        google()
-
-        gradlePluginPortal()
-    }
-}
-
 dependencyResolutionManagement {
     repositories {
         mavenLocal()
         mavenCentral()
+
+        google()
         gradlePluginPortal()
     }
 
-    val catalogVersions = "1.8.2"
+    val catalogVersions = "1.8.3"
     val group = "io.github.merseyside"
     versionCatalogs {
 
