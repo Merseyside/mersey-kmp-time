@@ -34,11 +34,13 @@ class Configuration internal constructor(private val settings: Settings) {
     var monthPattern = CUSTOM("MM")
     var timePattern = CUSTOM("HH:mm:ss.SSS")
     var yearPattern = CUSTOM("yy")
+    var serverPattern =  CUSTOM("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
 
     var datePattern: Pattern = CUSTOM("$dayPattern.$monthPattern.$yearPattern")
     var dateWithTimePattern: Pattern = CUSTOM("$datePattern $hoursMinutesPattern")
     var defaultPattern: Pattern = dateWithTimePattern
     var dayMonthPattern: Pattern = CUSTOM("dd MMMM")
+
 
     var zonedDefaultPattern: Offset = Offset.ISO_OFFSET_DATE_TIME
 
