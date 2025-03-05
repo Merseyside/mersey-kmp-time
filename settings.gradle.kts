@@ -11,7 +11,7 @@ dependencyResolutionManagement {
         gradlePluginPortal()
     }
 
-    val catalogVersions = "1.8.4"
+    val catalogVersions = "1.8.5"
     val group = "io.github.merseyside"
     versionCatalogs {
         val multiplatformLibs by creating {
