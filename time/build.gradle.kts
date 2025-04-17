@@ -1,4 +1,3 @@
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     with(catalogPlugins.plugins) {
         plugin(android.library)
@@ -61,7 +60,6 @@ kotlin {
             // (Optional) Dependency export
             transitiveExport = true
             // (Optional) Bitcode embedding
-            embedBitcode(org.jetbrains.kotlin.gradle.plugin.mpp.BitcodeEmbeddingMode.BITCODE)
             podfile = project.file("../ios-app-swiftui/Podfile")
         }
 
