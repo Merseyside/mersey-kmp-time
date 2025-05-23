@@ -69,12 +69,6 @@ kotlin {
     }
 }
 
-android {
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-    }
-}
-
 androidExtension {
     sourceSets {
         setSourceSets = false
@@ -92,21 +86,10 @@ kswift {
     install(dev.icerock.moko.kswift.plugin.feature.PlatformExtensionFunctionsFeature)
 }
 
-val commonLibs = listOf(
-    common.serialization
-)
-
 dependencies {
     commonMainImplementation(multiplatformLibs.settings)
-
-    if (isLocalKotlinExtLibrary()) {
-        commonMainImplementation(project(":kotlin-ext"))
-    } else {
-        commonMainImplementation(common.mersey.kotlin.ext)
-    }
+    commonMainImplementation(common.mersey.kotlin.ext)
+    commonMainImplementation(common.serialization)
 
     commonMainApi(multiplatformLibs.moko.kswift)
-    commonLibs.forEach { commonMainImplementation(it) }
-
-    coreLibraryDesugaring(androidLibs.desugarJdk)
 }

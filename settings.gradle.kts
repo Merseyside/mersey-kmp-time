@@ -1,7 +1,5 @@
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-private val isLocalKotlinExtLibrary = false
-
 dependencyResolutionManagement {
     repositories {
         mavenLocal()
@@ -41,11 +39,5 @@ include(
     ":time-coroutine-ext",
     ":android-app"
 )
-
-if (isLocalKotlinExtLibrary) {
-    include(":kotlin-ext")
-    project(":kotlin-ext").projectDir =
-        File(rootDir.parent, "mersey-kotlin-ext/kotlin-ext")
-}
 
 rootProject.name = "kmm-time-library"
