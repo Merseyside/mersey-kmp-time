@@ -15,24 +15,19 @@ plugins {
 
 android {
     namespace = "com.merseyside.merseyLib.time"
-    compileSdk = Application.compileSdk
+    compileSdk = androidLibs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = Application.minSdk
+        minSdk = androidLibs.versions.compileMinSdk.get().toInt()
     }
 }
 
 kotlin {
-    androidTarget {
-        publishLibraryVariants("release", "debug")
-        publishLibraryVariantsGroupedByFlavor = true
-    }
+    androidTarget()
 
     iosArm64()
     iosX64()
     iosSimulatorArm64()
-
-    applyDefaultHierarchyTemplate()
 
     multiplatformSwiftPackage {
         packageName("Time")
@@ -73,13 +68,11 @@ androidExtension {
     sourceSets {
         setSourceSets = false
     }
-
 }
 
 kotlinExtension {
     setCompilerArgs("-Xskip-prerelease-check")
 }
-
 
 kswift {
     install(dev.icerock.moko.kswift.plugin.feature.SealedToSwiftEnumFeature)

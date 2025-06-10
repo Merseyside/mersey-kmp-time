@@ -1,4 +1,3 @@
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     with(catalogPlugins.plugins) {
         plugin(android.library)
@@ -13,53 +12,41 @@ plugins {
 
 android {
     namespace = "com.merseyside.merseyLib.time.coroutines"
-    compileSdk = Application.compileSdk
+    compileSdk = androidLibs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = Application.minSdk
+        minSdk = androidLibs.versions.compileMinSdk.get().toInt()
     }
 }
 
 kotlin {
-    androidTarget {
-        publishLibraryVariants("release", "debug")
-        publishLibraryVariantsGroupedByFlavor = true
-    }
+    androidTarget()
 
     iosArm64()
     iosSimulatorArm64()
     iosX64()
-
-    applyDefaultHierarchyTemplate()
 }
 
 androidExtension {
     sourceSets {
         setSourceSets = false
     }
-
 }
 
 kotlinExtension {
     setCompilerArgs("-Xskip-prerelease-check")
 }
 
-
 kswift {
     install(dev.icerock.moko.kswift.plugin.feature.SealedToSwiftEnumFeature)
     install(dev.icerock.moko.kswift.plugin.feature.PlatformExtensionFunctionsFeature)
 }
 
-
 dependencies {
     commonMainImplementation(projects.time)
     commonMainImplementation(common.coroutines)
 
-    if (isLocalKotlinExtLibrary()) {
-        commonMainImplementation(project(":kotlin-ext"))
-    } else {
-        commonMainImplementation(common.mersey.kotlin.ext)
-    }
+    commonMainImplementation(common.mersey.kotlin.ext)
 
     commonMainApi(multiplatformLibs.moko.kswift)
 }

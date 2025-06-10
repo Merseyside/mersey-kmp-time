@@ -1,4 +1,3 @@
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     with(catalogPlugins.plugins) {
         plugin(android.application)
@@ -11,13 +10,13 @@ plugins {
 
 android {
     namespace = "com.merseyside.time"
-    compileSdk = Application.compileSdk
+    compileSdk = androidLibs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = Application.minSdk
-        targetSdk = Application.targetSdk
+        minSdk = androidLibs.versions.compileMinSdk.get().toInt()
+        targetSdk = androidLibs.versions.compileTargetSdk.get().toInt()
 
-        applicationId = Application.applicationId
+        applicationId = "com.merseyside.time.sample"
 
         versionCode = 1
         versionName = "0.1.0"
