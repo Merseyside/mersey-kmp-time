@@ -34,10 +34,14 @@ dependencyResolutionManagement {
     }
 }
 
+val isCompositeBuild = gradle.parent != null
+if (!isCompositeBuild) {
+    include(":android-app")
+}
+
 include(
     ":time",
-    ":time-coroutine-ext",
-    ":android-app"
+    ":time-coroutine-ext"
 )
 
 rootProject.name = "kmm-time-library"
