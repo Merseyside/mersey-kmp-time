@@ -52,8 +52,6 @@ kotlin {
             // Optional properties
             // (Optional) Dynamic framework support
             isStatic = false
-            // (Optional) Dependency export
-            transitiveExport = true
             // (Optional) Bitcode embedding
             podfile = project.file("../ios-app-swiftui/Podfile")
         }

@@ -4,6 +4,8 @@ import com.merseyside.merseyLib.time.units.TimeUnit
 import com.merseyside.merseyLib.time.exception.TimeInitializeException
 import com.merseyside.merseyLib.time.ext.getGap
 import com.merseyside.merseyLib.time.ext.getHumanDate
+import com.merseyside.merseyLib.time.units.compareTo
+import com.merseyside.merseyLib.time.units.unaryMinus
 
 interface TimeRange : Comparable<TimeRange> {
     val start: TimeUnit
@@ -11,9 +13,18 @@ interface TimeRange : Comparable<TimeRange> {
 
     @Throws(IllegalArgumentException::class)
     fun requireValid() {
-        if (start > end)
-            throw TimeInitializeException("Start value ${start.getHumanDate()} must be less" +
-                    " than end value ${end.getHumanDate()}")
+        check(start < end) {
+            throw TimeInitializeException(
+                "Start value ${start.getHumanDate()} must be less" +
+                        " than end value ${end.getHumanDate()}"
+            )
+        }
+
+        check(start >= 0 || start == -TimeUnit.UNDEFINED) {
+            throw TimeInitializeException(
+                "Start value ${start.getHumanDate()} must be positive or equal to UNDEFINED"
+            )
+        }
     }
 
     override fun compareTo(other: TimeRange): Int {

@@ -60,6 +60,11 @@ operator fun <T : TimeUnit> T.rem(other: TimeUnit): T {
     return newInstanceMillis(millis % other.millis) as T
 }
 
+operator fun <T : TimeUnit> T.unaryMinus(): T {
+    return newInstanceMillis(-millis) as T
+}
+
+
 fun <T : TimeUnit> T.round() = newInstance(value) as T
 
 fun <T : TimeUnit> T.isRound() = newInstance(value).millis == millis
@@ -142,6 +147,12 @@ interface TimeUnit : Comparable<TimeUnit> {
         inline fun <reified T : TimeUnit> empty(): T {
             return Millis(0).castTo(T::class)
         }
+
+        fun TimeUnit.UNDEFINED(): TimeUnit {
+            return UNDEFINED
+        }
+
+        val UNDEFINED = Millis(Long.MAX_VALUE)
     }
 }
 
