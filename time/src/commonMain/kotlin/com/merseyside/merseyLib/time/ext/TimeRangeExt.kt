@@ -14,12 +14,11 @@ fun TimeRange.isEmpty(): Boolean {
 }
 
 fun TimeRange.toTimeUnitRange(): TimeUnitRange {
-    return if (this is TimeUnitRange) this
-    else TimeUnitRange(start, end)
+    return this as? TimeUnitRange ?: TimeUnitRange(start, end)
 }
 
 fun <T : TimeRange> List<T>.findEdge(): TimeUnitRange {
-    if (isEmpty()) throw  IllegalArgumentException("List can not be empty!")
+    if (isEmpty()) throw IllegalArgumentException("List can not be empty!")
     val mutList = this.toMutableList()
 
     return if (size > 1) {
@@ -47,7 +46,7 @@ fun <T : TimeRange> List<T>.findEdge(block: (TimeUnitRange) -> T): T {
 
 fun <T : TimeRange> T.toDaysOfWeek(): List<DayOfWeek> {
     return if (getGap() > Weeks(1)) {
-        DayOfWeek.values().toList()
+        DayOfWeek.entries
     } else {
         val startDay = start.toDayOfWeek()
         val endDay = end.toDayOfWeek()
@@ -56,10 +55,10 @@ fun <T : TimeRange> T.toDaysOfWeek(): List<DayOfWeek> {
             if (getGap() < Days(1)) {
                 return listOf(startDay)
             } else {
-                DayOfWeek.values().toList()
+                DayOfWeek.entries
             }
         } else {
-            val list = DayOfWeek.values().toMutableList()
+            val list = DayOfWeek.entries.toMutableList()
             if (endDay.index < startDay.index) {
                 val indexRange = (endDay.index + 1 until startDay.index)
                 list.filter { !indexRange.contains(it.index) }.toList()

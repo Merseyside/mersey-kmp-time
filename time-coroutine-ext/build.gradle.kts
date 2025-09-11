@@ -1,8 +1,6 @@
 plugins {
+    `kotlin-multiplatform-convention`
     with(catalogPlugins.plugins) {
-        plugin(android.library)
-        plugin(kotlin.multiplatform)
-        id(mersey.android.extension.id())
         id(mersey.kotlin.extension.id())
         plugin(kotlin.kapt)
         plugin(moko.kswift)
@@ -10,26 +8,18 @@ plugins {
     `maven-publish-plugin`
 }
 
-android {
-    namespace = "com.merseyside.merseyLib.time.coroutines"
-    compileSdk = androidLibs.versions.compileSdk.get().toInt()
-
-    defaultConfig {
-        minSdk = androidLibs.versions.compileMinSdk.get().toInt()
-    }
-}
-
 kotlin {
-    androidTarget()
+    androidLibrary {
+        namespace = "com.merseyside.merseyLib.time.coroutines"
+    }
 
-    iosArm64()
-    iosSimulatorArm64()
-    iosX64()
-}
-
-androidExtension {
     sourceSets {
-        setSourceSets = false
+        commonMain.dependencies {
+            implementation(projects.time)
+            implementation(common.coroutines)
+            implementation(common.mersey.kotlin.ext)
+            api(multiplatformLibs.moko.kswift)
+        }
     }
 }
 
@@ -40,13 +30,4 @@ kotlinExtension {
 kswift {
     install(dev.icerock.moko.kswift.plugin.feature.SealedToSwiftEnumFeature)
     install(dev.icerock.moko.kswift.plugin.feature.PlatformExtensionFunctionsFeature)
-}
-
-dependencies {
-    commonMainImplementation(projects.time)
-    commonMainImplementation(common.coroutines)
-
-    commonMainImplementation(common.mersey.kotlin.ext)
-
-    commonMainApi(multiplatformLibs.moko.kswift)
 }
