@@ -29,7 +29,6 @@ operator fun <T : TimeUnit> T.times(times: Number): T {
 }
 
 operator fun <T : TimeUnit> T.plus(increment: TimeUnit): T {
-    if (increment is UNDEFINED) return this
     return newInstanceMillis(this.millis + increment.millis) as T
 }
 
@@ -329,8 +328,7 @@ class Days private constructor(override val millis: Long) : TimeUnit {
         return millis.hashCode()
     }
 }
-
-@Serializable
+ @Serializable
 class Weeks private constructor(override val millis: Long) : TimeUnit {
 
     override val value: Long = toDays().value / Conversions.WEEK_CONST
@@ -364,30 +362,4 @@ class Weeks private constructor(override val millis: Long) : TimeUnit {
     override fun hashCode(): Int {
         return millis.hashCode()
     }
-}
-
-@Serializable
-object UNDEFINED : TimeUnit {
-    override val millis: Long
-        get() = throw UnsupportedOperationException(errorMsg)
-    override val value: Long
-        get() = throw UnsupportedOperationException(errorMsg)
-
-    override fun newInstance(value: Long): TimeUnit {
-        return this
-    }
-
-    override fun newInstanceMillis(millis: Long): TimeUnit {
-        return this
-    }
-
-    override fun toString(): String {
-        return "UNDEFINED"
-    }
-
-    override fun equals(other: Any?): Boolean {
-        return this === other
-    }
-
-    const val errorMsg = "UNDEFINED timeUnit doesn't support any operations"
 }

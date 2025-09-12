@@ -2,10 +2,10 @@ package com.merseyside.merseyLib.time
 
 import com.merseyside.merseyLib.time.exception.TimeParseException
 import com.merseyside.merseyLib.time.ext.*
-import com.merseyside.merseyLib.time.ranges.MonthRange
+import com.merseyside.merseyLib.time.ranges.month.MonthRange
 import com.merseyside.merseyLib.time.ranges.TimeRange
-import com.merseyside.merseyLib.time.ranges.TimeUnitRange
-import com.merseyside.merseyLib.time.ranges.WeekRange
+import com.merseyside.merseyLib.time.ranges.TimeRangeImpl
+import com.merseyside.merseyLib.time.ranges.week.WeekRange
 import com.merseyside.merseyLib.time.units.*
 import com.merseyside.merseyLib.time.utils.Pattern
 import com.russhwolf.settings.Settings
@@ -90,7 +90,7 @@ object Time {
         }
 
         polymorphic(TimeRange::class) {
-            subclass(TimeUnitRange::class)
+            subclass(TimeRangeImpl::class)
             subclass(WeekRange::class)
             subclass(MonthRange::class)
         }

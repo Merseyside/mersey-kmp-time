@@ -40,6 +40,7 @@ android {
     packaging {
         packagingOptions.resources.excludes.addAll(
             setOf(
+                "META-INF/INDEX.LIST",
                 "META-INF/*.kotlin_module",
                 "META-INF/DEPENDENCIES",
                 "META-INF/NOTICE",
@@ -73,9 +74,13 @@ val android = listOf(
 val merseyLibs = listOf(
     androidLibs.mersey.archy,
     androidLibs.mersey.utils
+
 )
 
 dependencies {
+    implementation(projects.time)
+    implementation(projects.timeCoroutineExt)
+
     android.forEach { lib -> implementation(lib) }
     merseyLibs.forEach { lib -> implementation(lib) }
 }

@@ -1,6 +1,6 @@
-package com.merseyside.merseyLib.time.ext
+package com.merseyside.merseyLib.time.ranges.years
 
-import com.merseyside.merseyLib.time.ranges.CalendarYearsRange
+import com.merseyside.merseyLib.time.ext.toYearsSince1970
 import com.merseyside.merseyLib.time.units.CalendarYears
 
 fun CalendarYearsRange.toYearsSince1970(): CalendarYears {

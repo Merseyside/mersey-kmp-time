@@ -5,19 +5,29 @@ import com.merseyside.merseyLib.time.PatternedFormattedDate
 import com.merseyside.merseyLib.time.units.TimeUnit
 import com.merseyside.merseyLib.time.units.ZonedTimeUnit
 import com.merseyside.merseyLib.time.exception.TimeParseException
+import com.merseyside.merseyLib.time.ranges.undefined.Undefined
+
+inline fun PatternedFormattedDate.checkUndefined(undefined: () -> Unit) {
+    if (pattern is Pattern.UNDEFINED) undefined()
+}
 
 @Throws(TimeParseException::class)
 fun PatternedFormattedDate.toPattern(newPattern: Pattern): PatternedFormattedDate {
+    checkUndefined { return this }
+
     val timeUnit = toTimeUnit(pattern)
     return PatternedFormattedDate(timeUnit.toFormattedDate(newPattern), newPattern)
 }
 
 @Throws(TimeParseException::class)
 fun PatternedFormattedDate.toPattern(newPattern: String): PatternedFormattedDate {
+    checkUndefined { return this }
     return toPattern(Pattern.CUSTOM(newPattern))
 }
 
 fun PatternedFormattedDate.toTimeUnit(): TimeUnit {
+    checkUndefined { return Undefined.MIN() }
+
     return date.toTimeUnit(pattern)
 }
 

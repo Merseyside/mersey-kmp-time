@@ -2,9 +2,9 @@ package com.merseyside.merseyLib.time.utils.serializers
 
 import com.merseyside.merseyLib.kotlin.serialization.deserialize
 import com.merseyside.merseyLib.kotlin.serialization.serialize
-import com.merseyside.merseyLib.time.ranges.MonthRange
-import com.merseyside.merseyLib.time.ranges.TimeUnitRange
-import com.merseyside.merseyLib.time.ranges.WeekRange
+import com.merseyside.merseyLib.time.ranges.month.MonthRange
+import com.merseyside.merseyLib.time.ranges.TimeRangeImpl
+import com.merseyside.merseyLib.time.ranges.week.WeekRange
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
@@ -14,7 +14,7 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object TimeUnitRangeAsListSerializer : KSerializer<TimeUnitRange> {
+internal object TimeUnitRangeAsListSerializer : KSerializer<TimeRangeImpl> {
     override val descriptor: SerialDescriptor =
         PrimitiveSerialDescriptor(
             "com.merseyside.merseyLib.time.utils.serializers.TimeUnitRangeAsListSerializer",
@@ -24,7 +24,7 @@ internal object TimeUnitRangeAsListSerializer : KSerializer<TimeUnitRange> {
     private val serializer: KSerializer<List<String>> =
         ListSerializer(String.serializer())
 
-    override fun serialize(encoder: Encoder, value: TimeUnitRange) {
+    override fun serialize(encoder: Encoder, value: TimeRangeImpl) {
         with(value) {
             val start = start.serialize()
             val end = end.serialize()
@@ -36,9 +36,9 @@ internal object TimeUnitRangeAsListSerializer : KSerializer<TimeUnitRange> {
         }
     }
 
-    override fun deserialize(decoder: Decoder): TimeUnitRange {
+    override fun deserialize(decoder: Decoder): TimeRangeImpl {
         val list = decoder.decodeSerializableValue(serializer)
-        return TimeUnitRange(
+        return TimeRangeImpl(
             start = list[0].deserialize(),
             end = list[1].deserialize()
         )

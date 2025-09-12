@@ -1,9 +1,8 @@
-package com.merseyside.merseyLib.time.ranges
+package com.merseyside.merseyLib.time.ranges.month
 
 import com.merseyside.merseyLib.time.units.TimeUnit
-import com.merseyside.merseyLib.time.ext.getNextMonth
-import com.merseyside.merseyLib.time.ext.getPrevMonth
-import com.merseyside.merseyLib.time.ext.toHumanString
+import com.merseyside.merseyLib.time.ranges.TimeRange
+import com.merseyside.merseyLib.time.ranges.ext.toHumanString
 import com.merseyside.merseyLib.time.utils.Pattern
 
 import kotlinx.serialization.Serializable

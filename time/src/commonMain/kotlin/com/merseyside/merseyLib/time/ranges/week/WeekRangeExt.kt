@@ -1,11 +1,15 @@
-package com.merseyside.merseyLib.time.ext
+package com.merseyside.merseyLib.time.ranges.week
 
+import com.merseyside.merseyLib.time.ext.toMonthRange
+import com.merseyside.merseyLib.time.ext.toTimeUnit
 import com.merseyside.merseyLib.time.units.DayOfWeek
 import com.merseyside.merseyLib.time.units.TimeUnit
 import com.merseyside.merseyLib.time.units.plus
 import com.merseyside.merseyLib.time.ranges.TimeRange
-import com.merseyside.merseyLib.time.ranges.TimeUnitRange
-import com.merseyside.merseyLib.time.ranges.WeekRange
+import com.merseyside.merseyLib.time.ranges.TimeRangeImpl
+import com.merseyside.merseyLib.time.ranges.ext.intersect
+import com.merseyside.merseyLib.time.ranges.ext.shift
+import com.merseyside.merseyLib.time.ranges.ext.shiftBack
 import com.merseyside.merseyLib.time.units.Weeks
 
 fun WeekRange.toTimeUnitByDayOfWeek(dayOfWeek: DayOfWeek): TimeUnit {
@@ -18,7 +22,7 @@ fun WeekRange.toTimeUnitByDayOfWeek(index: Int): TimeUnit {
 
 fun WeekRange.intersectWithMonth(): TimeRange {
     val currentMonth = start.toMonthRange()
-    return TimeUnitRange(currentMonth.intersect(this) ?: throw Exception("Should never happened."))
+    return TimeRangeImpl(currentMonth.intersect(this) ?: throw Exception("Should never happened."))
 }
 
 fun WeekRange.getNextWeek(): WeekRange {

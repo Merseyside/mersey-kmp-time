@@ -46,7 +46,7 @@ class PatternedFormattedDate internal constructor(
                     throw TimeInitializeException("Pattern is empty!")
 
                 if (pattern.isOffsetPattern()) {
-                    date.toZonedTimeUnit(pattern as Pattern.Offset)
+                    date.toZonedTimeUnit(pattern)
                 } else {
                     date.toTimeUnit(pattern)
                 }
@@ -69,3 +69,5 @@ class PatternedFormattedDate internal constructor(
     }
 
 }
+
+fun UndefinedPatternedFormattedDate(date: String) = PatternedFormattedDate(date, Pattern.UNDEFINED)

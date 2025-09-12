@@ -17,5 +17,7 @@ internal fun patternToDateTimeFormatter(pattern: Pattern): DateTimeFormatter {
 
         is ISO_LOCAL_DATE -> DateTimeFormatter.ISO_LOCAL_DATE
         is ISO_LOCAL_TIME -> DateTimeFormatter.ISO_LOCAL_TIME
+
+        is Pattern.UNDEFINED -> throw UnsupportedOperationException()
     }
 }

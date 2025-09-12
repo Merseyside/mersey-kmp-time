@@ -20,6 +20,8 @@ sealed class Pattern {
     open class CUSTOM(val value: String) : Pattern()
     object EMPTY : CUSTOM("")
 
+    object UNDEFINED : Pattern()
+
     override fun toString(): String {
         return if (this is CUSTOM) {
             value

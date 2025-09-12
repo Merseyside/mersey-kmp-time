@@ -1,12 +1,12 @@
 package com.merseyside.merseyLib.time.ext
 
 import com.merseyside.merseyLib.time.parseByCalendarUnits
-import com.merseyside.merseyLib.time.ranges.MonthRange
-import com.merseyside.merseyLib.time.ranges.CalendarYearsRange
+import com.merseyside.merseyLib.time.ranges.ext.splitToMonthRanges
+import com.merseyside.merseyLib.time.ranges.month.MonthRange
+import com.merseyside.merseyLib.time.ranges.years.CalendarYearsRange
 import com.merseyside.merseyLib.time.units.TimeUnit
 import com.merseyside.merseyLib.time.units.CalendarYears
 import com.merseyside.merseyLib.time.units.inc
-import com.merseyside.merseyLib.time.units.plus
 
 fun CalendarYears.isLeap(): Boolean {
     return value % 4 == 0
@@ -29,5 +29,5 @@ fun CalendarYears.toYearsRange(): CalendarYearsRange {
 }
 
 fun CalendarYears.toMonthRanges(): List<MonthRange> {
-    return toYearsRange().toMonthRanges()
+    return toYearsRange().splitToMonthRanges()
 }

@@ -1,8 +1,7 @@
-package com.merseyside.merseyLib.time.ranges
+package com.merseyside.merseyLib.time.ranges.week
 
+import com.merseyside.merseyLib.time.ranges.TimeRange
 import com.merseyside.merseyLib.time.units.TimeUnit
-import com.merseyside.merseyLib.time.ext.getNextWeek
-import com.merseyside.merseyLib.time.ext.getPrevWeek
 import kotlinx.serialization.Serializable
 
 /**
