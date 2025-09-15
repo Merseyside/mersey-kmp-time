@@ -10,17 +10,15 @@ import com.merseyside.merseyLib.time.ext.toZonedTimeUnit
 import com.merseyside.merseyLib.time.utils.Pattern
 import kotlinx.serialization.Serializable
 
+@ConsistentCopyVisibility
 @Serializable
-data class ZonedTimeUnit internal constructor(
-    val gmtTimeUnit: TimeUnit,
-    val timeZone: TimeZone
-) {
+data class ZonedTimeUnit internal constructor(val gmtTimeUnit: TimeUnit, val timeZone: TimeZone) {
 
     val localTimeUnit: TimeUnit
         get() = gmtTimeUnit + timeZone.offset
 
     override fun toString(): String {
-        return "gmt = ${gmtTimeUnit.getHumanDate()} local = ${localTimeUnit.getHumanDate()} $timeZone"
+        return " gmt = ${gmtTimeUnit.getHumanDate()}, local = ${localTimeUnit.getHumanDate()}, $timeZone"
     }
 
     companion object {

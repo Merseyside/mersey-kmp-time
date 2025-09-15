@@ -8,7 +8,6 @@ import com.merseyside.merseyLib.time.calendar.CalendarDate
 import com.merseyside.merseyLib.time.ranges.month.MonthRange
 import com.merseyside.merseyLib.time.ranges.TimeRange
 import com.merseyside.merseyLib.time.ranges.TimeRangeImpl
-import com.merseyside.merseyLib.time.ranges.ext.checkUndefined
 import com.merseyside.merseyLib.time.ranges.undefined.Undefined
 import com.merseyside.merseyLib.time.ranges.week.WeekRange
 import com.merseyside.merseyLib.time.units.*
@@ -174,13 +173,13 @@ fun TimeUnit.toDayOfMonth(): Int {
 }
 
 fun TimeUnit.getHumanDate(pattern: Pattern = Time.configuration.dateWithTimePattern): PatternedFormattedDate {
-    checkUndefined()
+    checkUndefined { return UndefinedPatternedFormattedDate() }
+
     return if (!isMoreThanDay()) toFormattedHoursMinutesOfDay()
     else toFormattedDate(pattern)
 }
 
 fun TimeUnit.getHumanDate(pattern: String): PatternedFormattedDate {
-    checkUndefined()
     return getHumanDate(Pattern.CUSTOM(pattern))
 }
 

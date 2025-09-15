@@ -70,4 +70,4 @@ class PatternedFormattedDate internal constructor(
 
 }
 
-fun UndefinedPatternedFormattedDate(date: String) = PatternedFormattedDate(date, Pattern.UNDEFINED)
+fun UndefinedPatternedFormattedDate(date: String = "Undefined") = PatternedFormattedDate(date, Pattern.UNDEFINED)
