@@ -4,7 +4,7 @@ import com.merseyside.merseyLib.time.FormattedDate
 import com.merseyside.merseyLib.time.TimeZone
 import com.merseyside.merseyLib.time.ext.toFormattedDate
 import com.merseyside.merseyLib.time.ext.toTimeUnit
-import com.merseyside.merseyLib.time.ranges.ZonedTimeUnitRange
+import com.merseyside.merseyLib.time.ranges.ZonedTimeRange
 import com.merseyside.merseyLib.time.units.ZonedTimeUnit
 import com.merseyside.merseyLib.time.utils.Pattern
 import kotlinx.serialization.KSerializer
@@ -69,7 +69,7 @@ class StringAsServerTimeZoneSerializer : KSerializer<ZonedTimeUnit> {
 }
 
 
-class StringAsServerTimeZoneRangeSerializer : KSerializer<ZonedTimeUnitRange> {
+class StringAsServerTimeZoneRangeSerializer : KSerializer<ZonedTimeRange> {
 
     override val descriptor: SerialDescriptor =
         PrimitiveSerialDescriptor(
@@ -80,7 +80,7 @@ class StringAsServerTimeZoneRangeSerializer : KSerializer<ZonedTimeUnitRange> {
     private val serializer: KSerializer<List<String>> =
         ListSerializer(String.serializer())
 
-    override fun serialize(encoder: Encoder, value: ZonedTimeUnitRange) {
+    override fun serialize(encoder: Encoder, value: ZonedTimeRange) {
         with(value) {
             val start = startZoned.localTimeUnit.toFormattedDate().date
             val end = endZoned.localTimeUnit.toFormattedDate().date
@@ -91,11 +91,11 @@ class StringAsServerTimeZoneRangeSerializer : KSerializer<ZonedTimeUnitRange> {
         }
     }
 
-    override fun deserialize(decoder: Decoder): ZonedTimeUnitRange {
+    override fun deserialize(decoder: Decoder): ZonedTimeRange {
         val list = decoder.decodeSerializableValue(serializer)
         val start = FormattedDate(list[0]).toTimeUnit()
         val end = FormattedDate(list[1]).toTimeUnit()
-        return ZonedTimeUnitRange(
+        return ZonedTimeRange(
             startZoned = ZonedTimeUnit.withServerTimeZone(start),
             endZoned = ZonedTimeUnit.withServerTimeZone(end)
         )
