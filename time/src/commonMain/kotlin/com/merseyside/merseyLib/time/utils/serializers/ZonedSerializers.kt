@@ -1,14 +1,18 @@
 package com.merseyside.merseyLib.time.utils.serializers
 
+import com.merseyside.merseyLib.kotlin.utils.safeLet
 import com.merseyside.merseyLib.time.FormattedDate
 import com.merseyside.merseyLib.time.TimeZone
 import com.merseyside.merseyLib.time.ext.toFormattedDate
 import com.merseyside.merseyLib.time.ext.toTimeUnit
 import com.merseyside.merseyLib.time.ranges.ZonedTimeRange
+import com.merseyside.merseyLib.time.ranges.undefined.Undefined
+import com.merseyside.merseyLib.time.ranges.undefined.UndefinedTimeRange
 import com.merseyside.merseyLib.time.units.ZonedTimeUnit
 import com.merseyside.merseyLib.time.utils.Pattern
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
@@ -69,6 +73,9 @@ class StringAsServerTimeZoneSerializer : KSerializer<ZonedTimeUnit> {
 }
 
 
+/**
+ * Formats json array with two strings: f.e ["22:22+03:00", "23:23+03:00"]
+ */
 class StringAsServerTimeZoneRangeSerializer : KSerializer<ZonedTimeRange> {
 
     override val descriptor: SerialDescriptor =
@@ -77,27 +84,52 @@ class StringAsServerTimeZoneRangeSerializer : KSerializer<ZonedTimeRange> {
             PrimitiveKind.STRING
         )
 
-    private val serializer: KSerializer<List<String>> =
-        ListSerializer(String.serializer())
+    private val serializer: KSerializer<List<String?>> =
+        ListSerializer(String.serializer().nullable)
 
     override fun serialize(encoder: Encoder, value: ZonedTimeRange) {
+        val start: String?
+        val end: String?
+
         with(value) {
-            val start = startZoned.localTimeUnit.toFormattedDate().date
-            val end = endZoned.localTimeUnit.toFormattedDate().date
-            encoder.encodeSerializableValue(
-                serializer,
-                listOf(start, end)
-            )
+            if (this is UndefinedTimeRange) {
+                start = if (startZoned.gmtTimeUnit is Undefined) null
+                else startZoned.localTimeUnit.toFormattedDate().date
+
+                end = if (endZoned.gmtTimeUnit is Undefined) null
+                else endZoned.localTimeUnit.toFormattedDate().date
+            } else {
+                start = startZoned.localTimeUnit.toFormattedDate().date
+                end = endZoned.localTimeUnit.toFormattedDate().date
+            }
         }
+
+        encoder.encodeSerializableValue(serializer, listOf(start, end))
     }
 
     override fun deserialize(decoder: Decoder): ZonedTimeRange {
         val list = decoder.decodeSerializableValue(serializer)
-        val start = FormattedDate(list[0]).toTimeUnit()
-        val end = FormattedDate(list[1]).toTimeUnit()
-        return ZonedTimeRange(
-            startZoned = ZonedTimeUnit.withServerTimeZone(start),
-            endZoned = ZonedTimeUnit.withServerTimeZone(end)
-        )
+        val startStr = list[0]
+        val endStr = list[1]
+
+        return safeLet(startStr, endStr) { start, end ->
+            val start = FormattedDate(start).toTimeUnit()
+            val end = FormattedDate(end).toTimeUnit()
+
+            ZonedTimeRange.create(
+                startZoned = ZonedTimeUnit.withServerTimeZone(start),
+                endZoned = ZonedTimeUnit.withServerTimeZone(end)
+            )
+        } ?: run {
+            if (startStr == null && endStr != null) ZonedTimeRange.createWithEnd(
+                ZonedTimeUnit.withServerTimeZone(
+                    FormattedDate(endStr).toTimeUnit()
+                )
+            ) else if (endStr == null && startStr != null) ZonedTimeRange.createWithStart(
+                ZonedTimeUnit.withServerTimeZone(
+                    FormattedDate(startStr).toTimeUnit()
+                )
+            ) else throw IllegalArgumentException("Both ranges are null!")
+        }
     }
 }

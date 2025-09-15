@@ -8,11 +8,36 @@ import com.merseyside.merseyLib.time.units.TimeUnit
 import com.merseyside.merseyLib.time.units.ZonedTimeUnit
 import kotlinx.serialization.Serializable
 
-@Serializable
-data class ZonedTimeRange(
-    val startZoned: ZonedTimeUnit,
+interface ZonedTimeRange : TimeRange {
+    val startZoned: ZonedTimeUnit
     val endZoned: ZonedTimeUnit
-) : TimeRange {
+
+    companion object {
+        fun create(startZoned: ZonedTimeUnit, endZoned: ZonedTimeUnit): ZonedTimeRange {
+            return ZonedTimeRangeImpl(startZoned, endZoned)
+        }
+
+        fun createWithStart(startZoned: ZonedTimeUnit): ZonedTimeRange {
+            return UndefinedZonedTimeRange(
+                startZoned,
+                ZonedTimeUnit(Undefined.MAX(), TimeZone.NOT_SET_ZONE)
+            )
+        }
+
+        fun createWithEnd(endZoned: ZonedTimeUnit): ZonedTimeRange {
+            return UndefinedZonedTimeRange(
+                ZonedTimeUnit(Undefined.MIN(), TimeZone.NOT_SET_ZONE),
+                endZoned
+            )
+        }
+    }
+}
+
+@Serializable
+internal data class ZonedTimeRangeImpl(
+    override val startZoned: ZonedTimeUnit,
+    override val endZoned: ZonedTimeUnit
+) : ZonedTimeRange {
 
     override val start: TimeUnit = startZoned.gmtTimeUnit
     override val end: TimeUnit = endZoned.gmtTimeUnit
@@ -23,26 +48,10 @@ data class ZonedTimeRange(
 }
 
 @Serializable
-class UndefinedZonedTimeRange internal constructor(
-    val startZoned: ZonedTimeUnit,
-    val endZoned: ZonedTimeUnit
-) : UndefinedTimeRange {
+internal data class UndefinedZonedTimeRange(
+    override val startZoned: ZonedTimeUnit,
+    override val endZoned: ZonedTimeUnit
+) : ZonedTimeRange, UndefinedTimeRange {
     override val start: TimeUnit = startZoned.gmtTimeUnit
     override val end: TimeUnit = endZoned.gmtTimeUnit
-
-    companion object {
-        fun createWithStart(start: ZonedTimeUnit): UndefinedZonedTimeRange {
-            return UndefinedZonedTimeRange(
-                start,
-                ZonedTimeUnit(Undefined.MAX(), TimeZone.NOT_SET_ZONE)
-            )
-        }
-
-        fun createWithEnd(end: ZonedTimeUnit): UndefinedZonedTimeRange {
-            return UndefinedZonedTimeRange(
-                ZonedTimeUnit(Undefined.MIN(), TimeZone.NOT_SET_ZONE),
-                end
-            )
-        }
-    }
 }
