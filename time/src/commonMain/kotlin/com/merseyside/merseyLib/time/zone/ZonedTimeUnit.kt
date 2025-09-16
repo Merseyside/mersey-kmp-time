@@ -1,12 +1,14 @@
-package com.merseyside.merseyLib.time.units
+package com.merseyside.merseyLib.time.zone
 
-import com.merseyside.merseyLib.kotlin.logger.Logger
 import com.merseyside.merseyLib.kotlin.extensions.forEachNotNull
+import com.merseyside.merseyLib.kotlin.logger.Logger
 import com.merseyside.merseyLib.time.Time
-import com.merseyside.merseyLib.time.TimeZone
 import com.merseyside.merseyLib.time.exception.TimeParseException
 import com.merseyside.merseyLib.time.ext.getHumanDate
 import com.merseyside.merseyLib.time.ext.toZonedTimeUnit
+import com.merseyside.merseyLib.time.units.TimeUnit
+import com.merseyside.merseyLib.time.units.minus
+import com.merseyside.merseyLib.time.units.plus
 import com.merseyside.merseyLib.time.utils.Pattern
 import kotlinx.serialization.Serializable
 
@@ -14,8 +16,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ZonedTimeUnit internal constructor(val gmtTimeUnit: TimeUnit, val timeZone: TimeZone) {
 
-    val localTimeUnit: TimeUnit
-        get() = gmtTimeUnit + timeZone.offset
+    val localTimeUnit: TimeUnit by lazy { gmtTimeUnit + timeZone.offset }
 
     override fun toString(): String {
         return " gmt = ${gmtTimeUnit.getHumanDate()}, local = ${localTimeUnit.getHumanDate()}, $timeZone"
@@ -40,7 +41,7 @@ data class ZonedTimeUnit internal constructor(val gmtTimeUnit: TimeUnit, val tim
         @Throws(TimeParseException::class)
         fun withServerTimeZone(localTimeUnit: TimeUnit): ZonedTimeUnit {
             val serverTimeZone = Time.configuration.serverTimeZone
-            check(serverTimeZone != TimeZone.NOT_SET_ZONE) {
+            check(serverTimeZone != TimeZone.Companion.NOT_SET_ZONE) {
                 "Can not init ZonedTimeUnit because serverTimeZone wasn't set!"
             }
             return ZonedTimeUnit(localTimeUnit - serverTimeZone.offset, serverTimeZone)

@@ -1,8 +1,12 @@
-package com.merseyside.merseyLib.time.ext
+package com.merseyside.merseyLib.time.zone.ext
 
 import com.merseyside.merseyLib.time.*
+import com.merseyside.merseyLib.time.ext.checkUndefined
+import com.merseyside.merseyLib.time.format.PatternedFormattedDate
 import com.merseyside.merseyLib.time.units.*
 import com.merseyside.merseyLib.time.utils.Pattern
+import com.merseyside.merseyLib.time.zone.TimeZone
+import com.merseyside.merseyLib.time.zone.ZonedTimeUnit
 
 operator fun ZonedTimeUnit.plus(increment: ZonedTimeUnit): TimeUnit {
     return gmtTimeUnit + increment.gmtTimeUnit
@@ -35,8 +39,17 @@ fun ZonedTimeUnit.applyToTimeUnit(block: (TimeUnit) -> TimeUnit): ZonedTimeUnit 
     return ZonedTimeUnit(block(gmtTimeUnit), timeZone)
 }
 
-fun ZonedTimeUnit.toSystemTime(): TimeUnit {
-    return gmtTimeUnit + Time.configuration.systemTimeZone.offset
+fun ZonedTimeUnit.toTimeZone(timeZone: TimeZone): ZonedTimeUnit {
+    gmtTimeUnit.checkUndefined { return this }
+    return ZonedTimeUnit(gmtTimeUnit, Time.configuration.systemTimeZone)
+}
+
+fun ZonedTimeUnit.toSystemTimeZone(): ZonedTimeUnit {
+    return toTimeZone(Time.configuration.systemTimeZone)
+}
+
+fun ZonedTimeUnit.toServerTimeZone(): ZonedTimeUnit {
+    return toTimeZone(Time.configuration.serverTimeZone)
 }
 
 expect fun ZonedTimeUnit.toFormattedDate(

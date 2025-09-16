@@ -5,9 +5,9 @@ import com.merseyside.merseyLib.time.ext.includeMilli
 import com.merseyside.merseyLib.time.ext.toHoursMinutesOfDay
 import com.merseyside.merseyLib.time.ranges.TimeRange
 import com.merseyside.merseyLib.time.ranges.TimeRangeImpl
-import com.merseyside.merseyLib.time.ranges.undefined.Undefined
 import com.merseyside.merseyLib.time.ranges.undefined.UndefinedTimeRange
-import com.merseyside.merseyLib.time.units.*
+import com.merseyside.merseyLib.time.units.Day
+import com.merseyside.merseyLib.time.units.TimeUnit
 
 inline fun TimeRange.checkUndefined(undefined: () -> Unit = {
     throw UnsupportedOperationException("Undefined time range doesn't support that operation")

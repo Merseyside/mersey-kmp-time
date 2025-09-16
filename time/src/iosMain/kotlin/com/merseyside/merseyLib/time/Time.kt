@@ -39,7 +39,7 @@ actual fun getFormattedDate(
     pattern: Pattern,
     language: String,
     country: String
-): PatternedFormattedDate {
+): com.merseyside.merseyLib.time.format.PatternedFormattedDate {
     val date = getDate(timeUnit)
     val dateFormatter = NSDateFormatter().apply {
         timeZone = NSTimeZone.timeZoneWithName("GMT")!!
@@ -48,12 +48,20 @@ actual fun getFormattedDate(
     return if (pattern is Pattern.CUSTOM) {
         dateFormatter.dateFormat = pattern.value
 
-        PatternedFormattedDate(dateFormatter.stringFromDate(date), pattern)
+        _root_ide_package_.com.merseyside.merseyLib.time.format.PatternedFormattedDate(
+            dateFormatter.stringFromDate(
+                date
+            ), pattern
+        )
     } else {
         val formatter = NSISO8601DateFormatter()
         formatter.formatOptions = patternToFormattedOptions(pattern)
 
-        PatternedFormattedDate(formatter.stringFromDate(date), pattern)
+        _root_ide_package_.com.merseyside.merseyLib.time.format.PatternedFormattedDate(
+            formatter.stringFromDate(
+                date
+            ), pattern
+        )
     }
 }
 

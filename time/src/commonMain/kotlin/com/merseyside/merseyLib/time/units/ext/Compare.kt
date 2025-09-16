@@ -1,4 +1,4 @@
-package com.merseyside.merseyLib.time.ext
+package com.merseyside.merseyLib.time.units.ext
 
 import com.merseyside.merseyLib.time.units.*
 import kotlin.reflect.KClass
@@ -59,4 +59,14 @@ inline fun <reified T : TimeUnit> T.equalsOrMoreThen(other: TimeUnit): Boolean {
         0, 1 -> true
         else -> false
     }
+}
+
+fun min(first: TimeUnit, second: TimeUnit): TimeUnit {
+    return if (first <= second) first
+    else second
+}
+
+fun max(first: TimeUnit, second: TimeUnit): TimeUnit {
+    return if (first >= second) first
+    else second
 }

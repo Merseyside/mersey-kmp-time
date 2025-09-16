@@ -1,5 +1,6 @@
-package com.merseyside.merseyLib.time
+package com.merseyside.merseyLib.time.format
 
+import com.merseyside.merseyLib.time.Time
 import com.merseyside.merseyLib.time.exception.TimeInitializeException
 import com.merseyside.merseyLib.time.exception.TimeParseException
 import com.merseyside.merseyLib.time.ext.toTimeUnit
@@ -11,7 +12,10 @@ class PatternedFormattedDate internal constructor(
     val pattern: Pattern
 ) : FormattedDate(date) {
 
-    internal constructor(formattedDate: FormattedDate, pattern: Pattern): this(formattedDate.date, pattern)
+    internal constructor(formattedDate: FormattedDate, pattern: Pattern) : this(
+        formattedDate.date,
+        pattern
+    )
 
     companion object {
 
@@ -19,7 +23,10 @@ class PatternedFormattedDate internal constructor(
         fun of(date: String, pattern: Pattern): PatternedFormattedDate {
             return try {
                 requireValid(date, pattern)
-                PatternedFormattedDate(date, pattern)
+                PatternedFormattedDate(
+                    date,
+                    pattern
+                )
             } catch (e: TimeParseException) {
                 throw TimeInitializeException("Could not parse date!", e)
             }
@@ -70,4 +77,5 @@ class PatternedFormattedDate internal constructor(
 
 }
 
-fun UndefinedPatternedFormattedDate(date: String = "Undefined") = PatternedFormattedDate(date, Pattern.UNDEFINED)
+fun UndefinedPatternedFormattedDate(date: String = "Undefined") =
+    PatternedFormattedDate(date, Pattern.UNDEFINED)

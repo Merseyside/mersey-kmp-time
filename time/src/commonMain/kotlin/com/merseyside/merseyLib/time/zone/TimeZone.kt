@@ -1,5 +1,6 @@
-package com.merseyside.merseyLib.time
+package com.merseyside.merseyLib.time.zone
 
+import com.merseyside.merseyLib.time.Time
 import com.merseyside.merseyLib.time.exception.TimeParseException
 import com.merseyside.merseyLib.time.ext.abs
 import com.merseyside.merseyLib.time.ext.toFormattedDate
@@ -40,7 +41,7 @@ class TimeZone internal constructor(val zoneId: String, val offset: TimeUnit) {
         val GMT: TimeZone
             get() { return of("GMT") }
 
-        internal val NOT_SET_ZONE = TimeZone("GMT", TimeUnit.empty())
+        internal val NOT_SET_ZONE = TimeZone("GMT", TimeUnit.Companion.empty())
     }
 
     override fun toString(): String {

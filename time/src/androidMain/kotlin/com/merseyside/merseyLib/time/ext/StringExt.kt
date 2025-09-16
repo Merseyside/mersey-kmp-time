@@ -7,9 +7,10 @@ import com.merseyside.merseyLib.time.exception.TimeParseException
 import com.merseyside.merseyLib.time.units.Millis
 import com.merseyside.merseyLib.time.units.Seconds
 import com.merseyside.merseyLib.time.units.TimeUnit
-import com.merseyside.merseyLib.time.units.ZonedTimeUnit
+import com.merseyside.merseyLib.time.zone.ZonedTimeUnit
 import com.merseyside.merseyLib.time.utils.Pattern
 import com.merseyside.merseyLib.time.utils.patternToDateTimeFormatter
+import com.merseyside.merseyLib.time.zone.TimeZone
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.time.*

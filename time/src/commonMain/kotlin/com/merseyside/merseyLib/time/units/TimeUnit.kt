@@ -2,7 +2,7 @@
 
 package com.merseyside.merseyLib.time.units
 
-import com.merseyside.merseyLib.time.ext.castTo
+import com.merseyside.merseyLib.time.units.ext.castTo
 import kotlinx.serialization.Serializable
 
 object Conversions {

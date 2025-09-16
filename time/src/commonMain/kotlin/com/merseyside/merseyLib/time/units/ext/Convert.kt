@@ -1,6 +1,10 @@
-package com.merseyside.merseyLib.time.ext
+package com.merseyside.merseyLib.time.units.ext
 
-import com.merseyside.merseyLib.time.units.*
+import com.merseyside.merseyLib.time.units.Days
+import com.merseyside.merseyLib.time.units.Hours
+import com.merseyside.merseyLib.time.units.Millis
+import com.merseyside.merseyLib.time.units.Minutes
+import com.merseyside.merseyLib.time.units.Seconds
 
 fun <T : Number> T.toMillis(): Millis {
     return Millis(this.toLong())
@@ -40,14 +44,4 @@ fun <T : CharSequence> T.toHours(): Hours {
 
 fun <T : CharSequence> T.toDays(): Days {
     return this.toString().toLong().toDays()
-}
-
-fun min(first: TimeUnit, second: TimeUnit): TimeUnit {
-    return if (first <= second) first
-    else second
-}
-
-fun max(first: TimeUnit, second: TimeUnit): TimeUnit {
-    return if (first >= second) first
-    else second
 }

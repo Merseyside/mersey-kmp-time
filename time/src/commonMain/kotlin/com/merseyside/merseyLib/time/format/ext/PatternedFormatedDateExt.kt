@@ -1,10 +1,12 @@
-package com.merseyside.merseyLib.time.ext
+package com.merseyside.merseyLib.time.format.ext
 
 import com.merseyside.merseyLib.time.utils.Pattern
-import com.merseyside.merseyLib.time.PatternedFormattedDate
+import com.merseyside.merseyLib.time.format.PatternedFormattedDate
 import com.merseyside.merseyLib.time.units.TimeUnit
-import com.merseyside.merseyLib.time.units.ZonedTimeUnit
+import com.merseyside.merseyLib.time.zone.ZonedTimeUnit
 import com.merseyside.merseyLib.time.exception.TimeParseException
+import com.merseyside.merseyLib.time.ext.toFormattedDate
+import com.merseyside.merseyLib.time.ext.toTimeUnit
 import com.merseyside.merseyLib.time.ranges.undefined.Undefined
 
 inline fun PatternedFormattedDate.checkUndefined(undefined: () -> Unit) {

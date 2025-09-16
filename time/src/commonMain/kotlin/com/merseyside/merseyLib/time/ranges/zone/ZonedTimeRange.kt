@@ -1,11 +1,11 @@
-package com.merseyside.merseyLib.time.ranges
+package com.merseyside.merseyLib.time.ranges.zone
 
-import com.merseyside.merseyLib.time.TimeZone
+import com.merseyside.merseyLib.time.ranges.TimeRange
+import com.merseyside.merseyLib.time.zone.TimeZone
 import com.merseyside.merseyLib.time.ranges.undefined.Undefined
 import com.merseyside.merseyLib.time.ranges.undefined.UndefinedTimeRange
-import com.merseyside.merseyLib.time.ranges.undefined.UndefinedTimeRangeImpl
 import com.merseyside.merseyLib.time.units.TimeUnit
-import com.merseyside.merseyLib.time.units.ZonedTimeUnit
+import com.merseyside.merseyLib.time.zone.ZonedTimeUnit
 import kotlinx.serialization.Serializable
 
 interface ZonedTimeRange : TimeRange {

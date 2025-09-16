@@ -1,10 +1,10 @@
 package com.merseyside.merseyLib.time.ranges.ext
 
-import com.merseyside.merseyLib.time.ext.max
-import com.merseyside.merseyLib.time.ext.min
 import com.merseyside.merseyLib.time.ranges.TimeRange
 import com.merseyside.merseyLib.time.ranges.TimeRangeImpl
 import com.merseyside.merseyLib.time.units.TimeUnit
+import com.merseyside.merseyLib.time.units.ext.max
+import com.merseyside.merseyLib.time.units.ext.min
 
 /**
  * Unite two ranges(if they intersect) into one range

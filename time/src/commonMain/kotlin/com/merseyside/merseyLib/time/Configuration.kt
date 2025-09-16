@@ -5,6 +5,7 @@ import com.merseyside.merseyLib.kotlin.serialization.serialize
 import com.merseyside.merseyLib.time.units.Days
 import com.merseyside.merseyLib.time.utils.Pattern
 import com.merseyside.merseyLib.time.utils.Pattern.*
+import com.merseyside.merseyLib.time.zone.TimeZone
 import com.russhwolf.settings.Settings
 
 class Configuration internal constructor(private val settings: Settings) {

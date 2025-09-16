@@ -1,15 +1,17 @@
 package com.merseyside.merseyLib.time.utils.serializers
 
 import com.merseyside.merseyLib.kotlin.utils.safeLet
-import com.merseyside.merseyLib.time.FormattedDate
-import com.merseyside.merseyLib.time.TimeZone
 import com.merseyside.merseyLib.time.ext.toFormattedDate
-import com.merseyside.merseyLib.time.ext.toTimeUnit
-import com.merseyside.merseyLib.time.ranges.ZonedTimeRange
+import com.merseyside.merseyLib.time.format.FormattedDate
+import com.merseyside.merseyLib.time.format.ext.toTimeUnit
 import com.merseyside.merseyLib.time.ranges.undefined.Undefined
 import com.merseyside.merseyLib.time.ranges.undefined.UndefinedTimeRange
-import com.merseyside.merseyLib.time.units.ZonedTimeUnit
+import com.merseyside.merseyLib.time.ranges.zone.ZonedTimeRange
+import com.merseyside.merseyLib.time.ranges.zone.ext.toServerTimeZone
 import com.merseyside.merseyLib.time.utils.Pattern
+import com.merseyside.merseyLib.time.zone.TimeZone
+import com.merseyside.merseyLib.time.zone.ZonedTimeUnit
+import com.merseyside.merseyLib.time.zone.ext.toFormattedDate
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.nullable
@@ -37,11 +39,11 @@ class IsoOffsetDateTimeSerializer : KSerializer<ZonedTimeUnit> {
     }
 }
 
-class StringAsTimeZoneSerializer : KSerializer<TimeZone> {
+class TimeZoneAsStringSerializer : KSerializer<TimeZone> {
 
     override val descriptor: SerialDescriptor =
         PrimitiveSerialDescriptor(
-            "com.merseyside.merseyLib.time.utils.serializers.StringAsTimeZoneSerializer",
+            "com.merseyside.merseyLib.time.utils.serializers.TimeZoneAsStringSerializer",
             PrimitiveKind.STRING
         )
 
@@ -55,9 +57,9 @@ class StringAsTimeZoneSerializer : KSerializer<TimeZone> {
     }
 }
 
-class StringAsServerTimeZoneSerializer : KSerializer<ZonedTimeUnit> {
+class ServerTimeZoneAsFormattedDateSerializer : KSerializer<ZonedTimeUnit> {
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(
-        "com.merseyside.merseyLib.time.utils.StringAsServerTimeZoneSerializer",
+        "com.merseyside.merseyLib.time.utils.ServerTimeZoneAsFormattedDateSerializer",
         PrimitiveKind.STRING
     )
 
@@ -76,11 +78,11 @@ class StringAsServerTimeZoneSerializer : KSerializer<ZonedTimeUnit> {
 /**
  * Formats json array with two strings: f.e ["22:22+03:00", "23:23+03:00"]
  */
-class StringAsServerTimeZoneRangeSerializer : KSerializer<ZonedTimeRange> {
+class ServerTimeZonedRangeAsFormattedDateRangeSerializer : KSerializer<ZonedTimeRange> {
 
     override val descriptor: SerialDescriptor =
         PrimitiveSerialDescriptor(
-            "com.merseyside.merseyLib.time.utils.serializers.StringAsServerTimeZoneRangeSerializer",
+            "com.merseyside.merseyLib.time.utils.serializers.ServerTimeZonedRangeAsFormattedDateRangeSerializer",
             PrimitiveKind.STRING
         )
 
@@ -91,7 +93,9 @@ class StringAsServerTimeZoneRangeSerializer : KSerializer<ZonedTimeRange> {
         val start: String?
         val end: String?
 
-        with(value) {
+        val serverZonedRange = value.toServerTimeZone()
+
+        with(serverZonedRange) {
             if (this is UndefinedTimeRange) {
                 start = if (startZoned.gmtTimeUnit is Undefined) null
                 else startZoned.localTimeUnit.toFormattedDate().date

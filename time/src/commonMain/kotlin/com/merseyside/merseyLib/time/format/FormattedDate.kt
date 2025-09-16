@@ -1,4 +1,4 @@
-package com.merseyside.merseyLib.time
+package com.merseyside.merseyLib.time.format
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
@@ -29,7 +29,8 @@ open class FormattedDate (val date: String) {
     }
 
     companion object {
-        fun empty(): FormattedDate = FormattedDate("")
+        fun empty(): FormattedDate =
+            _root_ide_package_.com.merseyside.merseyLib.time.format.FormattedDate("")
     }
 }
 
@@ -44,7 +45,7 @@ class StringAsFormattedDateSerializer : KSerializer<FormattedDate> {
         )
 
     override fun deserialize(decoder: Decoder): FormattedDate {
-        return FormattedDate(decoder.decodeString())
+        return _root_ide_package_.com.merseyside.merseyLib.time.format.FormattedDate(decoder.decodeString())
     }
 
     override fun serialize(encoder: Encoder, value: FormattedDate) {

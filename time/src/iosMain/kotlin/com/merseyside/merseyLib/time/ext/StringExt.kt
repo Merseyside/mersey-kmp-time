@@ -2,11 +2,11 @@ package com.merseyside.merseyLib.time.ext
 
 import com.merseyside.merseyLib.time.Country
 import com.merseyside.merseyLib.time.Language
-import com.merseyside.merseyLib.time.TimeZone
+import com.merseyside.merseyLib.time.zone.TimeZone
 import com.merseyside.merseyLib.time.exception.TimeParseException
 import com.merseyside.merseyLib.time.units.Seconds
 import com.merseyside.merseyLib.time.units.TimeUnit
-import com.merseyside.merseyLib.time.units.ZonedTimeUnit
+import com.merseyside.merseyLib.time.zone.ZonedTimeUnit
 import com.merseyside.merseyLib.time.utils.Pattern
 import com.merseyside.merseyLib.time.utils.getOffsetFromString
 import com.merseyside.merseyLib.time.utils.patternToFormattedOptions

@@ -1,8 +1,16 @@
-package com.merseyside.merseyLib.time.ext
+package com.merseyside.merseyLib.time.format.ext
 
 import com.merseyside.merseyLib.kotlin.logger.Logger
 import com.merseyside.merseyLib.time.*
 import com.merseyside.merseyLib.time.exception.TimeParseException
+import com.merseyside.merseyLib.time.ext.toFormattedDate
+import com.merseyside.merseyLib.time.ext.toHoursMinutesOfDay
+import com.merseyside.merseyLib.time.ext.toHoursOfDay
+import com.merseyside.merseyLib.time.ext.toMinutesOfHour
+import com.merseyside.merseyLib.time.ext.toSecondsOfMinute
+import com.merseyside.merseyLib.time.ext.toTimeUnit
+import com.merseyside.merseyLib.time.format.FormattedDate
+import com.merseyside.merseyLib.time.format.PatternedFormattedDate
 import com.merseyside.merseyLib.time.units.TimeUnit
 import com.merseyside.merseyLib.time.utils.Pattern
 

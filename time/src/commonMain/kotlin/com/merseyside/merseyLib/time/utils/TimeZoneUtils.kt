@@ -2,7 +2,7 @@ package com.merseyside.merseyLib.time.utils
 
 import com.merseyside.merseyLib.time.units.Seconds
 import com.merseyside.merseyLib.time.units.TimeUnit
-import com.merseyside.merseyLib.time.TimeZone
+import com.merseyside.merseyLib.time.zone.TimeZone
 import com.merseyside.merseyLib.time.exception.TimeParseException
 
 @Throws(TimeParseException::class)
