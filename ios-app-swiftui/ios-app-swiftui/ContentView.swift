@@ -7,7 +7,6 @@
 
 import SwiftUI
 import CoreData
-import KotlinTime
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext

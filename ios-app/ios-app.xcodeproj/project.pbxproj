@@ -17,7 +17,7 @@
 		287627FF1F319065007FA12B /* mokoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mokoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C62700626D23EE40080622D /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		2C62700A26D240B30080622D /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SceneDelegate.swift; path = ../../../../ios/WeatherApp/WeatherApp/Application/SceneDelegate.swift; sourceTree = "<group>"; };
-		45964D362282A1FD00C16658 /* time */ = {isa = PBXFileReference; lastKnownFileType = folder; name = time; path = ../time; sourceTree = "<group>"; };
+		45964D362282A1FD00C16658 /* time-core */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "time-core"; path = "../time-core"; sourceTree = "<group>"; };
 		45F4791A219463C7003D25FA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		45F4791B219463C7003D25FA /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		45F4791C219463C7003D25FA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -39,7 +39,7 @@
 			children = (
 				2C62700326D23EB50080622D /* Application */,
 				2C62700426D23EC70080622D /* Main */,
-				45964D362282A1FD00C16658 /* time */,
+				45964D362282A1FD00C16658 /* time-core */,
 				45F47910219463C7003D25FA /* src */,
 				287628001F319065007FA12B /* Products */,
 				ADB5B2971F2D9259DC280B63 /* Pods */,

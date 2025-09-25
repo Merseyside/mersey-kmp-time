@@ -15,19 +15,13 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.time)
+            implementation(projects.timeCore)
             implementation(common.coroutines)
             implementation(common.mersey.kotlin.ext)
-            api(multiplatformLibs.moko.kswift)
         }
     }
 }
 
 kotlinExtension {
     setCompilerArgs("-Xskip-prerelease-check")
-}
-
-kswift {
-    install(dev.icerock.moko.kswift.plugin.feature.SealedToSwiftEnumFeature)
-    install(dev.icerock.moko.kswift.plugin.feature.PlatformExtensionFunctionsFeature)
 }

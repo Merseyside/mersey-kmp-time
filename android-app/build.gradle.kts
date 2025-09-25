@@ -78,7 +78,7 @@ val merseyLibs = listOf(
 )
 
 dependencies {
-    implementation(projects.time)
+    implementation(projects.timeCore)
     implementation(projects.timeCoroutineExt)
 
     android.forEach { lib -> implementation(lib) }

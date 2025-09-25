@@ -45,7 +45,7 @@ private fun getTimeZone(nsTimeZone: NSTimeZone): TimeZone {
 }
 
 private fun getNSTimeZone(zoneId: String): NSTimeZone {
-    return NSTimeZone.timeZoneWithAbbreviation(zoneId)
+    return NSTimeZone.timeZoneWithName(zoneId) ?: NSTimeZone.timeZoneWithAbbreviation(zoneId)
         ?: throw TimeParseException("Can not obtain time zone with $zoneId abbreviation")
 }
 

@@ -4,7 +4,14 @@ import com.merseyside.merseyLib.time.exception.TimeParseException
 import com.merseyside.merseyLib.time.units.*
 import com.merseyside.merseyLib.time.utils.Pattern
 import com.merseyside.merseyLib.time.utils.patternToFormattedOptions
+import com.russhwolf.settings.NSUserDefaultsSettings
 import platform.Foundation.*
+
+fun Time.init() {
+    val userDefaults = NSUserDefaults(suiteName = "mersey_time_prefs")
+    val settings = NSUserDefaultsSettings(delegate = userDefaults)
+    setConfiguration(settings)
+}
 
 actual fun getCurrentTimeGMT(): TimeUnit {
     return Seconds(NSDate().timeIntervalSince1970)

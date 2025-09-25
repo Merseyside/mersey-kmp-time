@@ -31,10 +31,20 @@ dependencyResolutionManagement {
         val catalogGradle by creating {
             from("$group:catalog-version-gradle:$catalogVersions")
         }
+
+        val iosLibs by creating {
+            from("$group:catalog-version-ios:$catalogVersions")
+        }
     }
 }
 
-include(":time", ":time-coroutine-ext")
+include(":time-core", ":time-coroutine-ext")
+
+//include(":messaging-firebase")
+//project(":messaging-firebase").projectDir = File(rootDir.parent, "mersey-kmp-messaging/messaging-firebase")
+//
+//include(":messaging-core")
+//project(":messaging-core").projectDir = File(rootDir.parent, "mersey-kmp-messaging/messaging-core")
 
 val isCompositeBuild = gradle.parent != null
 if (!isCompositeBuild) {
