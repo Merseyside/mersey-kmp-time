@@ -5,6 +5,7 @@ import com.merseyside.merseyLib.time.exception.TimeInitializeException
 import com.merseyside.merseyLib.time.ext.getHumanDate
 import com.merseyside.merseyLib.time.ranges.ext.getGap
 import com.merseyside.merseyLib.time.ranges.ext.toHumanString
+import com.merseyside.merseyLib.time.ranges.week.WeekRange
 import com.merseyside.merseyLib.time.utils.Pattern
 import kotlinx.serialization.Serializable
 
