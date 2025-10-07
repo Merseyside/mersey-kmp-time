@@ -9,9 +9,7 @@ kotlin {
         minSdk = androidLibsBuild.version("compileMinSdk").toInt()
     }
 
-    val isMac = System.getProperty("os.name").startsWith("Mac OS")
-
-    if (isMac) {
+    ifBuildIos {
         iosX64()
         iosArm64()
         iosSimulatorArm64()

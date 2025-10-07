@@ -4,9 +4,13 @@ plugins {
         id(mersey.kotlin.extension.id())
         plugin(kotlin.kapt)
         plugin(kotlin.serialization)
-        id(cocoapods.id())
     }
     `maven-publish-plugin`
+}
+
+val isBuildIos = isBuildIos()
+if (isBuildIos) {
+    pluginManager.apply(catalogPlugins.plugins.cocoapods.id())
 }
 
 kotlin {
@@ -14,14 +18,12 @@ kotlin {
         namespace = "com.merseyside.merseyLib.time"
     }
 
-    val isMac = System.getProperty("os.name").startsWith("Mac OS")
-
-    if (isMac) {
+    if (isBuildIos) {
         iosX64()
         iosArm64()
         iosSimulatorArm64()
 
-        cocoapods {
+        extensions.configure<org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension> {
             summary = "Time module"
             version = common.versions.mersey.time.get()
             homepage = "https://github.com/Merseyside/mersey-kmp-time"

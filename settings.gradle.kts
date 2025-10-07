@@ -40,12 +40,6 @@ dependencyResolutionManagement {
 
 include(":time-core", ":time-coroutine-ext")
 
-//include(":messaging-firebase")
-//project(":messaging-firebase").projectDir = File(rootDir.parent, "mersey-kmp-messaging/messaging-firebase")
-//
-//include(":messaging-core")
-//project(":messaging-core").projectDir = File(rootDir.parent, "mersey-kmp-messaging/messaging-core")
-
 val isCompositeBuild = gradle.parent != null
 if (!isCompositeBuild) {
     include(":android-app")
