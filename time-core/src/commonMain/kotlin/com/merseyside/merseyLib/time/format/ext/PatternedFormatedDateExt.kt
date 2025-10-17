@@ -7,7 +7,7 @@ import com.merseyside.merseyLib.time.zone.ZonedTimeUnit
 import com.merseyside.merseyLib.time.exception.TimeParseException
 import com.merseyside.merseyLib.time.ext.toFormattedDate
 import com.merseyside.merseyLib.time.ext.toTimeUnit
-import com.merseyside.merseyLib.time.ranges.undefined.Undefined
+import com.merseyside.merseyLib.time.units.Undefined
 
 inline fun PatternedFormattedDate.checkUndefined(undefined: () -> Unit) {
     if (pattern is Pattern.UNDEFINED) undefined()

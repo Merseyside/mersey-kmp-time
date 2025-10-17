@@ -4,7 +4,7 @@ import com.merseyside.merseyLib.kotlin.utils.safeLet
 import com.merseyside.merseyLib.time.ext.toFormattedDate
 import com.merseyside.merseyLib.time.format.FormattedDate
 import com.merseyside.merseyLib.time.format.ext.toTimeUnit
-import com.merseyside.merseyLib.time.ranges.undefined.Undefined
+import com.merseyside.merseyLib.time.units.Undefined
 import com.merseyside.merseyLib.time.ranges.undefined.UndefinedTimeRange
 import com.merseyside.merseyLib.time.ranges.zone.ZonedTimeRange
 import com.merseyside.merseyLib.time.ranges.zone.ext.toServerTimeZone
