@@ -14,7 +14,7 @@ import kotlinx.serialization.Serializable
 
 @ConsistentCopyVisibility
 @Serializable
-data class ZonedTimeUnit internal constructor(val gmtTimeUnit: TimeUnit, val timeZone: TimeZone) {
+data class ZonedTimeUnit private constructor(val gmtTimeUnit: TimeUnit, val timeZone: TimeZone) {
 
     val localTimeUnit: TimeUnit by lazy { gmtTimeUnit + timeZone.offset }
 
@@ -41,7 +41,7 @@ data class ZonedTimeUnit internal constructor(val gmtTimeUnit: TimeUnit, val tim
         @Throws(TimeParseException::class)
         fun withServerTimeZone(localTimeUnit: TimeUnit): ZonedTimeUnit {
             val serverTimeZone = Time.configuration.serverTimeZone
-            check(serverTimeZone != TimeZone.Companion.NOT_SET_ZONE) {
+            check(serverTimeZone != TimeZone.NOT_SET_ZONE) {
                 "Can not init ZonedTimeUnit because serverTimeZone wasn't set!"
             }
             return ZonedTimeUnit(localTimeUnit - serverTimeZone.offset, serverTimeZone)

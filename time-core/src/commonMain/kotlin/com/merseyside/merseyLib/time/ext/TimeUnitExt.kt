@@ -7,11 +7,9 @@ import com.merseyside.merseyLib.time.calendar.Calendar
 import com.merseyside.merseyLib.time.calendar.CalendarDate
 import com.merseyside.merseyLib.time.format.PatternedFormattedDate
 import com.merseyside.merseyLib.time.format.UndefinedPatternedFormattedDate
-import com.merseyside.merseyLib.time.format.ext.toFormattedDate
-import com.merseyside.merseyLib.time.format.ext.toHoursMinutesOfDay
-import com.merseyside.merseyLib.time.ranges.month.MonthRange
 import com.merseyside.merseyLib.time.ranges.TimeRange
 import com.merseyside.merseyLib.time.ranges.TimeRangeImpl
+import com.merseyside.merseyLib.time.ranges.month.MonthRange
 import com.merseyside.merseyLib.time.ranges.undefined.Undefined
 import com.merseyside.merseyLib.time.ranges.week.WeekRange
 import com.merseyside.merseyLib.time.units.*
@@ -201,8 +199,8 @@ fun TimeUnit.isMoreThanDay(): Boolean {
 
 fun TimeUnit.toDayTimeRange(includeMilli: Boolean = true): TimeRange {
     checkUndefined()
-    val day = toDays().round()
-    return day.toTimeRange(startShift = Days(1).includeMilli(includeMilli))
+    val dayStart = getStartOfDate()
+    return dayStart.toTimeRange(startShift = Days(1).includeMilli(includeMilli))
 }
 
 fun TimeUnit.toTimeRange(shift: TimeUnit): TimeRange {
@@ -234,15 +232,15 @@ fun TimeUnit.getPrevDay(): Days {
 }
 
 /**
- * @return WeekRange starts from monday (00:00) ends with sunday (23:59)
+ * @return WeekRange starts from monday (00:00) ends with sunday (23:59:59.9999)
  */
 fun TimeUnit.toWeekRange(): WeekRange {
     checkUndefined()
 
     val dayOfWeek = toDayOfWeek()
-    val days = toDays().round()
+    val dayStart = getStartOfDate()
 
-    val monday = days - dayOfWeek.toTimeUnit()
+    val monday = dayStart - dayOfWeek.toTimeUnit()
     val endOfSunday = monday + Days(7).excludeMilli()
 
     return WeekRange(monday, endOfSunday)
@@ -259,13 +257,13 @@ fun TimeUnit.toMonth(): Month {
 fun TimeUnit.toMonthRange(): MonthRange {
     checkUndefined()
 
-    val days: Days = toDays().round()
+    val dayStart: Days = getStartOfDate()
 
     val dayOfMonth = getDayOfMonth(this)
 
     val month = getMonth(this)
 
-    val monthStart = days + 1 - dayOfMonth
+    val monthStart = dayStart + 1 - dayOfMonth
     val monthEnd = monthStart + month.getDayCount(getYear(this))
     return MonthRange(monthStart, monthEnd.excludeMilli())
 }

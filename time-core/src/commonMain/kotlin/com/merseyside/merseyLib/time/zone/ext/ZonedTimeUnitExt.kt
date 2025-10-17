@@ -1,8 +1,13 @@
 package com.merseyside.merseyLib.time.zone.ext
 
-import com.merseyside.merseyLib.time.*
+import com.merseyside.merseyLib.time.Time
 import com.merseyside.merseyLib.time.ext.checkUndefined
+import com.merseyside.merseyLib.time.ext.getNextDay
+import com.merseyside.merseyLib.time.ext.getPrevDay
+import com.merseyside.merseyLib.time.ext.getStartOfDate
 import com.merseyside.merseyLib.time.format.PatternedFormattedDate
+import com.merseyside.merseyLib.time.ranges.TimeRangeImpl
+import com.merseyside.merseyLib.time.ranges.zone.ZonedTimeRange
 import com.merseyside.merseyLib.time.units.*
 import com.merseyside.merseyLib.time.utils.Pattern
 import com.merseyside.merseyLib.time.zone.TimeZone
@@ -36,22 +41,51 @@ fun ZonedTimeUnit.isEqualInstantTime(other: ZonedTimeUnit): Boolean {
 }
 
 fun ZonedTimeUnit.applyToTimeUnit(block: (TimeUnit) -> TimeUnit): ZonedTimeUnit {
-    return ZonedTimeUnit(block(gmtTimeUnit), timeZone)
+    return ZonedTimeUnit.ofLocalTime(block(localTimeUnit), timeZone)
 }
 
 fun ZonedTimeUnit.toTimeZone(timeZone: TimeZone): ZonedTimeUnit {
     gmtTimeUnit.checkUndefined { return this }
-    return ZonedTimeUnit(gmtTimeUnit, Time.configuration.systemTimeZone)
+    return ZonedTimeUnit.ofGMT(gmtTimeUnit, Time.configuration.systemTimeZone)
 }
 
 fun ZonedTimeUnit.toSystemTimeZone(): ZonedTimeUnit {
     return toTimeZone(Time.configuration.systemTimeZone)
 }
 
+fun ZonedTimeUnit.getStartOfDate(): ZonedTimeUnit {
+    return ZonedTimeUnit.ofLocalTime(localTimeUnit.getStartOfDate(), timeZone)
+}
+
+fun ZonedTimeUnit.getNextDay(): ZonedTimeUnit {
+    return applyToTimeUnit { it.getNextDay() }
+}
+
+fun ZonedTimeUnit.getPrevDay(): ZonedTimeUnit {
+    return applyToTimeUnit { it.getPrevDay() }
+}
+
 fun ZonedTimeUnit.toServerTimeZone(): ZonedTimeUnit {
     return toTimeZone(Time.configuration.serverTimeZone)
+}
+
+fun ZonedTimeUnit.toDayTimeRange(): ZonedTimeRange {
+    val daysTimeUnit = getStartOfDate()
+    return daysTimeUnit.toZonedTimeRange(startShift = Day)
+}
+
+fun ZonedTimeUnit.toZonedTimeRange(
+    startShift: TimeUnit = TimeUnit.empty(),
+    backShift: TimeUnit = TimeUnit.empty()
+): ZonedTimeRange {
+    if (startShift.isEmpty() && backShift.isEmpty())
+        throw IllegalArgumentException("Pass at least one shift value!")
+
+    val timeRange = TimeRangeImpl(localTimeUnit - backShift, localTimeUnit + startShift)
+    return ZonedTimeRange.create(timeRange, timeZone)
 }
 
 expect fun ZonedTimeUnit.toFormattedDate(
     pattern: Pattern.Offset = Time.configuration.zonedDefaultPattern
 ): PatternedFormattedDate
+

@@ -14,6 +14,7 @@ import com.merseyside.merseyLib.time.ranges.week.WeekRange
 import com.merseyside.merseyLib.time.units.*
 import com.merseyside.merseyLib.time.utils.Pattern
 import com.merseyside.merseyLib.time.zone.ZonedTimeUnit
+import com.merseyside.merseyLib.time.zone.ext.toDayTimeRange
 import com.russhwolf.settings.Settings
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
@@ -35,15 +36,14 @@ object Time {
     val systemTime: TimeUnit
         get() = now.localTimeUnit
 
-    val today: Days
-        get() = systemTime.toDays().round()
+    val today: ZonedTimeUnit
+        get() = ZonedTimeUnit.ofLocalTime(systemTime.toDays().round(), configuration.systemTimeZone)
 
-    val todayRange: TimeRange
-        get() = today.toDayTimeRange(false)
+    val todayRange: ZonedTimeRange
+        get() = today.toDayTimeRange()
 
-    fun getCurrentDayTime(): TimeUnit {
-        return now.localTimeUnit.toHoursMinutesOfDay()
-    }
+    val systemDayTime: TimeUnit
+        get() = now.localTimeUnit.toHoursMinutesOfDay()
 
     @Throws(TimeParseException::class)
     fun of(

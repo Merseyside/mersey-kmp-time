@@ -57,9 +57,9 @@ class TimeZoneAsStringSerializer : KSerializer<TimeZone> {
     }
 }
 
-class ServerTimeZoneAsFormattedDateSerializer : KSerializer<ZonedTimeUnit> {
+class ServerZonedInstantSerializer : KSerializer<ZonedTimeUnit> {
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(
-        "com.merseyside.merseyLib.time.utils.ServerTimeZoneAsFormattedDateSerializer",
+        "com.merseyside.merseyLib.time.utils.ServerZonedInstantSerializer",
         PrimitiveKind.STRING
     )
 
@@ -78,11 +78,11 @@ class ServerTimeZoneAsFormattedDateSerializer : KSerializer<ZonedTimeUnit> {
 /**
  * Formats json array with two strings: f.e ["22:22+03:00", "23:23+03:00"]
  */
-class ServerTimeZonedRangeAsFormattedDateRangeSerializer : KSerializer<ZonedTimeRange> {
+class ServerZonedTimeRangeAsArraySerializer : KSerializer<ZonedTimeRange> {
 
     override val descriptor: SerialDescriptor =
         PrimitiveSerialDescriptor(
-            "com.merseyside.merseyLib.time.utils.serializers.ServerTimeZonedRangeAsFormattedDateRangeSerializer",
+            "com.merseyside.merseyLib.time.utils.serializers.ServerZonedTimeRangeAsArraySerializer",
             PrimitiveKind.STRING
         )
 

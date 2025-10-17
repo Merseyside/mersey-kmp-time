@@ -73,7 +73,7 @@ internal actual fun String.toZonedTimeUnit(pattern: Pattern.Offset): ZonedTimeUn
         val zoneId = zonedDateTime.zone.id
         val offset = Seconds(zonedDateTime.offset.totalSeconds)
 
-        ZonedTimeUnit(millis, TimeZone(zoneId, offset))
+        ZonedTimeUnit.ofGMT(millis, TimeZone(zoneId, offset))
     } catch (e: DateTimeParseException) {
         throw TimeParseException(msg = "Can not parse zoned time!", cause = e)
     }

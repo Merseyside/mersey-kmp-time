@@ -14,6 +14,21 @@ import kotlinx.serialization.Serializable
 @Serializable
 class TimeZone internal constructor(val zoneId: String, val offset: TimeUnit) {
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other is TimeUnit) return offset == other
+        if (other !is TimeZone) return false
+
+        if (zoneId != other.zoneId) return false
+        return false
+    }
+
+    override fun hashCode(): Int {
+        var result = zoneId.hashCode()
+        result = 31 * result + offset.hashCode()
+        return result
+    }
+
     companion object {
         @Throws(TimeParseException::class)
         fun of(zoneId: String): TimeZone {
@@ -47,4 +62,6 @@ class TimeZone internal constructor(val zoneId: String, val offset: TimeUnit) {
     override fun toString(): String {
         return "zoneId = $zoneId offset = ${offset.toFormattedDate(Time.configuration.hoursMinutesPattern)}"
     }
+
+
 }
