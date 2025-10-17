@@ -13,7 +13,7 @@ import com.merseyside.merseyLib.time.ranges.ext.logHuman
 import com.merseyside.merseyLib.time.ranges.ext.shiftBack
 import com.merseyside.merseyLib.time.ranges.ext.splitToMonthRanges
 import com.merseyside.merseyLib.time.ranges.ext.toHumanString
-import com.merseyside.merseyLib.time.units.UndefinedTimeRange
+import com.merseyside.merseyLib.time.ranges.undefined.UndefinedTimeRange
 import com.merseyside.merseyLib.time.ranges.years.CalendarYearsRange
 import com.merseyside.merseyLib.time.units.*
 import com.merseyside.time.R
@@ -49,7 +49,7 @@ class MainActivity: BaseActivity() {
 
         calendarDate.toTimeUnit().logHuman()
 
-        val undefinedTimeRange = UndefinedTimeRange.createWithStart(Time.now.localTimeUnit).logHuman()
+        val undefinedTimeRange = UndefinedTimeRange.createWithStart(Time.systemTime).logHuman()
         undefinedTimeRange.shiftBack(Day).logHuman()
 
         undefinedTimeRange.toHumanString(undefinedDate = "undefined end").log()
