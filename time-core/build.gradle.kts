@@ -41,6 +41,9 @@ kotlin {
             implementation(common.mersey.kotlin.ext)
             implementation(common.serialization)
         }
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+        }
     }
 }
 
