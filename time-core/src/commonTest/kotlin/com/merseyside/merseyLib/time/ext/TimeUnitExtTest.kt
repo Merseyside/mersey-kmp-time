@@ -10,15 +10,20 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
 import com.merseyside.merseyLib.time.units.Minutes
 import com.merseyside.merseyLib.time.units.Hours
-import com.merseyside.merseyLib.time.DayOfWeek
 import com.merseyside.merseyLib.time.Time
-import com.merseyside.merseyLib.time.month.Month
+import com.merseyside.merseyLib.time.units.DayOfWeek
+import com.merseyside.merseyLib.time.units.Milli
+import com.merseyside.merseyLib.time.units.Millis
+import com.merseyside.merseyLib.time.units.Month
+import com.merseyside.merseyLib.time.units.minus
+import com.merseyside.merseyLib.time.units.plus
+import com.merseyside.merseyLib.time.units.times
 
 class TimeUnitExtTest {
 
     @Test
     fun testCheckUndefined() {
-        val undefined = Undefined()
+        val undefined = Undefined.MAX()
         assertFailsWith<UnsupportedOperationException> { undefined.checkUndefined() }
 
         val defined = Seconds(5)
@@ -27,7 +32,7 @@ class TimeUnitExtTest {
 
     @Test
     fun testIfUndefined() {
-        val undefined = Undefined()
+        val undefined = Undefined.MAX()
         val result = undefined.ifUndefined { "is undefined" }
         assertEquals("is undefined", result)
 
@@ -41,9 +46,9 @@ class TimeUnitExtTest {
         val timeUnit = Days(19000) // 2022-01-18
         val calendarDate = timeUnit.toCalendarDate()
 
-        assertEquals(2022, calendarDate.year.value)
-        assertEquals(1, calendarDate.month.value)
-        assertEquals(18, calendarDate.day.value)
+        assertEquals(2022, calendarDate.years.value)
+        assertEquals(1, calendarDate.month.index)
+        assertEquals(18, calendarDate.days)
     }
 
     @Test
@@ -52,9 +57,9 @@ class TimeUnitExtTest {
         val builder = timeUnit.toCalendarBuilder()
         val calendarDate = builder.build()
 
-        assertEquals(2022, calendarDate.year.value)
-        assertEquals(1, calendarDate.month.value)
-        assertEquals(18, calendarDate.day.value)
+        assertEquals(2022, calendarDate.years.value)
+        assertEquals(1, calendarDate.month.index)
+        assertEquals(18, calendarDate.days)
     }
 
     @Test
@@ -201,7 +206,7 @@ class TimeUnitExtTest {
 
     @Test
     fun testGetHumanDateWithPattern() {
-        val now = Time.now()
+        val now = Time.systemTime
         val formattedNow = now.getHumanDate("HH:mm")
         val time = now.toHoursMinutesOfDay().toFormattedDate("HH:mm")
         assertEquals(time.date, formattedNow.date)
@@ -216,7 +221,7 @@ class TimeUnitExtTest {
         val past = Seconds(1)
         assertEquals(true, past.isExpired())
 
-        val future = Time.now() + Days(1)
+        val future = Time.systemTime + Days(1)
         assertEquals(false, future.isExpired())
     }
 
@@ -311,13 +316,13 @@ class TimeUnitExtTest {
     @Test
     fun testExcludeMilli() {
         val seconds = Seconds(1)
-        assertEquals(Seconds(1) - TimeUnit.milli(1), seconds.excludeMilli())
+        assertEquals(Seconds(1) - Milli, seconds.excludeMilli())
     }
 
     @Test
     fun testAddMilli() {
         val seconds = Seconds(1)
-        assertEquals(Seconds(1) + TimeUnit.milli(1), seconds.addMilli())
+        assertEquals(Seconds(1) + Milli, seconds.addMilli())
     }
 
     @Test
@@ -375,8 +380,8 @@ class TimeUnitExtTest {
 
     @Test
     fun testMoreOrEqualsSecond() {
-        assertEquals(true, (TimeUnit.milli(1000)).moreOrEqualsSecond())
-        assertEquals(false, (TimeUnit.milli(999)).moreOrEqualsSecond())
+        assertEquals(true, (Millis(1000)).moreOrEqualsSecond())
+        assertEquals(false, (Millis(999)).moreOrEqualsSecond())
     }
 
     @Test

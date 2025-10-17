@@ -1,10 +1,6 @@
 plugins {
     `kotlin-multiplatform-convention`
-    with(catalogPlugins.plugins) {
-        id(mersey.kotlin.extension.id())
-        plugin(kotlin.kapt)
-        plugin(kotlin.serialization)
-    }
+    plugin(catalogPlugins.plugins.kotlin.serialization)
     `maven-publish-plugin`
 }
 
@@ -19,9 +15,6 @@ kotlin {
     }
 
     if (isBuildIos) {
-        iosX64()
-        iosArm64()
-        iosSimulatorArm64()
 
         extensions.configure<org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension> {
             summary = "Time module"
@@ -45,8 +38,4 @@ kotlin {
             implementation(kotlin("test"))
         }
     }
-}
-
-kotlinExtension {
-    setCompilerArgs("-Xskip-prerelease-check")
 }
